@@ -1,0 +1,11 @@
+(dp1
+I0
+S'left'
+p2
+sI1
+S'center'
+p3
+sI2
+S'right'
+p4
+s.
