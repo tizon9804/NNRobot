@@ -92,7 +92,7 @@ persistence.loadNN(typeN)
 #Mode
 #-------------------------------------------------------------------------
 while True:
-    mode=raw_input("please select a mode(0:online,1:training):")
+    mode='1'#raw_input("please select a mode(0:online,1:training):")
     if mode=='1':
         #-------------------------------------------------------------------------
         #initialize training
@@ -100,7 +100,7 @@ while True:
         lamb = 0.001
         iterations = 3000
 
-        ty=raw_input("please select a type(0:sight,1:navigation):")
+        ty='1'#raw_input("please select a type(0:sight,1:navigation):")
         if ty =='0':
             print("initializing training sight..")
             training = Training.config(elements,lamb,iterations,persistence,type)
@@ -132,7 +132,7 @@ while True:
 #-------------------------------------------------------------------------#-------------------------------------------------------------------------#-------------------------------------------------------------------------
 #-------------------------------------------------------------------------#-------------------------------------------------------------------------#-------------------------------------------------------------------------
 #-------------------------------------------------------------------------#-------------------------------------------------------------------------#-------------------------------------------------------------------------
-robot.closeRobot()
+#robot.closeRobot()
 cap.release()
 cv2.destroyAllWindows()
 print("Chappie down!!")

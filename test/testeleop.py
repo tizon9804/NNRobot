@@ -24,7 +24,7 @@ Adept MobileRobots for information about a commercial version of ARIA at
 robots@mobilerobots.com or
 Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
 """
-from  paria.AriaPy import *
+from  AriaPy import *
 import sys
 
 # This is an example of how to use the limiting behaviors.

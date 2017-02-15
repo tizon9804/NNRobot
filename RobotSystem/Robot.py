@@ -25,7 +25,7 @@ robots@mobilerobots.com or
 Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
 """
 
-from paria.AriaPy import *
+from AriaPy import *
 import numpy as np
 import sys
 
@@ -37,7 +37,7 @@ class RobotDriver:
         Aria.init()
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
-        self.argparser.addDefaultArgument("-cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241
+        self.argparser.addDefaultArgument("-rh 190.168.0.18 -lp 190.168.0.18 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241
         self.robot = ArRobot()
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)

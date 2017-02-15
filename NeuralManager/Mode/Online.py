@@ -39,12 +39,12 @@ class Online:
                   #todo create report
                   print "----------------------------------------------"
               buffersensor = 0
-              buffer = self.robot.getLaserBuffer()
+              #buffer = self.robot.getLaserBuffer()
               #bufferC = np.append(buffer,[self.mind1.pred])
               bufferC = np.append(buffer,[0])
               bufferC = np.reshape(bufferC,(1,bufferC.shape[0]))
               self.mind2.think(bufferC,self.costgradsN,self.actions)
-              self.robot.setRobotAction(int(self.mind2.pred),self.mind2.proba)
+              #self.robot.setRobotAction(int(self.mind2.pred),self.mind2.proba)
             cv2.destroyAllWindows()
-            self.robot.robot.disableMotors()
+            #self.robot.robot.disableMotors()
 

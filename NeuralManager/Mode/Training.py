@@ -84,7 +84,7 @@ class config:
             print "elements saved"
 
     def collectDataSensor(self,robot,elements):
-        old = raw_input("Train old actions?")
+        old = '1'#raw_input("Train old actions?")
         if old == "":
            if self.persistence.loadDataSensor():
              self.X,self.y = self.persistence.datasensor
@@ -92,10 +92,10 @@ class config:
            else:
              print "no data!"
         save = False
-        old = raw_input("Train other action?")
+        old = ""#raw_input("Train other action?")
         while old == "":
             save = True
-            self.chooseElement(elements)
+            #self.chooseElement(elements)
             robot.activateTeleop()
             while(robot.robot.isConnected()):
                 X=robot.getLaserBuffer()
@@ -109,7 +109,7 @@ class config:
                     robot.deactivateTeleop()
                     break
 
-            old=raw_input("Train other element?")
+            old="y"#raw_input("Train other element?")
         print "please wait, saving..."
         if save:
             self.persistence.saveDataSensor([self.X,self.y])
