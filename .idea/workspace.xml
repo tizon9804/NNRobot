@@ -1,78 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97334a0b-1a52-4826-9024-3f7ca0d52605" name="Default" comment="Reformat folders">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/Aria over Raspberry.docx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/docs/Theano environment install.docx" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/NNCostFunction.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/NeuralNetwork.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/RandInitializeWeights.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/Think.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/sigmoid.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/sigmoidGradient.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/RobotSystem/Robot.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/RobotSystem/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/ImageProcessor/ConvolutionLayer.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/ImageProcessor/ImageDriver.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/ImageProcessor/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NNRobot.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/Online.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/Training.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/NeuralDriver.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/TargetManager.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/NNCostFunction.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/NeuralLearning.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/NeuralNetwork.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/RandInitializeWeights.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/Think.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/sigmoid.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/NeuralManager/nnet/sigmoidGradient.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/RobotSystem/Robot.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/RobotSystem/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/data/NavigatonConscience.pkl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/data/actions.pkl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/data/elements.pkl" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotSup/data/mapaRobotP1.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2)" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2) (2)" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2) (4)" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ImageProcessor/ConvolutionLayer.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ImageProcessor/ImageDriver.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/ImageProcessor/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Instalacion Ambiente Theano.docx" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NNRobot.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NNRobotUnSup/Design/Vista Desarrollo" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NNRobotUnSup/Design/Vista Desarrollo (2)" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NNRobotUnSup/Design/Vista Desarrollo (2) (2)" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NNRobotUnSup/Design/Vista Desarrollo (2) (4)" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/Mode/Online.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/Mode/Training.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/Mode/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/NeuralDriver.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/TargetManager.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/NNCostFunction.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/NeuralLearning.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/NeuralNetwork.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/RandInitializeWeights.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/Think.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/sigmoid.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/NeuralManager/nnet/sigmoidGradient.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/RobotSystem/Robot.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/RobotSystem/__init__.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/NavigatonConscience.pkl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/actions.pkl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/elements.pkl" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/data/mapaRobotP1.map" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/NNRobot.iml" afterPath="$PROJECT_DIR$/.idea/NNRobot.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+    <list default="true" id="97334a0b-1a52-4826-9024-3f7ca0d52605" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/NNET/Train.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Libraries/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Brain/LogicBrain.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Brain/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Entities/Conscience.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Entities/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/ImageRecognition/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Memory/LongTerm.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/Memory/__init__.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/NNRobotUSup/__init__.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Libraries/NNET/NNCostFunction.py" afterPath="$PROJECT_DIR$/Libraries/NNET/NNCostFunction.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Libraries/NNET/NeuralNetwork.py" afterPath="$PROJECT_DIR$/Libraries/NNET/NeuralNetwork.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Libraries/NNET/Think.py" afterPath="$PROJECT_DIR$/Libraries/NNET/Think.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2) (4)" afterPath="$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2) (4)" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -91,12 +35,48 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Online.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/Online.py">
+      <file leaf-file-name="Train.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Libraries/NNET/Train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="464">
-              <caret line="38" column="19" lean-forward="false" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+            <state relative-caret-position="51">
+              <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="16" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LongTerm.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/NNRobotUSup/Memory/LongTerm.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="3" column="14" lean-forward="false" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="LogicBrain.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/NNRobotUSup/Brain/LogicBrain.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="22" column="19" lean-forward="false" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+              <folding>
+                <element signature="e#0#45#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="NeuralDriver.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/NNRobotSup/NeuralManager/NeuralDriver.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1071">
+              <caret line="68" column="3" lean-forward="false" selection-start-line="68" selection-start-column="3" selection-end-line="68" selection-end-column="3" />
+              <folding>
+                <element signature="e#21#31#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,16 +108,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/ImageProcessor/ConvolutionLayer.py" />
-        <option value="$PROJECT_DIR$/NeuralManager/NeuralNetwork.py" />
-        <option value="$PROJECT_DIR$/imageProcessor/__init__.py" />
-        <option value="$PROJECT_DIR$/neuralManager/__init__.py" />
-        <option value="$PROJECT_DIR$/__init__.py" />
-        <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/sigmoid.py" />
-        <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/sigmoidGradient.py" />
-        <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/randInitializeWeights.py" />
-        <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/Think.py" />
-        <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/NNCostFunction.py" />
         <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/__init__.py" />
         <option value="$PROJECT_DIR$/neuralManager/NeuralNetwork/NeuralNetwork.py" />
         <option value="$PROJECT_DIR$/neuralManager/nnet/sigmoidGradient.py" />
@@ -179,16 +149,28 @@
         <option value="$PROJECT_DIR$/test/reconocimimento.py" />
         <option value="$PROJECT_DIR$/test/raspberryCamTest.py" />
         <option value="$PROJECT_DIR$/RobotSystem/Robot.py" />
+        <option value="$PROJECT_DIR$/Libraries/__init__.py" />
+        <option value="$PROJECT_DIR$/Libraries/NNET/Think.py" />
+        <option value="$PROJECT_DIR$/Libraries/NNET/NNCostFunction.py" />
+        <option value="$PROJECT_DIR$/Libraries/NNET/NeuralNetwork.py" />
+        <option value="$PROJECT_DIR$/Libraries/NNET/Train.py" />
+        <option value="$PROJECT_DIR$/NNRobotUSup/Entities/Conscience.py" />
+        <option value="$PROJECT_DIR$/NNRobotUSup/Entities/__init__.py" />
+        <option value="$PROJECT_DIR$/NNRobotUSup/__init__.py" />
+        <option value="$PROJECT_DIR$/NNRobotUSup/Memory/LongTerm.py" />
+        <option value="$PROJECT_DIR$/NNRobotUSup/Brain/LogicBrain.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-11" />
-    <option name="y" value="-11" />
-    <option name="width" value="2894" />
-    <option name="height" value="1582" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1080" />
+    <option name="height" value="576" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectReloadState">
     <option name="STATE" value="1" />
   </component>
@@ -221,6 +203,84 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobotUSup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobotUSup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Brain" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobotSup" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNRobot" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NNET" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -232,7 +292,7 @@
     <property name="options.lastSelected" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="558" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
@@ -260,6 +320,12 @@
     </option>
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\DocsTizon\Dropbox\2016-2\Tesis 2\NNRobot\Libraries\NNET" />
+      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot" />
+      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\NeuralManager\Mode" />
+      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\Test" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot" />
       <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\neuralManager" />
@@ -267,30 +333,8 @@
       <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\neuralManager\NeuralNetwork" />
       <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\NeuralManager" />
     </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot" />
-      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\NeuralManager\Mode" />
-      <recent name="D:\Documentos Tizon\Dropbox\Tesis\NNRobot\Test" />
-    </key>
   </component>
-  <component name="RunManager" selected="Python.NNRobot">
-    <configuration default="false" name="reconocimimento" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="NNRobot" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/reconocimimento.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
+  <component name="RunManager" selected="Python.LogicBrain">
     <configuration default="false" name="VideoTest" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -355,6 +399,23 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="NNRobot" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/raspberryCamTest.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LogicBrain" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/NNRobotUSup/Brain" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="NNRobot" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/NNRobotUSup/Brain/LogicBrain.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -494,19 +555,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.reconocimimento" />
-      <item index="1" class="java.lang.String" itemvalue="Python.VideoTest" />
-      <item index="2" class="java.lang.String" itemvalue="Python.NNRobot" />
-      <item index="3" class="java.lang.String" itemvalue="Python.testtheano" />
-      <item index="4" class="java.lang.String" itemvalue="Python.raspberryCamTest" />
+      <item index="0" class="java.lang.String" itemvalue="Python.VideoTest" />
+      <item index="1" class="java.lang.String" itemvalue="Python.NNRobot" />
+      <item index="2" class="java.lang.String" itemvalue="Python.testtheano" />
+      <item index="3" class="java.lang.String" itemvalue="Python.raspberryCamTest" />
+      <item index="4" class="java.lang.String" itemvalue="Python.LogicBrain" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.NNRobot" />
-        <item index="1" class="java.lang.String" itemvalue="Python.raspberryCamTest" />
-        <item index="2" class="java.lang.String" itemvalue="Python.VideoTest" />
-        <item index="3" class="java.lang.String" itemvalue="Python.testtheano" />
-        <item index="4" class="java.lang.String" itemvalue="Python.reconocimimento" />
+        <item index="0" class="java.lang.String" itemvalue="Python.LogicBrain" />
+        <item index="1" class="java.lang.String" itemvalue="Python.NNRobot" />
+        <item index="2" class="java.lang.String" itemvalue="Python.raspberryCamTest" />
+        <item index="3" class="java.lang.String" itemvalue="Python.VideoTest" />
+        <item index="4" class="java.lang.String" itemvalue="Python.testtheano" />
       </list>
     </recent_temporary>
   </component>
@@ -538,10 +599,17 @@
       <option name="project" value="LOCAL" />
       <updated>1481542589287</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Reformat folders">
+      <created>1487452027971</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1487452027971</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="4">
+  <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
     </todo-panel>
@@ -551,13 +619,12 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-11" y="-11" width="2894" height="1582" extended-state="0" />
+    <frame x="-8" y="-8" width="1080" height="576" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18279944" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32838982" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18139097" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3282322" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31504703" sideWeight="0.50292397" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32920924" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19927971" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.22803235" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -570,8 +637,9 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39956802" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5534214" sideWeight="0.49707603" order="13" side_tool="false" content_ui="tabs" x="14" y="223" width="996" height="281" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21794195" sideWeight="0.49707603" order="13" side_tool="false" content_ui="tabs" x="14" y="223" width="996" height="281" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32920924" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39945653" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -601,109 +669,9 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/test/testeleop.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/testgpu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="22" column="25" lean-forward="false" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/testimagedataset.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#1#15#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/testtheano.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/VideoTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="14" column="23" lean-forward="false" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-          <folding>
-            <element signature="e#21#39#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/ConvolutionTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="72" column="25" lean-forward="false" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Neural/Theano/theano/tensor/nnet/conv.py" />
-    <entry file="file://$PROJECT_DIR$/NeuralManager/Mode/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Anaconda/Lib/site-packages/numpy/core/numeric.py" />
-    <entry file="file://C:/Neural/Theano/theano/tensor/basic.py" />
-    <entry file="file://C:/Neural/Theano/theano/__init__.py" />
-    <entry file="file://C:/Neural/Theano/theano/compile/pfunc.py" />
-    <entry file="file://C:/Neural/Theano/theano/compile/function.py" />
-    <entry file="file://C:/Neural/Theano/setup.py" />
-    <entry file="file://C:/Neural/Theano/theano/gradient.py" />
-    <entry file="file://$PROJECT_DIR$/ImageProcessor/ConvolutionLayer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="11" column="11" lean-forward="false" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/Anaconda/Lib/site-packages/numpy/core/shape_base.py" />
-    <entry file="file://C:/Anaconda/Lib/site-packages/numpy/lib/function_base.py" />
-    <entry file="file://$PROJECT_DIR$/test/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/Mode/Online.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="23" column="35" lean-forward="false" selection-start-line="23" selection-start-column="35" selection-end-line="23" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/Mode/Training.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="68" column="27" lean-forward="false" selection-start-line="67" selection-start-column="16" selection-end-line="68" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ImageProcessor/ImageDriver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="78" column="34" lean-forward="false" selection-start-line="78" selection-start-column="34" selection-end-line="78" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/NeuralManager/Mode/Online.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/Mode/Training.py" />
+    <entry file="file://$PROJECT_DIR$/ImageProcessor/ImageDriver.py" />
     <entry file="file://$PROJECT_DIR$/test/ConvolutionTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1020">
@@ -715,7 +683,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="475">
           <caret line="22" column="25" lean-forward="false" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -723,7 +690,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1925">
           <caret line="78" column="0" lean-forward="false" selection-start-line="78" selection-start-column="0" selection-end-line="78" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -733,9 +699,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="250">
           <caret line="10" column="28" lean-forward="false" selection-start-line="9" selection-start-column="32" selection-end-line="10" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#32#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -743,7 +706,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="775">
           <caret line="32" column="35" lean-forward="false" selection-start-line="32" selection-start-column="34" selection-end-line="32" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -751,9 +713,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
           <caret line="21" column="27" lean-forward="false" selection-start-line="21" selection-start-column="27" selection-end-line="21" selection-end-column="27" />
-          <folding>
-            <element signature="e#1#15#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -761,7 +720,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="4" column="11" lean-forward="false" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -769,9 +727,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
           <caret line="2" column="10" lean-forward="false" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
-          <folding>
-            <element signature="e#21#39#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -779,154 +734,173 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#32#69#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NNRobot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="4" column="20" lean-forward="true" selection-start-line="4" selection-start-column="20" selection-end-line="4" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="50">
-          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NeuralNetwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NNCostFunction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="42" column="37" lean-forward="false" selection-start-line="42" selection-start-column="37" selection-end-line="42" selection-end-column="37" />
-          <caret line="38" column="34" lean-forward="false" selection-start-line="38" selection-start-column="34" selection-end-line="38" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/RandInitializeWeights.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="20" lean-forward="false" selection-start-line="0" selection-start-column="20" selection-end-line="0" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/sigmoid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="25" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/sigmoidGradient.py">
+    <entry file="file://$PROJECT_DIR$/NNRobot.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NeuralNetwork.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NNCostFunction.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/RandInitializeWeights.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/sigmoid.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/sigmoidGradient.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/Think.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/NeuralDriver.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/TargetManager.py" />
+    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NeuralLearning.py" />
+    <entry file="file://$PROJECT_DIR$/RobotSystem/Robot.py" />
+    <entry file="file://$PROJECT_DIR$/data/elements.pkl" />
+    <entry file="file://$PROJECT_DIR$/data/NavigatonConscience.pkl" />
+    <entry file="file://$PROJECT_DIR$/data/mapaRobotP1.map" />
+    <entry file="file://$PROJECT_DIR$/data/actions.pkl" />
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/NeuralLearning.py" />
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Design/Vista Desarrollo (2) (4)">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/Think.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="775">
-          <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/NeuralDriver.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-525">
-          <caret line="68" column="40" lean-forward="false" selection-start-line="68" selection-start-column="40" selection-end-line="68" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/TargetManager.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/NeuralManager/nnet/NeuralLearning.py">
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/RobotSystem/Robot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="39" column="76" lean-forward="false" selection-start-line="39" selection-start-column="76" selection-end-line="39" selection-end-column="76" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/elements.pkl">
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Brain/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/NavigatonConscience.pkl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-27014">
-          <caret line="12" column="4" lean-forward="true" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/mapaRobotP1.map">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1375">
-          <caret line="55" column="21" lean-forward="true" selection-start-line="55" selection-start-column="21" selection-end-line="55" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/actions.pkl">
+    <entry file="file://$PROJECT_DIR$/Libraries/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Libraries/NNET/NeuralLearning.py">
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Entities/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/Online.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="38" column="19" lean-forward="false" selection-start-line="38" selection-start-column="19" selection-end-line="38" selection-end-column="19" />
+        <state relative-caret-position="396">
+          <caret line="13" column="45" lean-forward="true" selection-start-line="13" selection-start-column="45" selection-end-line="13" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Entities/Conscience.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/NeuralNetwork.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="726">
+          <caret line="22" column="46" lean-forward="false" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotSup/NeuralManager/NeuralDriver.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="68" column="3" lean-forward="false" selection-start-line="68" selection-start-column="3" selection-end-line="68" selection-end-column="3" />
+          <folding>
+            <element signature="e#21#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/Think.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="15" column="44" lean-forward="true" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/sigmoidGradient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotSup/NeuralManager/Mode/Training.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/sigmoid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="33">
+          <caret line="1" column="0" lean-forward="false" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/RandInitializeWeights.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/Train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="0" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="16" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Libraries/NNET/NNCostFunction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1617">
+          <caret line="49" column="34" lean-forward="false" selection-start-line="49" selection-start-column="34" selection-end-line="49" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Memory/LongTerm.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="3" column="14" lean-forward="false" selection-start-line="3" selection-start-column="14" selection-end-line="3" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotSup/NNRobot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/NNRobotUSup/Brain/LogicBrain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="22" column="19" lean-forward="false" selection-start-line="22" selection-start-column="19" selection-end-line="22" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

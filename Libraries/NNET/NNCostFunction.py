@@ -1,7 +1,6 @@
 __author__ = 'Tizon'
 import theano
 import theano.tensor as T
-import numpy as np
 from sigmoid import sigmoid
 class costGrads:
     def __init__(self,thetain,hiddenTheta,thetaout):
@@ -47,12 +46,14 @@ class costGrads:
         print "creating function"
         logistic=(-self.y*T.log(zout))-((1-self.y)*T.log(1-zout))
         logistic=T.mean(logistic)
-        #regular=T.sum(self.win**2)
-        #for wt in self.wt:
-         #  regular+=T.sum(wt**2)
-        #regular+=T.sum(self.wout**2)
-        #regular=regular*0.01
-        #logistic=logistic+regular
+
+        regular=T.sum(self.win**2)
+        for wt in self.wt:
+           regular+=T.sum(wt**2)
+        regular+=T.sum(self.wout**2)
+        regular=regular*0.01
+        logistic=logistic+regular
+
         gs=T.grad(logistic,self.thetas)
         self.cost,self.grads=logistic,gs
         self.max=T.argmax(zout)
