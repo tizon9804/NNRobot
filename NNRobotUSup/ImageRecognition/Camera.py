@@ -16,7 +16,7 @@ class Camera:
         time.sleep(0.1)
     def getImage(self):
         # capture frames from the camera
-        self.camera.capture(self.rawCapture, 'rgb')
+        self.camera.capture_continuous(self.rawCapture, format="bgr", use_video_port=True)
         print('Captured %dx%d image' % (
         self.rawCapture.array.shape[1], self.rawCapture.array.shape[0]))
         # clear the stream in preparation for the next frame
