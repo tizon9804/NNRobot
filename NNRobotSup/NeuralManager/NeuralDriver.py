@@ -40,15 +40,16 @@ actions=persistence.loadActions()
 #initialize imagedriver
 #-------------------------------------------------------------------------
 print("initializing imagedriver..")
-from ImageProcessor import ImageDriver as imd
+from NNRobotSup.ImageProcessor import ImageDriver as imd
 init=imd.ImgDriver()
 cap=init.cap
 #-------------------------------------------------------------------------
 #initialize robotDriver
 #-------------------------------------------------------------------------
 print("initializing robotdriver..")
-from RobotSystem import Robot
-robot=Robot.RobotDriver()
+#from NNRobotSup.RobotSystem import Robot
+#robot=Robot.RobotDriver()
+robot=0
 #-------------------------------------------------------------------------
 #initialize neuralnetwork
 #-------------------------------------------------------------------------
@@ -92,7 +93,7 @@ persistence.loadNN(typeN)
 #Mode
 #-------------------------------------------------------------------------
 while True:
-    mode='1'#raw_input("please select a mode(0:online,1:training):")
+    mode=raw_input("please select a mode(0:online,1:training):")
     if mode=='1':
         #-------------------------------------------------------------------------
         #initialize training
@@ -100,7 +101,7 @@ while True:
         lamb = 0.001
         iterations = 3000
 
-        ty='1'#raw_input("please select a type(0:sight,1:navigation):")
+        ty=raw_input("please select a type(0:sight,1:navigation):")
         if ty =='0':
             print("initializing training sight..")
             training = Training.config(elements,lamb,iterations,persistence,type)

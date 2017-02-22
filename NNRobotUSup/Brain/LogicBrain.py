@@ -20,7 +20,7 @@ class LogicBrain:
         tSense.start()
         # init in new thread the part of the brain that have actuators
         tExplore = threading.Thread(target=self.loopExplore)
-        tExplore.start()
+        #tExplore.start()
 
     def loopLogic(self):
         self.logic = "Logic"
@@ -29,8 +29,8 @@ class LogicBrain:
     def loopSense(self):
         self.sense = "Sense"
         self.logSenseThread("thread started...")
+        self.sight = sight.SightSense()
         while self.senseLife:
-            self.sight = sight.SightSense()
             self.sight.getRoute()
             if self.RobotLife:
                 self.logSenseThread("sense laser:" + str(self.RobotLife))

@@ -37,7 +37,7 @@ class RobotDriver:
         Aria.init()
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
-        self.argparser.addDefaultArgument("-cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
+        self.argparser.addDefaultArgument("-rh 192.168.0.10 -lp 192.168.0.10 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
