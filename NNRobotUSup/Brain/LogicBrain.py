@@ -1,5 +1,6 @@
 from NNRobotUSup.Memory import LongTerm as lt
 import ExplorationLogicBrain as ELB
+import NNRobotUSup.ImageRecognition.SightSense as sight
 import threading
 
 
@@ -29,6 +30,8 @@ class LogicBrain:
         self.sense = "Sense"
         self.logSenseThread("thread started...")
         while self.senseLife:
+            self.sight = sight.SightSense()
+            self.sight.getRoute()
             if self.RobotLife:
                 self.logSenseThread("sense laser:" + str(self.RobotLife))
 
