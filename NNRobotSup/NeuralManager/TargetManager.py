@@ -14,32 +14,35 @@ class targetManager:
             self.trainingLoad = False
 
     def saveNN(self,name,costgrads):
-        with open('data/'+str(name)+'.pkl', 'w') as f:
+        with open('data/'+str(name)+'.pkl', 'wb') as f:
              cPickle.dump(costgrads, f)
         print "NN ",name," saved..."
 
     def saveElements(self,elements):
-        with open('data/'+'elements.pkl', 'w') as f:
+        with open('data/'+'elements.pkl', 'wb') as f:
              cPickle.dump(elements, f)
         print "elements saved..."
     def saveActions(self,elements):
-        with open('data/'+'actions.pkl', 'w') as f:
+        with open('data/'+'actions.pkl', 'wb') as f:
              cPickle.dump(elements, f)
         print "elements saved..."
 
     def saveDataSet(self,data):
-        with open('data/'+'dataSet.pkl', 'w') as f:
+        with open('data/'+'dataSet.pkl', 'wb') as f:
              cPickle.dump(data, f)
         print "inputs X y saved..."
     def saveDataSensor(self,data):
-        with open('data/'+'dataSensor.pkl', 'w') as f:
+        with open('data/'+'dataSensor.pkl', 'wb') as f:
              cPickle.dump(data, f)
         print "inputs X y saved..."
 
     def loadNN(self,name):
         try:
             print "trying to load the NN ",name
-            self.state[name] = cPickle.load(open('data/'+str(name)+'.pkl'))
+            self.state[name] = cPickle.load(open('data/'+str(name)+'.pkl','r'))
+            win,wt,wout=self.state[name]
+            print len(wt)
+            #cPickle.dump(self.state[name], open('data/sighuniversal.pkl', 'wb'))
             self.NNLoaded[name]=True
             print "NN ",name," Loaded..."
             return True

@@ -67,29 +67,6 @@ class RobotDriver:
         else:
           print 'Warning: unable to connect to lasers. Continuing anyway!'
         ArUtil.sleep(1000)
-        self.getLaserBuffer()
-    def getLaserBuffer2(self):
-        if self.laser:
-          self.laser.lockDevice()
-          readings = self.laser.getRawReadingsAsVector()
-          lenreading=len(readings)
-          buffer=np.zeros(lenreading)
-          for r in range(lenreading):
-            buffer[r]=readings[r].getRange()
-        # to simulate the real size reading of the robot p3dx with urg sensor
-          if lenreading > 228:
-            dif=int((lenreading-228)/2)
-            fbuffer=np.zeros(228)
-            for i in range(len(fbuffer)):
-                fbuffer[i]=buffer[i+dif]
-            print "Laser readings: ",(lenreading) ," Laser Filtered: ",len(fbuffer)
-            self.laser.unlockDevice()
-            return fbuffer/1000
-          self.laser.unlockDevice()
-          return (buffer*5000)/(1000*4096)
-
-        else:
-          return np.zeros(1,228)
 
     def getLaserBuffer(self):
         if self.laser:
@@ -99,54 +76,64 @@ class RobotDriver:
           buffer=np.zeros(lenreading)
           for r in range(lenreading):
             buffer[r]=readings[r].getRange()
-        # to simulate the real size reading of the robot p3dx with urg sensor
-          if lenreading <= 228:
-            dif=int((242-lenreading)/2)
-            fbuffer=np.zeros(241)
-            for j in range(dif):
-                fbuffer[j]=buffer[0]
-                fbuffer[len(fbuffer)-j-1]=buffer[lenreading-1]
-            for i in range(len(buffer)):
-                fbuffer[i+dif]=buffer[i]
-            print "Laser readings: ",(lenreading) ," Laser Filtered: ",len(fbuffer)
-            self.laser.unlockDevice()
-            return (fbuffer*5000)/(1000*4096)
+          print "Laser readings: ",(lenreading)
           self.laser.unlockDevice()
-          return buffer/1000
+          return buffer
+
         else:
           return np.zeros(1,228)
 
-    def getAction(self):
+    def getMaxDistance(self):
+        if self.laser:
+            self.laser.lockDevice()
+            distance = self.laser.getMaxRange()
+            self.laser.unlockDevice()
+            return distance
+    def getClosestFrontDistance(self):
+        if self.laser:
+            self.laser.lockDevice()
+            distance = self.laser.currentReadingPolar(-20,20)
+            self.laser.unlockDevice()
+            return distance
+    def rotate(self,angle):
+        self.robot.lock()
+        self.robot.setHeading(angle)
+        self.robot.unlock()
 
-        rot=self.robot.getRotVel()
-        vel=self.robot.getVel()
-        print "rot ",rot," vel ",vel
-        if rot>15:
-            return 0
-        if rot<-15:
-            return 2
-        if vel>0:
-            return 1
-        else:
-            return -1
+    def rotateSecure(self,angle):
+        self.robot.lock()
+        self.robot.setHeading(angle)
+        self.robot.unlock()
+        while not self.robot.isHeadingDone():
+            self.sleep()
+
+
+    def move(self,dist):
+        self.robot.lock()
+        self.robot.move(dist)
+        self.robot.getMoveDoneDist()
+        self.robot.unlock()
+        while not self.robot.isMoveDone():
+            diff = self.robot.getMoveDoneDist()
+            closest = self.getClosestFrontDistance()
+            if closest < diff:
+                print "object in movement is in front"
+                self.robot.stop()
+                self.robot.setMoveDoneDist(0)
+        self.sleep()
+
     def activateTeleop(self):
         self.cont=0
         self.teleop.activate()
+
+    def restartHeading(self):
+        print self.robot.getPose()
 
     def deactivateTeleop(self):
         self.teleop.deactivate()
 
     def sleep(self):
-        ArUtil.sleep(500)
-
-    def isEnter(self):
-        print self.cont
-        if self.cont >= 2000:
-            return True
-        else:
-            self.cont+=1
-            return False
-
+        ArUtil.sleep(600)
 
     def setRobotAction(self,action,speed):
         # Drive the robot a bit, then exit.
@@ -169,5 +156,5 @@ class RobotDriver:
 
     def closeRobot(self):
         self.robot.disableMotors()
-        print "goodbye."
+        print " ROBOT goodbye."
         Aria.exit(0)
