@@ -1,0 +1,204 @@
+﻿
+.background path {
+  fill: none;
+  //stroke: #003249;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  opacity: 0.5;
+}
+
+#botonesanhoscontainer{
+   // position:fixed;
+    width:100%
+}
+
+#scatter{
+    float:left;
+    width:100%;
+
+}
+
+.foreground path {
+  fill: none;
+  stroke: #003249;
+  stroke-width: 2;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #9AD1D4;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+  cursor: move;
+  draggable: true;
+}
+
+#paralelcontainer{
+    width:100%;    
+    float:left;
+}
+
+#paralel{
+    width:10%;       
+    margin-right: 4%;
+    float:left;
+}
+#ejecontainer{   
+    width:10%;    
+    float:left;
+    border-style:solid;     
+    height:500px;
+    font:20px;
+    text-align:center;
+    vertical-align:middle;
+   
+}
+#ejecontainer2{   
+    width:10%;    
+    float:left;
+    border-style:solid;     
+    height:150px;
+    font:20px;
+    text-align:center;
+    vertical-align:middle;
+   
+}
+
+#ejecontainerText{   
+    text-align:center;
+    vertical-align:middle;
+    color:#003249;
+}
+
+#ejecontainer rect{
+    border-radius:10px;
+}
+#paralel svg{
+     padding-left: 5%;
+}
+.main{
+    display:table;
+}
+
+.d3-tipEje {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: #003249;
+  color: #9AD1D4;
+  border-radius: 2px;
+  stroke: brown;
+  stroke-width : 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tipEje:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(250, 250, 250, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+
+/* Style northward tooltips differently */
+.d3-tipEje:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+.d3-tipSerie {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: #5476e6;
+  color: #fff;
+  border-radius: 2px;
+  stroke: brown;
+  stroke-width : 2px;
+}
+
+
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tipSerie:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: #5476e6;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+
+/* Style northward tooltips differently */
+.d3-tipSerie:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+
+.d3-tipCirculosRTotal {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(250, 250, 250, 1);
+  color: #fff;
+  border-radius: 2px;
+  stroke: brown;
+  stroke-width : 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tipCirculosRTotal:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  background: rgba(250, 250, 250, 1);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+
+/* Style northward tooltips differently */
+.d3-tipCirculosRTotal:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+.resizer {
+    position: absolute;
+    width: 10px;
+    top: 0;
+    bottom: 0;
+    right: -5px;
+    background: orange;
+    opacity: .5;
+    cursor: pointer;
+}

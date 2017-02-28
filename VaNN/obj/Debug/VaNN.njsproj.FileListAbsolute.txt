@@ -1,0 +1,4 @@
+D:\DocsTizon\Dropbox\2016-2\Tesis 2\NNRobot\NNRobotUSup\Network\VaNN\obj\Debug\VaNN.njsprojResolveAssemblyReference.cache
+D:\DocsTizon\Dropbox\2016-2\Tesis 2\NNRobot\NNRobotUSup\Network\VaNN\bin\Microsoft.NodejsTools.WebRole.dll
+D:\DocsTizon\Dropbox\2016-2\Tesis 2\NNRobot\VaNN\obj\Debug\VaNN.njsprojResolveAssemblyReference.cache
+D:\DocsTizon\Dropbox\2016-2\Tesis 2\NNRobot\VaNN\bin\Microsoft.NodejsTools.WebRole.dll

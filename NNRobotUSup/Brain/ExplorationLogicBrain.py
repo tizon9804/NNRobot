@@ -9,11 +9,13 @@ class Explore:
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
             self.RobotStarted = True
             self.angle = 0
+            self.rotationRate = -1.4
             self.actualFront = 0
             self.contAngle=1
             self.estimation = 0
             self.distance = 0
             self.tempMoves = []
+            self.trackroute =[]
             self.thread = thread
         except Exception as ex:
             print thread + "Cannot connect to Robot:" + str(ex)
@@ -26,13 +28,13 @@ class Explore:
         self.estimation = self.calculateProbToMove(distance,bestWay)
         self.tempMoves.append([self.angle,distance,self.estimation])
         print self.thread + "temp::",self.tempMoves[len(self.tempMoves)-1]
-        self.angle += np.power(-1.4,self.contAngle)
+        self.angle += np.power(self.rotationRate,self.contAngle)
         self.contAngle += 1
 
     def calculateProbToMove(self,distance,bestWay):
         # calculate the final value estimation to move between distance and bestway
-        scaledistance = (distance / self.MAXDISTANCE)*2
-        moveestimate = bestWay - (1 - scaledistance)
+        scaledistance = (distance / self.MAXDISTANCE)
+        moveestimate = bestWay - ((1 - scaledistance)/2)
         print "distance::", distance, "::besway::", bestWay, "::scaledist::", scaledistance, "::move est:: ", moveestimate
         return moveestimate
 
@@ -66,3 +68,6 @@ class Explore:
                 maxdistance=dist
                 tupleMax = tuple
         return tupleMax
+
+    def trackRoute(self,angle,distance):
+        self.trackroute.append([angle,self.actualFront,distance])

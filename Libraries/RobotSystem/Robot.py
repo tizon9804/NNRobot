@@ -39,6 +39,8 @@ class RobotDriver:
         self.argparser.loadDefaultArguments()
         self.argparser.addDefaultArgument("-rh 192.168.0.10 -lp 192.168.0.10 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
+        self.startAngle=-20
+        self.endAngle = 20
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
         self.robot.isConnected()
@@ -92,7 +94,7 @@ class RobotDriver:
     def getClosestFrontDistance(self):
         if self.laser:
             self.laser.lockDevice()
-            distance = self.laser.currentReadingPolar(-20,20)
+            distance = self.laser.currentReadingPolar(self.startAngle,self.endAngle)
             self.laser.unlockDevice()
             return distance
     def rotate(self,angle):
@@ -133,7 +135,7 @@ class RobotDriver:
         self.teleop.deactivate()
 
     def sleep(self):
-        ArUtil.sleep(600)
+        ArUtil.sleep(100)
 
     def setRobotAction(self,action,speed):
         # Drive the robot a bit, then exit.

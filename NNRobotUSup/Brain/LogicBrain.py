@@ -1,12 +1,14 @@
 from NNRobotUSup.Memory import LongTerm as lt
 import ExplorationLogicBrain as ELB
 #import NNRobotUSup.ImageRecognition.SightSense as sight
+import NNRobotUSup.Network.Routes as ro
 import threading
 import numpy as np
 
 
 class LogicBrain:
     def __init__(self):
+        self.net = ro.Network()
         self.PROBTOMOVE = 0.8#is temp 1
         self.logicLife = True
         self.senseLife = True
@@ -41,16 +43,17 @@ class LogicBrain:
                     self.isSearchingLogic()
 
     def isSearchingLogic(self):
-        if np.absolute(self.exploreLogic.angle) > 180 or self.moveEstimation >= self.PROBTOMOVE:
+        if np.absolute(self.exploreLogic.angle) > 180 or self.moveEstimation >= self.PROBTOMOVE: #TODO
             self.isSearching = False
-            self.logLogicThread("Finishing Search")
-            threading._sleep(1)
+            threading._sleep(0.2)
             self.logLogicThread("###SEARCHED###")
             self.logLogicThread(":::" + str(self.moveEstimation))
-            while len(self.exploreLogic.tempMoves)== 0:
+            while len(self.exploreLogic.tempMoves) == 0:
                 print "waiting.."
             self.actualAngle,self.actualDistance,self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp()
-            self.error = self.actualDistance * 0.1
+            self.exploreLogic.rotationRate -= (1-self.actualEstimation)/4 #TODO
+            self.logLogicThread(" rotation rate::: "+str(self.exploreLogic.rotationRate))
+            self.error = self.actualDistance * 0.3
             self.startMoving()
 
     def startMoving(self):
@@ -59,11 +62,11 @@ class LogicBrain:
     def loopSense(self):
         self.sense = "Sense"
         self.logSenseThread("thread started...")
-        self.sight = sight.SightSense()
+        #self.sight = sight.SightSense()
         while self.senseLife:
-            self.sight.getRoute()
+            #self.sight.getRoute()
             if self.RobotLife:
-                self.logSenseThread("sense laser robotlife:" + str(self.RobotLife))
+               print "up"
 
     def loopExplore(self):
         self.explore = "Explore"
@@ -72,7 +75,8 @@ class LogicBrain:
         while self.exploreLife:
             self.RobotLife = self.exploreLogic.RobotStarted
             if self.RobotLife:
-                self.logExploreThread(str(self.PROBTOMOVE))
+                data = self.exploreLogic.robotSystem.getLaserBuffer()
+                self.net.sendLaserData(data)
                 self.searchDirection()
                 self.move()
 
@@ -82,6 +86,7 @@ class LogicBrain:
             bestWay = 1
             # search a possible direction to move, it do not cares the range of distance
             self.exploreLogic.searchDirection(bestWay)
+            self.logExploreThread(str(self.PROBTOMOVE))
             self.moveEstimation = self.exploreLogic.estimation
 
     def move(self):
@@ -90,7 +95,7 @@ class LogicBrain:
                 self.inTransition()
             self.logExploreThread("moving robot" + str(self.actualDistance - self.error))
             self.exploreLogic.move(self.actualDistance - self.error)
-            threading._sleep(1)
+            threading._sleep(0.2)
             self.logLogicThread("FINISHING MOVE")
             self.actualAngle = 0
             self.actualDistance = 0
@@ -100,10 +105,9 @@ class LogicBrain:
 
     def inTransition(self):
         self.logExploreThread("in transition")
-        self.PROBTOMOVE = self.actualEstimation/1.1
+        self.PROBTOMOVE = self.actualEstimation
         self.moveEstimation = 0
-        print "PROBTOMOVE::",self.PROBTOMOVE
-        print "Best way for laser::", self.actualAngle, ":::", self.actualDistance
+        print "Best way for laser::", self.actualAngle, ":::", self.actualDistance,"PROBTOMOVE::",self.PROBTOMOVE
         self.exploreLogic.transitionMove(self.actualAngle)
         self.isTransition = False
 
