@@ -4,6 +4,9 @@ import ExplorationLogicBrain as ELB
 import NNRobotUSup.Network.Routes as ro
 import threading
 import numpy as np
+import time
+import psutil as psu
+import datetime as dt
 
 
 class LogicBrain:
@@ -24,12 +27,18 @@ class LogicBrain:
         self.isTransition = False
         self.targetList = []
         self.longTerm = lt.LongTerm()
+        #robot indicators
+        self.laserData = []
+        self.posData = []
+        self.nlogic = 0
+        self.nimage = 0
+        self.nexplore = 0
         # init in new thread the part of the brain that take decisions
         tLogic = threading.Thread(target=self.loopLogic)
         tLogic.start()
         # init in new thread the part of the brain that take the sensors
         tSense = threading.Thread(target=self.loopSense)
-        #tSense.start()
+        tSense.start()
         # init in new thread the part of the brain that have actuators
         tExplore = threading.Thread(target=self.loopExplore)
         tExplore.start()
@@ -37,48 +46,64 @@ class LogicBrain:
     def loopLogic(self):
         self.logic = "Logic"
         self.logLogicThread("thread started...")
+        last_time = time.clock()
+        diffs = []
         while self.logicLife:
+            # register iterations per second
+            last_time,diffs,ips = self.ips(last_time,diffs);
+            self.nlogic = ips
             if self.RobotLife:
                 if self.isSearching:
                     self.isSearchingLogic()
 
+    def loopSense(self):
+        self.sense = "Sense"
+        self.logSenseThread("thread started...")
+        last_time = time.clock()
+        diffs = []
+        #self.sight = sight.SightSense()
+        while self.senseLife:
+            #register iterations per second
+            last_time, diffs, ips = self.ips(last_time, diffs);
+            self.nimage = ips
+            #self.sight.getRoute()
+            #time.sleep(0.5)
+            self.net.sendData(self.laserData,self.posData,self.nlogic,self.nimage,self.nexplore,psu.cpu_percent(),psu.virtual_memory().percent)
+            if self.RobotLife:
+                self.laserData,self.posData = self.exploreLogic.robotSystem.getLaserBuffer()
+
+    def loopExplore(self):
+        self.explore = "Explore"
+        self.logExploreThread("thread started...")
+        self.exploreLogic = ELB.Explore(self.explore)
+        last_time = time.clock()
+        diffs = []
+        while self.exploreLife:
+            # register iterations per second
+            last_time, diffs, ips = self.ips(last_time, diffs);
+            self.nexplore = ips
+            self.RobotLife = self.exploreLogic.RobotStarted
+            if self.RobotLife:
+                self.searchDirection()
+                self.move()
+
     def isSearchingLogic(self):
-        if np.absolute(self.exploreLogic.angle) > 180 or self.moveEstimation >= self.PROBTOMOVE: #TODO
+        if np.absolute(self.exploreLogic.angle) > 180 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
             self.isSearching = False
             threading._sleep(0.2)
             self.logLogicThread("###SEARCHED###")
             self.logLogicThread(":::" + str(self.moveEstimation))
             while len(self.exploreLogic.tempMoves) == 0:
                 print "waiting.."
-            self.actualAngle,self.actualDistance,self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp()
-            self.exploreLogic.rotationRate -= (1-self.actualEstimation)/4 #TODO
-            self.logLogicThread(" rotation rate::: "+str(self.exploreLogic.rotationRate))
+            self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp()
+            self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
+            self.logLogicThread(" rotation rate::: " + str(self.exploreLogic.rotationRate))
             self.error = self.actualDistance * 0.3
             self.startMoving()
 
     def startMoving(self):
         self.isTransition = True
         self.isMoving = True
-    def loopSense(self):
-        self.sense = "Sense"
-        self.logSenseThread("thread started...")
-        #self.sight = sight.SightSense()
-        while self.senseLife:
-            #self.sight.getRoute()
-            if self.RobotLife:
-               print "up"
-
-    def loopExplore(self):
-        self.explore = "Explore"
-        self.logExploreThread("thread started...")
-        self.exploreLogic = ELB.Explore(self.explore)
-        while self.exploreLife:
-            self.RobotLife = self.exploreLogic.RobotStarted
-            if self.RobotLife:
-                data = self.exploreLogic.robotSystem.getLaserBuffer()
-                self.net.sendLaserData(data)
-                self.searchDirection()
-                self.move()
 
     def searchDirection(self):
         if self.isSearching:
@@ -105,7 +130,7 @@ class LogicBrain:
 
     def inTransition(self):
         self.logExploreThread("in transition")
-        self.PROBTOMOVE = self.actualEstimation
+        self.PROBTOMOVE = 0.7
         self.moveEstimation = 0
         print "Best way for laser::", self.actualAngle, ":::", self.actualDistance,"PROBTOMOVE::",self.PROBTOMOVE
         self.exploreLogic.transitionMove(self.actualAngle)
@@ -119,3 +144,15 @@ class LogicBrain:
 
     def logExploreThread(self, message):
         print self.explore + ": " + message
+
+    def ips(self,last_time,diffs):
+        # Add new time diff to list
+        new_time = time.clock()
+        if len(diffs) > 10000:
+            diffs = []
+        diffs.append(new_time - last_time)
+        last_time = new_time
+        # Clip the list
+        ips= 1/(sum(diffs)/len(diffs))
+        return [last_time,diffs,ips]
+

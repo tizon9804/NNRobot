@@ -2,6 +2,12 @@
 
 var mysql = require('./mysqlConnection.js');
 var actualBuffer;
+var actualPos;
+var nlogic = 0;
+var nimage = 0;
+var nexplore = 0;
+var cpu = 0;
+var memory = 0;
 
 var validar = function (req) {
     var q = req.query;
@@ -13,14 +19,24 @@ var validar = function (req) {
     q.condicion = q.condicion == undefined ? "" : q.condicion;
 }
 
-var setLaser = function (req, res) {    
+var setData = function (req, res) {     
     var q = req.body;
-    actualBuffer =  q.buffer
+    actualBuffer = q.buffer;
+    actualPos = q.bufferpos;
+    nlogic = q.nlogic;
+    nimage = q.nimage;
+    nexplore = q.nexplore;    
+    cpu = q.cpu;
+    memory = q.memory;
     res.json({ "ok": "200"})
  };
 
 var getLaser = function (req, res) {    
     res.json({"buffer":actualBuffer})
+};
+
+var getPositions = function (req, res) {
+    res.json({ "buffer": actualPos })
 };
 
 var getParalelInfo = function (req, res) {
@@ -29,10 +45,24 @@ var getParalelInfo = function (req, res) {
     mysql.handle_database(req, res, promedio(q.anio,q.estudios,q.facultad,q.departamento,q.programa,q.condicion));
 };
 
-var getParalelSI = function (req, res) {
-    validar(req);
+var getParalelSI = function (req, res) {    
     var q = req.query;
-    mysql.handle_database(req, res, satisinsatis(q.anio, q.estudios, q.facultad, q.departamento, q.programa, q.condicion));
+    t = q.thread;
+    if (t == "logic") {
+        res.json({ "ips": nlogic })
+    }
+    if (t == "image") {
+        res.json({ "ips": nimage })
+    }
+    if (t == "explore") {
+        res.json({ "ips": nexplore })
+    } 
+    if (t == "cpu") {
+        res.json({ "ips": cpu })
+    } 
+    if (t == "memory") {
+        res.json({ "ips": memory })
+    }   
 };
 
 var getTree = function (req, res) {  
@@ -47,5 +77,7 @@ var getRTotal = function (req, res)
 }; 
 
 module.exports.getLaser = getLaser;
-module.exports.setLaser = setLaser;
+module.exports.getPositions = getPositions;
+module.exports.setData = setData;
+module.exports.getParalelSI = getParalelSI;
 

@@ -24,3 +24,36 @@
   stroke: red;
   stroke-width: 1.5px;
 }
+
+body {
+  font: 11px sans-serif;
+}
+
+#map .axis path,
+#map .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+#map .dot {
+  stroke: none;
+  opacity:0;
+}
+
+#map .tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+
+#map{
+    width:50%;
+    float:left;
+}
+
+#Laser{
+    width:50%;
+    float:left;
+}

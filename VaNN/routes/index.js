@@ -4,19 +4,23 @@ var consultas = require('../modules/consultas.js');
 
 /* GET home page. */
 router.get('/', function (req, res) {        
-    res.render('index', { title: 'ESAT' });
+    res.render('index', { title: 'USup Robot' });
 });
 
 router.get('/robotrt', function (req, res) {
     res.render('robotrt');
 });
 
-router.post('/laser', function (req, res) {
-    consultas.setLaser(req, res);
+router.post('/data', function (req, res) {
+    consultas.setData(req, res);
 });
 
 router.get('/laserStream', function (req, res) {
     consultas.getLaser(req, res);  
+});
+
+router.get('/positionStream', function (req, res) {
+    consultas.getPositions(req, res);
 });
 
 router.get('/tree', function (req, res) {

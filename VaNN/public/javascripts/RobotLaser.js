@@ -1,6 +1,6 @@
 ﻿
-var width = 960,
-    height = 500,
+var width = 400,
+    height = 400,
     radius = Math.min(width, height) / 2 - 30;
 
 var r = d3.scaleLinear()
@@ -61,8 +61,10 @@ getLaser();
 
 function getLaser() {    
     d3.interval(function () {
-        d3.json("/laserstream", function (error, laserData) {           
-            update(laserData);
+        d3.json("/laserstream", function (error, laserData) {    
+            if (laserData.buffer.length > 0) {
+                update(laserData);
+            }
         });
     }, 200);
 }
@@ -73,7 +75,4 @@ function update(data) {
         .datum(data.buffer)
         .attr("class", "line")       
         .attr("d", line); 
-
-  
-
 }

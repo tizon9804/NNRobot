@@ -72,15 +72,17 @@ class RobotDriver:
 
     def getLaserBuffer(self):
         if self.laser:
-          self.laser.lockDevice()
+          self.robot.tryLock()
           readings = self.laser.getRawReadingsAsVector()
+          self.robot.unlock()
           lenreading=len(readings)
           buffer=np.zeros(lenreading)
+          bufferpos = []
           for r in range(lenreading):
             buffer[r]=readings[r].getRange()
+            bufferpos.append({"x":readings[r].getX(),"y":readings[r].getY(),"range":readings[r].getRange()})
           print "Laser readings: ",(lenreading)
-          self.laser.unlockDevice()
-          return buffer
+          return [buffer,bufferpos]
 
         else:
           return np.zeros(1,228)
@@ -107,7 +109,7 @@ class RobotDriver:
         self.robot.setHeading(angle)
         self.robot.unlock()
         while not self.robot.isHeadingDone():
-            self.sleep()
+            d=0
 
 
     def move(self,dist):
