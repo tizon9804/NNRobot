@@ -1,5 +1,5 @@
 import requests as req
-
+import threading as t
 class Network:
 
     def __init__(self):
@@ -7,7 +7,11 @@ class Network:
 
     def sendData(self,data,posData,logic,image,explore,cpu,memory):
         print logic,"#",len(posData),"#",image,"#",explore,"#",cpu,"#",memory
-        r= req.post('http://localhost:1337/data',data = {
+        #tPost = t.Thread(target=self.asycnSend(data,posData,logic,image,explore,cpu,memory))
+        #tPost.start();
+
+    def asycnSend(self,data,posData,logic,image,explore,cpu,memory):
+        r= req.post('http://localhost:3000/data',data = {
             'buffer':data,
             'bufferpos': [posData],
             'nlogic':logic,
