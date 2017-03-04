@@ -50,6 +50,7 @@ class LogicBrain:
         diffs = []
         while self.logicLife:
             # register iterations per second
+            self.logLogicThread("Thinking...")
             last_time,diffs,ips = self.ips(last_time,diffs);
             self.nlogic = ips
             if self.RobotLife:

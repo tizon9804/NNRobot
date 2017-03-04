@@ -7,8 +7,8 @@ class Network:
 
     def sendData(self,data,posData,logic,image,explore,cpu,memory):
         print logic,"#",len(posData),"#",image,"#",explore,"#",cpu,"#",memory
-        #tPost = t.Thread(target=self.asycnSend(data,posData,logic,image,explore,cpu,memory))
-        #tPost.start();
+        tPost = t.Thread(target=self.asycnSend(data,posData,logic,image,explore,cpu,memory))
+        tPost.start();
 
     def asycnSend(self,data,posData,logic,image,explore,cpu,memory):
         r= req.post('http://localhost:3000/data',data = {
