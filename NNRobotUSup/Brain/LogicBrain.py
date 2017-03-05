@@ -11,7 +11,13 @@ import datetime as dt
 
 class LogicBrain:
     def __init__(self):
-        self.net = ro.Network()
+        self.debugLogic = True
+        self.debugSense = False
+        self.debugExplore = False
+        self.debugNetwork = False
+        self.debugExploreLogic = False
+        self.debugRobotSystem = False
+        self.net = ro.Network(self.debugNetwork)
         self.PROBTOMOVE = 0.8#is temp 1
         self.logicLife = True
         self.senseLife = True
@@ -50,7 +56,7 @@ class LogicBrain:
         diffs = []
         while self.logicLife:
             # register iterations per second
-            self.logLogicThread("Thinking...")
+            #self.logLogicThread("Thinking...")
             last_time,diffs,ips = self.ips(last_time,diffs);
             self.nlogic = ips
             if self.RobotLife:
@@ -76,7 +82,7 @@ class LogicBrain:
     def loopExplore(self):
         self.explore = "Explore"
         self.logExploreThread("thread started...")
-        self.exploreLogic = ELB.Explore(self.explore)
+        self.exploreLogic = ELB.Explore(self.explore,self.debugExploreLogic,self.debugRobotSystem)
         last_time = time.clock()
         diffs = []
         while self.exploreLife:
@@ -89,15 +95,17 @@ class LogicBrain:
                 self.move()
 
     def isSearchingLogic(self):
-        if np.absolute(self.exploreLogic.angle) > 180 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
+        if np.absolute(self.exploreLogic.cumulateAngle) > 360 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
             self.isSearching = False
-            threading._sleep(0.2)
+            threading._sleep(0.5)
             self.logLogicThread("###SEARCHED###")
             self.logLogicThread(":::" + str(self.moveEstimation))
             while len(self.exploreLogic.tempMoves) == 0:
-                print "waiting.."
+                self.logLogicThread( "waiting..")
             self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp()
-            self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
+            self.logLogicThread(str(self.actualAngle)+"$$"+str(self.actualDistance)+"$$"+str(self.actualEstimation))
+            #threading._sleep(5)
+            #self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
             self.logLogicThread(" rotation rate::: " + str(self.exploreLogic.rotationRate))
             self.error = self.actualDistance * 0.3
             self.startMoving()
@@ -121,7 +129,7 @@ class LogicBrain:
                 self.inTransition()
             self.logExploreThread("moving robot" + str(self.actualDistance - self.error))
             self.exploreLogic.move(self.actualDistance - self.error)
-            threading._sleep(0.2)
+            #threading._sleep(0.2)
             self.logLogicThread("FINISHING MOVE")
             self.actualAngle = 0
             self.actualDistance = 0
@@ -138,13 +146,16 @@ class LogicBrain:
         self.isTransition = False
 
     def logLogicThread(self, message):
-        print self.logic + ": " + message
+        if self.debugLogic:
+            print self.logic + ": " + message
 
     def logSenseThread(self, message):
-        print self.sense + ": " + message
+        if self.debugSense:
+            print self.sense + ": " + message
 
     def logExploreThread(self, message):
-        print self.explore + ": " + message
+        if self.debugExplore:
+            print self.explore + ": " + message
 
     def ips(self,last_time,diffs):
         # Add new time diff to list

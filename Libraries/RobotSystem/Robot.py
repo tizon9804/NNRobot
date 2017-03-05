@@ -29,63 +29,66 @@ from AriaPy import *
 import numpy as np
 import sys
 
+
 # This Python script connects to the robot and prints out the current
 # Sonar and Laser range readings.
 class RobotDriver:
-    def __init__(self):
+    def __init__(self, debug):
 
         Aria.init()
+        self.debug = debug
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
-        self.argparser.addDefaultArgument("-rh 192.168.0.10 -lp 192.168.0.10 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
+        self.argparser.addDefaultArgument(
+            "-rh 192.168.0.10 -lp 192.168.0.10 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
-        self.startAngle=-25
-        self.endAngle = 25
+        self.startAngle = -30
+        self.endAngle = 30
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
         self.robot.isConnected()
         self.kh = ArKeyHandler()
         Aria.setKeyHandler(self.kh)
         if (not self.conn.connectRobot(self.robot)):
-          print 'Error connecting to robot'
-          Aria.logOptions()
-          print 'Could not connect to robot, exiting.'
-          Aria.exit(1)
+            self.logRobot('Error connecting to robot')
+            Aria.logOptions()
+            self.logRobot('Could not connect to robot')
+            Aria.exit(1)
         self.robot.attachKeyHandler(self.kh)
-        self.teleop=ArModeUnguardedTeleop(self.robot,"teleop","t","T")
+        self.teleop = ArModeUnguardedTeleop(self.robot, "teleop", "t", "T")
 
-        print 'Connected to robot'
+        self.logRobot('Connected to robot')
         self.robot.runAsync(1)
         self.robot.enableMotors()
         if not Aria_parseArgs():
-          Aria.logOptions()
-          Aria.exit(1)
+            Aria.logOptions()
+            Aria.exit(1)
 
         print 'Connecting to laser and waiting 1 sec...'
         self.laser = None
-        if(self.laserCon.connectLasers()):
-          print 'Connected to lasers as configured in parameters'
-          self.laser = self.robot.findLaser(1)
+        if (self.laserCon.connectLasers()):
+            self.logRobot('Connected to lasers as configured in parameters')
+            self.laser = self.robot.findLaser(1)
         else:
-          print 'Warning: unable to connect to lasers. Continuing anyway!'
+            self.logRobot('Warning: unable to connect to lasers. Continuing anyway!')
         ArUtil.sleep(1000)
 
     def getLaserBuffer(self):
         if self.laser:
-          self.robot.tryLock()
-          readings = self.laser.getRawReadingsAsVector()
-          self.robot.unlock()
-          lenreading=len(readings)
-          buffer=np.zeros(lenreading)
-          bufferpos = []
-          for r in range(lenreading):
-            buffer[r]=readings[r].getRange()
-            bufferpos.append({"x":readings[r].getX(),"y":readings[r].getY(),"range":readings[r].getRange()})
-          print "Laser readings: ",(lenreading)
-          return [buffer,bufferpos]
+            self.robot.tryLock()
+            readings = self.laser.getRawReadingsAsVector()
+            self.robot.unlock()
+            lenreading = len(readings)
+            buffer = np.zeros(lenreading)
+            bufferpos = []
+            for r in range(lenreading):
+                buffer[r] = readings[r].getRange()
+                bufferpos.append({"x": readings[r].getX(), "y": readings[r].getY(), "range": readings[r].getRange()})
+            self.logRobot("Laser readings: " + str(lenreading))
+            return [buffer, bufferpos]
 
         else:
-          return np.zeros(1,228)
+            return np.zeros(1, 228)
 
     def getMaxDistance(self):
         if self.laser:
@@ -93,26 +96,27 @@ class RobotDriver:
             distance = self.laser.getMaxRange()
             self.laser.unlockDevice()
             return distance
+
     def getClosestFrontDistance(self):
         if self.laser:
-            self.laser.lockDevice()
-            distance = self.laser.currentReadingPolar(self.startAngle,self.endAngle)
-            self.laser.unlockDevice()
+            self.robot.tryLock()
+            distance = self.laser.currentReadingPolar(self.startAngle, self.endAngle)
+            self.robot.unlock()
             return distance
-    def rotate(self,angle):
+
+    def rotate(self, angle):
         self.robot.lock()
         self.robot.setHeading(angle)
         self.robot.unlock()
 
-    def rotateSecure(self,angle):
+    def rotateSecure(self, angle):
         self.robot.lock()
         self.robot.setHeading(angle)
         self.robot.unlock()
         while not self.robot.isHeadingDone():
-            d=0
+            d = 0
 
-
-    def move(self,dist):
+    def move(self, dist):
         self.robot.lock()
         self.robot.move(dist)
         self.robot.getMoveDoneDist()
@@ -121,13 +125,13 @@ class RobotDriver:
             diff = self.robot.getMoveDoneDist()
             closest = self.getClosestFrontDistance()
             if closest < diff:
-                print "object in movement is in front"
+                self.logRobot("object in movement is in front")
                 self.robot.stop()
                 self.robot.setMoveDoneDist(0)
         self.sleep()
 
     def activateTeleop(self):
-        self.cont=0
+        self.cont = 0
         self.teleop.activate()
 
     def restartHeading(self):
@@ -139,26 +143,29 @@ class RobotDriver:
     def sleep(self):
         ArUtil.sleep(100)
 
-    def setRobotAction(self,action,speed):
+    def setRobotAction(self, action, speed):
         # Drive the robot a bit, then exit.
-        speedr = 50*speed
-        speedv = 300*speed
+        speedr = 50 * speed
+        speedv = 300 * speed
         self.robot.lock()
         self.robot.setRotVel(0)
         self.robot.setVel(0)
         if action == 0:
-            print "0speed: ",speed
+            self.logRobot("0speed: ", speed)
             self.robot.setRotVel(speedr)
         elif action == 1:
-            print "1speed: ",speedv
+            self.logRobot("1speed: ", speedv)
             self.robot.setVel(speedv)
         elif action == 2:
-            print "2speed: ",-speedr
+            self.logRobot("2speed: ", -speedr)
             self.robot.setRotVel(-speedr)
         self.robot.unlock()
 
-
     def closeRobot(self):
         self.robot.disableMotors()
-        print " ROBOT goodbye."
+        self.logRobot(" ROBOT goodbye.")
         Aria.exit(0)
+
+    def logRobot(self, message):
+        if self.debug:
+            print "RobotSystem: ", message
