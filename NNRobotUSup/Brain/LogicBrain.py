@@ -95,19 +95,19 @@ class LogicBrain:
                 self.move()
 
     def isSearchingLogic(self):
-        if np.absolute(self.exploreLogic.cumulateAngle) > 360 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
+        if np.absolute(self.exploreLogic.cumulateAngle) > 3 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
             self.isSearching = False
             threading._sleep(0.5)
             self.logLogicThread("###SEARCHED###")
             self.logLogicThread(":::" + str(self.moveEstimation))
             while len(self.exploreLogic.tempMoves) == 0:
                 self.logLogicThread( "waiting..")
-            self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp()
+            self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp(self.exploreLogic.tempMoves)
             self.logLogicThread(str(self.actualAngle)+"$$"+str(self.actualDistance)+"$$"+str(self.actualEstimation))
             #threading._sleep(5)
             #self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
             self.logLogicThread(" rotation rate::: " + str(self.exploreLogic.rotationRate))
-            self.error = self.actualDistance * 0.3
+            self.error = self.actualDistance * 0.1
             self.startMoving()
 
     def startMoving(self):
@@ -116,12 +116,12 @@ class LogicBrain:
 
     def searchDirection(self):
         if self.isSearching:
+            # search a possible direction to move, it do not cares the range of distance
+            self.exploreLogic.searchDirection()
+            self.logExploreThread(str(self.PROBTOMOVE))
             # think best way with the nnet return 0-1 where 1 is a secure way
             bestWay = 1
-            # search a possible direction to move, it do not cares the range of distance
-            self.exploreLogic.searchDirection(bestWay)
-            self.logExploreThread(str(self.PROBTOMOVE))
-            self.moveEstimation = self.exploreLogic.estimation
+            self.moveEstimation = bestWay - (1-self.exploreLogic.estimation)
 
     def move(self):
         if self.isMoving:
@@ -129,7 +129,7 @@ class LogicBrain:
                 self.inTransition()
             self.logExploreThread("moving robot" + str(self.actualDistance - self.error))
             self.exploreLogic.move(self.actualDistance - self.error)
-            #threading._sleep(0.2)
+            threading._sleep(0.5)
             self.logLogicThread("FINISHING MOVE")
             self.actualAngle = 0
             self.actualDistance = 0

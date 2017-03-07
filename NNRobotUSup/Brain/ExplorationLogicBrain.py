@@ -9,10 +9,11 @@ class Explore:
             self.logExplore(thread + "init Explore")
             self.robotSystem = R.RobotDriver(debugRobot)
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
+            self.MAXREADINGS = self.robotSystem.getMaxReadings()
             self.RobotStarted = True
             self.angle = 0
             self.cumulateAngle = 0
-            self.rotationRate = -1.4
+            self.rotationRate = 90
             self.actualFront = 0
             self.contAngle = 1
             self.estimation = 0
@@ -24,26 +25,32 @@ class Explore:
             self.logExplore(thread + "Cannot connect to Robot:" + str(ex))
             self.RobotStarted = False
 
-    def searchDirection(self, bestWay):
+    def searchDirection(self):
+        start = self.MAXREADINGS/2
+        end  = start * -1
+        rangeL = 30
+        lmoves = []
+        #iterate al reading of the sensor in steps of rangeL grades
+        for x in range(start,(end+rangeL)-1,-1):
+            xend = x-rangeL
+            distance,angle = self.robotSystem.getClosestDistance(x,xend)
+            self.logExplore(self.thread + " angle::"+ str(self.angle)+ "relative::"+ str(self.getRelativeAngle()))
+            estimation = self.calculateProbToMove(distance)
+            lmoves.append([angle, distance, estimation])
+        self.angle,distance,estimation = self.getAngleMaxDistanceTemp(lmoves)
+        self.tempMoves.append([self.angle, distance, estimation])
+        self.estimation = estimation
         if self.robotSystem.robot.isHeadingDone():
             self.robotSystem.rotate(self.angle)
-            rate = np.power(self.rotationRate, self.contAngle)
-            self.angle = self.getRelativeAngle() + rate
-            self.cumulateAngle += np.absolute(rate)
-            self.contAngle += 1
-        distance = self.robotSystem.getClosestFrontDistance()
-        self.logExplore(self.thread + " angle::"+ str(self.angle)+ "relative::"+ str(self.getRelativeAngle()))
-        self.estimation = self.calculateProbToMove(distance, bestWay)
-        realAngle = self.robotSystem.robot.getPose().getTh()
-        self.tempMoves.append([realAngle, distance, self.estimation])
+            self.cumulateAngle += 1
         self.logExplore(self.thread + "temp:: "+str(len(self.tempMoves))+"&&"+ str(self.tempMoves[len(self.tempMoves) - 1]))
 
 
-    def calculateProbToMove(self, distance, bestWay):
+    def calculateProbToMove(self, distance):
         # calculate the final value estimation to move between distance and bestway
         scaledistance = (distance / self.MAXDISTANCE)
-        moveestimate = bestWay - ((1 - scaledistance))
-        self.logExplore("distance::"+ str(distance)+ "::besway::"+ str(bestWay)+ "::scaledist::"+ str(scaledistance)+ "::move est:: "+ str(moveestimate))
+        moveestimate = (scaledistance)
+        self.logExplore("distance::"+ str(distance)+ "::scaledist::"+ str(scaledistance)+ "::move est:: "+ str(moveestimate))
         return moveestimate
 
     def transitionMove(self, angle):
@@ -65,10 +72,10 @@ class Explore:
         else:
             self.robotSystem.move(distance)
 
-    def getAngleMaxDistanceTemp(self):
+    def getAngleMaxDistanceTemp(self,list):
         maxdistance = 0
-        tupleMax = self.tempMoves[len(self.tempMoves) - 1]
-        for tuple in reversed(self.tempMoves):
+        tupleMax = list[len(list) - 1]
+        for tuple in reversed(list):
             dist = tuple[2]
             if dist > maxdistance:
                 maxdistance = dist

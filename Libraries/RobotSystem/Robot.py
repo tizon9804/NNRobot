@@ -90,6 +90,12 @@ class RobotDriver:
         else:
             return np.zeros(1, 228)
 
+    def getMaxReadings(self):
+        self.robot.tryLock()
+        readings = self.laser.getRawReadingsAsVector()
+        self.robot.unlock()
+        return len(readings)
+
     def getMaxDistance(self):
         if self.laser:
             self.laser.lockDevice()
@@ -103,6 +109,17 @@ class RobotDriver:
             distance = self.laser.currentReadingPolar(self.startAngle, self.endAngle)
             self.robot.unlock()
             return distance
+
+    def getClosestDistance(self,start,end):
+        if self.laser:
+            self.robot.tryLock()
+            distance = self.laser.currentReadingPolar(end,start)
+            self.robot.unlock()
+            relangle = self.robot.getPose().getTh()
+            angle = (np.absolute(start)-np.absolute(end))/2
+            angle = start-angle
+            angle = relangle + angle
+            return distance,angle
 
     def rotate(self, angle):
         self.robot.lock()
