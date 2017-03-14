@@ -89,9 +89,9 @@ function updateMap(data) {
         var json = JSON.stringify(eval("(" + d + ")"));
         var object = JSON.parse(json)   
         if (jdata.length > 5000) {
-            jdata.splice(0, 500);;
+            jdata.splice(0, 1500);;
         }
-        if (object.range < 4900 && isadd==0) {
+        if (object.range < 3900 && isadd==0) {
             jdata.push(object)
         }
         if (isadd>40) {

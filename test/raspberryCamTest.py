@@ -7,7 +7,7 @@ import cv2
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (640, 480)
-camera.framerate = 5
+camera.framerate = 60
 rawCapture = PiRGBArray(camera)
 
 # allow the camera to warmup
@@ -27,5 +27,5 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     rawCapture.truncate(0)
 
     # if the `q` key was pressed, break from the loop
-    if key == ord("q"):
+    if key == ord("q"):        
         break
