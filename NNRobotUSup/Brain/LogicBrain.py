@@ -1,12 +1,12 @@
 from NNRobotUSup.Memory import LongTerm as lt
 import ExplorationLogicBrain as ELB
-#import NNRobotUSup.ImageRecognition.SightSense as sight
+import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
 import threading
 import numpy as np
 import time
 import psutil as psu
-import datetime as dt
+
 
 
 class LogicBrain:
@@ -31,6 +31,7 @@ class LogicBrain:
         self.isSearching = True
         self.isMoving = False
         self.isTransition = False
+        self.isVideoStreaming = True
         self.targetList = []
         self.longTerm = lt.LongTerm()
         #robot indicators
@@ -41,13 +42,13 @@ class LogicBrain:
         self.nexplore = 0
         # init in new thread the part of the brain that take decisions
         tLogic = threading.Thread(target=self.loopLogic)
-        tLogic.start()
+        #tLogic.start()
         # init in new thread the part of the brain that take the sensors
         tSense = threading.Thread(target=self.loopSense)
         tSense.start()
         # init in new thread the part of the brain that have actuators
         tExplore = threading.Thread(target=self.loopExplore)
-        tExplore.start()
+        #tExplore.start()
 
     def loopLogic(self):
         self.logic = "Logic"
@@ -57,27 +58,24 @@ class LogicBrain:
         while self.logicLife:
             # register iterations per second
             #self.logLogicThread("Thinking...")
+            self.sendDataVA()
             last_time,diffs,ips = self.ips(last_time,diffs);
             self.nlogic = ips
-            if self.RobotLife:
-                if self.isSearching:
-                    self.isSearchingLogic()
+            self.isSearchingLogic()
 
     def loopSense(self):
         self.sense = "Sense"
         self.logSenseThread("thread started...")
         last_time = time.clock()
         diffs = []
-        #self.sight = sight.SightSense()
+        self.sight = sight.SightSense(self.isVideoStreaming)
         while self.senseLife:
             #register iterations per second
             last_time, diffs, ips = self.ips(last_time, diffs);
             self.nimage = ips
-            #self.sight.getRoute()
+            self.logSenseThread("transmiting...")
+            self.sight.getRoute()
             #time.sleep(0.5)
-            self.net.sendData(self.laserData,self.posData,self.nlogic,self.nimage,self.nexplore,psu.cpu_percent(),psu.virtual_memory().percent)
-            if self.RobotLife:
-                self.laserData,self.posData = self.exploreLogic.robotSystem.getLaserBuffer()
 
     def loopExplore(self):
         self.explore = "Explore"
@@ -91,28 +89,37 @@ class LogicBrain:
             self.nexplore = ips
             self.RobotLife = self.exploreLogic.RobotStarted
             if self.RobotLife:
+                self.laserData, self.posData = self.exploreLogic.robotSystem.getLaserBuffer()
                 self.searchDirection()
                 self.move()
-
+#----------------------------------------------------------------------------------
+#LOGIC
+#---------------------------------------------------------------------------------
     def isSearchingLogic(self):
-        if np.absolute(self.exploreLogic.cumulateAngle) > 3 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
-            self.isSearching = False
-            threading._sleep(0.5)
-            self.logLogicThread("###SEARCHED###")
-            self.logLogicThread(":::" + str(self.moveEstimation))
-            while len(self.exploreLogic.tempMoves) == 0:
-                self.logLogicThread( "waiting..")
-            self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp(self.exploreLogic.tempMoves)
-            self.logLogicThread(str(self.actualAngle)+"$$"+str(self.actualDistance)+"$$"+str(self.actualEstimation))
-            #threading._sleep(5)
-            #self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
-            self.logLogicThread(" rotation rate::: " + str(self.exploreLogic.rotationRate))
-            self.error = self.actualDistance * 0.1
-            self.startMoving()
+        if self.RobotLife:
+            if self.isSearching:
+                if np.absolute(self.exploreLogic.cumulateAngle) > 3 or self.moveEstimation >= self.PROBTOMOVE*0.90:  # TODO
+                    self.isSearching = False
+                    threading._sleep(0.5)
+                    self.logLogicThread("###SEARCHED###")
+                    self.logLogicThread(":::" + str(self.moveEstimation))
+                    while len(self.exploreLogic.tempMoves) == 0:
+                        self.logLogicThread( "waiting..")
+                    self.actualAngle, self.actualDistance, self.actualEstimation = self.exploreLogic.getAngleMaxDistanceTemp(self.exploreLogic.tempMoves)
+                    self.logLogicThread(str(self.actualAngle)+"$$"+str(self.actualDistance)+"$$"+str(self.actualEstimation))
+                    #threading._sleep(5)
+                    #self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
+                    self.logLogicThread(" rotation rate::: " + str(self.exploreLogic.rotationRate))
+                    self.error = self.actualDistance * 0.1
+                    self.startMoving()
 
     def startMoving(self):
         self.isTransition = True
         self.isMoving = True
+
+# ----------------------------------------------------------------------------------
+# EXPLORE
+# ---------------------------------------------------------------------------------
 
     def searchDirection(self):
         if self.isSearching:
@@ -145,6 +152,10 @@ class LogicBrain:
         self.exploreLogic.transitionMove(self.actualAngle)
         self.isTransition = False
 
+    # ----------------------------------------------------------------------------------
+    # LOGS
+    # ---------------------------------------------------------------------------------
+
     def logLogicThread(self, message):
         if self.debugLogic:
             print self.logic + ": " + message
@@ -168,3 +179,6 @@ class LogicBrain:
         ips= 1/(sum(diffs)/len(diffs))
         return [last_time,diffs,ips]
 
+    def sendDataVA(self):
+        self.net.sendData(self.laserData, self.posData, self.nlogic, self.nimage, self.nexplore, psu.cpu_percent(),
+                          psu.virtual_memory().percent)

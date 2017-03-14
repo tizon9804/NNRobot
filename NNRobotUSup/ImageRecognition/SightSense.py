@@ -1,7 +1,9 @@
 import Camera as c
 class SightSense:
-    def __init__(self):
-       self.cam = c.Camera()
+    def __init__(self,isVideoStream):
+       self.cam = c.Camera(isVideoStream)
 
     def getRoute(self):
-        self.cam.getImage()
+        image = self.cam.getImage()
+        self.cam.contours(image)
+        #self.cam.show(image)

@@ -13,7 +13,7 @@ class Network:
         tPost.start();
 
     def asycnSend(self,data,posData,logic,image,explore,cpu,memory):
-        r= req.post('http://192.168.0.14:3000/data',data = {
+        r= req.post('http://localhost:3000/data',data = {
             'buffer':data,
             'bufferpos': [posData],
             'nlogic':logic,
