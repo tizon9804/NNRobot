@@ -62,71 +62,96 @@ class Camera:
             print "SENSE: SHOW error ",str(ex)
 
     def contours(self,img):
+        img2=img
         self.img = img
         self.imFilt = img
-        self.gray(False)
-        self.img = self.imFilt
-        self.convolution(True)
-        self.img = self.imFilt
+        self.gaussianBlur(False)
+        self.gray(True)
         self.laplacian(True)
-        self.img = self.imFilt
         self.gaussianBlur(True)
-        self.img = self.imFilt
-        self.bilateralFilter(True)
-        self.img = self.imFilt
+        self.convolution(True)
+        self.medianBlur(False)
+        self.bilateralFilter(False)
         self.medianBlur(True)
-        self.img = self.imFilt
+        self.bilateralFilter(True)
         self.cannyEdges(True)
         self.img = self.imFilt
-        im2, contours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        if len(contours) > 0:
-            cnt = contours[len(contours)-2]
-            #cv2.drawContours(img, [cnt], -1, (0, 255, 0), 3)
-            cv2.drawContours(img, contours, -1, (0, 255, 0), 3)
+        im2, contours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        i = 0
+        for contour in contours:
+            cnt = contour
+            hull = cv2.convexHull(cnt)
+            rect = cv2.minAreaRect(cnt)
+            w,h=rect[1]
+            box = cv2.boxPoints(rect)
+            box = np.int0(box)
+            max = 320
+            min = 50
+            if w>=min and h>=min and w<=max and h<=max:
+                #obtainPieceOfImage(rect,img2,i)
+                cv2.drawContours(img, [box], -1, (114, 224, 150),2)
+                cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
+            i += 1
         cv2.imshow("Contours", img)
         cv2.waitKey(1)
 
+    def obtainPieceOfImage(self,rect,img2,i):
+        rotMatrix = cv2.getRotationMatrix2D(rect[0],rect[2],1.0)
+        rotated = cv2.warpAffine(img2,rotMatrix,(640,480),cv2.INTER_CUBIC)
+        w, h = rect[1]
+        size = (int(w), int(h))
+        newimg = cv2.getRectSubPix(rotated,size,rect[0])
+        cv2.imshow("Contours"+str(i), newimg)
+        cv2.waitKey(1)
+
     def gaussianBlur(self,show):
+        self.img = self.imFilt
         self.imFilt = cv2.GaussianBlur(self.img, (7, 7), 0)
         if show:
             cv2.imshow("GaussianBlur", self.imFilt)
             cv2.waitKey(1)
 
     def gray(self,show):
+        self.img = self.imFilt
         self.imFilt = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
         if show:
             cv2.imshow("COLOR_BGR2GRAY", self.imFilt)
             cv2.waitKey(1)
 
     def laplacian(self,show):
+        self.img = self.imFilt
         dst = cv2.Laplacian(self.img, ddepth=cv2.CV_16S,
-                            scale=2, delta=150, ksize=3, borderType=cv2.BORDER_CONSTANT)
+                            scale=2, delta=200, ksize=5, borderType=cv2.BORDER_CONSTANT)
         self.imFilt = cv2.convertScaleAbs(dst)
         if show:
             cv2.imshow("Laplacian", self.imFilt)
             cv2.waitKey(1)
 
     def medianBlur(self,show):
+        self.img = self.imFilt
         self.imFilt = cv2.medianBlur(self.img, 5)
         if show:
             cv2.imshow("medianBlur", self.imFilt)
             cv2.waitKey(1)
 
     def bilateralFilter(self,show):
-        self.imFilt = cv2.bilateralFilter(self.img, 11, 17, 17)
+        self.img = self.imFilt
+        self.imFilt = cv2.bilateralFilter(self.img, 10, 17, 17)
         if show:
             cv2.imshow("bilateralFilter", self.imFilt)
             cv2.waitKey(1)
 
     def convolution(self,show):
+        self.img = self.imFilt
         kernel = np.ones((5, 5), np.float32) / 25
         self.imFilt = cv2.filter2D(self.img, -1, kernel)
         if show:
-            cv2.imshow("filter2D", self.imFilt)
+            cv2.imshow("convolution", self.imFilt)
             cv2.waitKey(1)
 
     def cannyEdges(self,show):
-        self.imFilt = cv2.Canny(self.img, 0, 100)
+        self.img = self.imFilt
+        self.imFilt = cv2.Canny(self.img, 0, 50)
         if show:
             cv2.imshow("edges1", self.imFilt)
             cv2.waitKey(1)
