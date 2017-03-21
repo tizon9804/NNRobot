@@ -1,4 +1,5 @@
 from NNRobotUSup.Memory import LongTerm as lt
+import NNRobotUSup.Memory.ShortTerm as S
 import ExplorationLogicBrain as ELB
 import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
@@ -6,6 +7,7 @@ import threading
 import numpy as np
 import time
 import psutil as psu
+from matplotlib import pyplot as plt
 
 
 
@@ -33,7 +35,8 @@ class LogicBrain:
         self.isTransition = False
         self.isVideoStreaming = True
         self.targetList = []
-        self.longTerm = lt.LongTerm()
+        self.Lmemory = lt.LongTerm()
+        self.Smemory = S.ShortTerm()
         #robot indicators
         self.laserData = []
         self.posData = []
@@ -49,6 +52,26 @@ class LogicBrain:
         # init in new thread the part of the brain that have actuators
         tExplore = threading.Thread(target=self.loopExplore)
         #tExplore.start()
+        while True:
+            if self.Smemory.kmeans.plot:
+                A = self.Smemory.kmeans.A
+                B = self.Smemory.kmeans.B
+                C = self.Smemory.kmeans.C
+                D = self.Smemory.kmeans.D
+                E = self.Smemory.kmeans.E
+                F = self.Smemory.kmeans.F
+                Z = self.Smemory.kmeans.z
+                center = self.Smemory.kmeans.center
+                # Plot the data
+                plt.scatter(A[:, 0], A[:, 1])
+                plt.scatter(B[:, 0], B[:, 1], c='r')
+                plt.scatter(C[:, 0], C[:, 1], c='b')
+                plt.scatter(D[:, 0], D[:, 1], c='y')
+                plt.scatter(E[:, 0], E[:, 1], c='g')
+                plt.scatter(F[:, 0], F[:, 1], c='r')
+                plt.scatter(center[:, 0], center[:, 1], s=80, c='y', marker='s')
+                plt.xlabel('Height'), plt.ylabel('Weight')
+                plt.show()
 
     def loopLogic(self):
         self.logic = "Logic"
@@ -68,7 +91,7 @@ class LogicBrain:
         self.logSenseThread("thread started...")
         last_time = time.clock()
         diffs = []
-        self.sight = sight.SightSense(self.isVideoStreaming)
+        self.sight = sight.SightSense(self.isVideoStreaming,self.Smemory)
         while self.senseLife:
             #register iterations per second
             last_time, diffs, ips = self.ips(last_time, diffs);

@@ -29,7 +29,13 @@ var setData = function (req, res) {
     cpu = q.cpu;
     memory = q.memory;
     res.json({ "ok": "200"})
- };
+};
+
+var setDataSight = function (req, res) {
+    var q = req.body;    
+    actualPos = q.bufferpos;    
+    res.json({ "ok": "200" })
+};
 
 var getLaser = function (req, res) {    
     res.json({"buffer":actualBuffer})
@@ -79,5 +85,6 @@ var getRTotal = function (req, res)
 module.exports.getLaser = getLaser;
 module.exports.getPositions = getPositions;
 module.exports.setData = setData;
+module.exports.setDataSight = setDataSight;
 module.exports.getParalelSI = getParalelSI;
 

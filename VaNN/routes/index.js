@@ -15,6 +15,10 @@ router.post('/data', function (req, res) {
     consultas.setData(req, res);
 });
 
+router.post('/dataSight', function (req, res) {
+    consultas.setDataSight(req, res);
+});
+
 router.get('/laserStream', function (req, res) {
     consultas.getLaser(req, res);  
 });
