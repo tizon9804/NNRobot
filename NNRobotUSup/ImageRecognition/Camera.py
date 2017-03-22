@@ -174,7 +174,7 @@ class Camera:
 
     def addItems(self,item):
         self.Smemory.items.append(item)
-        self.Smemory.Cluster()
+        #self.Smemory.Cluster()
 
 
     def gaussianBlur(self,show):
