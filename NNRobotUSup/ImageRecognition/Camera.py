@@ -107,8 +107,6 @@ class Camera:
                 cv2.drawContours(img,[box], -1, (114, 224, 150),2)
                 cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
             i += 1
-        #envia informacion para visualizar
-        self.sendDataSightVA(self.moments)
         #filtro que elimina el color de to_do lo que no es un controno
         self.floodImage(self.img,img,0)
         cv2.imshow("Contours", img)
@@ -174,7 +172,15 @@ class Camera:
 
     def addItems(self,item):
         self.Smemory.items.append(item)
-        #self.Smemory.Cluster()
+        self.Smemory.itemsZip.append(
+            {"C":item.compacity,
+             "ME":item.momEspacial,
+             "MC":item.momCentral,
+             "MC2":item.momCentral2,
+             "MR":item.meanRed,
+             "MG":item.meanGreen,
+             "MB":item.meanBlue})
+        self.Smemory.Cluster()
 
 
     def gaussianBlur(self,show):
@@ -229,5 +235,4 @@ class Camera:
             cv2.imshow("edges1", self.imFilt)
             cv2.waitKey(1)
 
-    def sendDataSightVA(self,posData):
-        self.net.sendDataSight(posData)
+

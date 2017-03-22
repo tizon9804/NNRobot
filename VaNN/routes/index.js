@@ -27,12 +27,12 @@ router.get('/positionStream', function (req, res) {
     consultas.getPositions(req, res);
 });
 
-router.get('/tree', function (req, res) {
-    consultas.getTree(req, res);
+router.get('/kmeans', function (req, res) {
+    consultas.getKmeans(req, res);
 });
 
-router.get('/rtotal', function (req, res) {
-    consultas.getRTotal(req, res);
+router.get('/moments', function (req, res) {
+    consultas.getMoments(req, res);
 });
 
 router.get('/paralelinfo', function (req, res) {

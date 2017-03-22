@@ -10,19 +10,16 @@ class KmeansFunctions:
         self.A = []
         self.B = []
         self.center = []
+        self.labels = []
         self.plot = False
 
     def applyKM(self,Z,numK):
         # Apply KMeans
-        ret, label, center = cv2.kmeans(Z, 6, None, self.criteria, 10, self.flags)
-
+        ret, label, center = cv2.kmeans(Z, numK, None, self.criteria, 10, self.flags)
         self.A = Z[label.ravel() == 0]
         self.B = Z[label.ravel() == 1]
-        self.C = Z[label.ravel() == 2]
-        self.D = Z[label.ravel() == 3]
-        self.E = Z[label.ravel() == 4]
-        self.F = Z[label.ravel() == 5]
         self.z = Z
+        self.labels = label.ravel()
         self.center = center
         self.plot = True
         return (ret,label,center)

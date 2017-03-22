@@ -52,26 +52,6 @@ class LogicBrain:
         # init in new thread the part of the brain that have actuators
         tExplore = threading.Thread(target=self.loopExplore)
         #tExplore.start()
-        while True:
-            if self.Smemory.kmeans.plot:
-                A = self.Smemory.kmeans.A
-                B = self.Smemory.kmeans.B
-                C = self.Smemory.kmeans.C
-                D = self.Smemory.kmeans.D
-                E = self.Smemory.kmeans.E
-                F = self.Smemory.kmeans.F
-                Z = self.Smemory.kmeans.z
-                center = self.Smemory.kmeans.center
-                # Plot the data
-                plt.scatter(A[:, 0], A[:, 1])
-                plt.scatter(B[:, 0], B[:, 1], c='r')
-                plt.scatter(C[:, 0], C[:, 1], c='b')
-                plt.scatter(D[:, 0], D[:, 1], c='y')
-                plt.scatter(E[:, 0], E[:, 1], c='g')
-                plt.scatter(F[:, 0], F[:, 1], c='r')
-                plt.scatter(center[:, 0], center[:, 1], s=80, c='y', marker='s')
-                plt.xlabel('Height'), plt.ylabel('Weight')
-                plt.show()
 
     def loopLogic(self):
         self.logic = "Logic"
@@ -82,6 +62,7 @@ class LogicBrain:
             # register iterations per second
             #self.logLogicThread("Thinking...")
             self.sendDataVA()
+            self.sendDataSight()
             last_time,diffs,ips = self.ips(last_time,diffs);
             self.nlogic = ips
             self.isSearchingLogic()
@@ -205,3 +186,24 @@ class LogicBrain:
     def sendDataVA(self):
         self.net.sendData(self.laserData, self.posData, self.nlogic, self.nimage, self.nexplore, psu.cpu_percent(),
                           psu.virtual_memory().percent)
+
+    def sendDataSight(self):
+        moments = self.sight.cam.moments
+        itemsDesc = self.Smemory.itemsZip
+        cluster1 = self.Smemory.kmeans.A
+        cluster2 = self.Smemory.kmeans.B
+        center = self.Smemory.kmeans.center
+        clus1 = []
+        clus2 = []
+        cent = []
+        for cl in cluster1:
+            clus1.append({"x": cl[0], "y": cl[1], "range": 50})
+        for cl in cluster2:
+            clus2.append({"x": cl[0], "y": cl[1], "range": 3000})
+        for cl in center:
+            cent.append({"x": cl[0], "y": cl[1], "range": 2000})
+
+        # envia informacion para visualizar
+        self.net.sendDataSight(moments,clus1,clus2,cent)
+
+

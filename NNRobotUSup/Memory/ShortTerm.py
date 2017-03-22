@@ -6,15 +6,15 @@ class ShortTerm:
     def __init__(self):
         self.kmeans = C.KmeansFunctions()
         self.items = []
+        self.itemsZip = []
         self.Z = []
 
     def Cluster(self):
         item = I.Item()
-
         for it in self.items:
             item=it
             self.Z.append([item.momCentral,item.momEspacial])
             Z = np.float32(self.Z)
-        if Z.shape[0]>50:
-            self.kmeans.applyKM(Z,10)
+        if Z.shape[0]%50==0:
+            self.kmeans.applyKM(Z,2)
 

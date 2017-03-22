@@ -29,31 +29,32 @@ body {
   font: 11px sans-serif;
 }
 
-#map .axis path,
-#map .axis line {
+.map .axis path,
+.map .axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
 }
 
-#map .dot {
+.map .dot {
   stroke: none;
   opacity:0;
 }
 
-#map .tooltip {
+.map .tooltip {
   position: absolute;
   width: 200px;
   height: 28px;
   pointer-events: none;
 }
 
-#map{
+.map{
     width:50%;
     float:left;
+    padding:10%;
 }
 
-#Laser{
+.Laser{
     width:50%;
     float:left;
 }

@@ -9,23 +9,20 @@ class Network:
     def sendData(self,data,posData,logic,image,explore,cpu,memory):
         logmessage = str(logic) + "#" + str(len(posData)) + "#" + str(image) + "#" + str(explore) + "#" + str(cpu) + "#" + str(memory)
         self.logRoutes(str(logmessage))
-        tPost = t.Thread(target=self.asycnSend('http://localhost:3000/data',data,posData,logic,image,explore,cpu,memory))
+        tPost = t.Thread(target=self.asycnSend('http://190.158.131.76:3000/data',data,posData,logic,image,explore,cpu,memory))
         tPost.start();
 
-    def sendDataSight(self,posData):
+    def sendDataSight(self,moments,cluster1,cluster2,center):
         self.logRoutes("Camera Data")
-        tPost = t.Thread(target=self.asycnSend('http://localhost:3000/data',[], posData, [], [], [], [], []))
+        tPost = t.Thread(target=self.asycnSend('http://190.158.131.76:3000/dataSigth',moments, cluster1,cluster2,center))
         tPost.start();
 
-    def asycnSend(self,url,data,posData,logic,image,explore,cpu,memory):
+    def asycnSend(self,url,moments,cluster1,cluster2,center):
         r= req.post(url,data = {
-            'buffer':data,
-            'bufferpos': [posData],
-            'nlogic':logic,
-            'nimage':image,
-            'nexplore':explore,
-            'cpu':cpu,
-            'memory':memory
+            'moments':moments,
+            'cluster1': cluster1,
+            'cluster2':cluster2,
+            'center':center
         })
         self.logRoutes("Send Laser: "+r.text)
 

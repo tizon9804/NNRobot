@@ -8,6 +8,10 @@ var nimage = 0;
 var nexplore = 0;
 var cpu = 0;
 var memory = 0;
+var moments;
+var cluster1;
+var cluster2;
+var central; 
 
 var validar = function (req) {
     var q = req.query;
@@ -33,7 +37,10 @@ var setData = function (req, res) {
 
 var setDataSight = function (req, res) {
     var q = req.body;    
-    actualPos = q.bufferpos;    
+    moments = q.moments; 
+    cluster1 = q.cluster1;
+    cluster2 = q.cluster2;
+    central = q.central;     
     res.json({ "ok": "200" })
 };
 
@@ -43,6 +50,18 @@ var getLaser = function (req, res) {
 
 var getPositions = function (req, res) {
     res.json({ "buffer": actualPos })
+};
+
+var getKmeans = function (req, res) {
+    res.json({
+        "cluster1": cluster1,
+        "cluster2": cluster2,
+        "center": central
+    })
+};
+
+var getMoments = function (req, res) {
+    res.json({"moments": moments})
 };
 
 var getParalelInfo = function (req, res) {
@@ -87,4 +106,6 @@ module.exports.getPositions = getPositions;
 module.exports.setData = setData;
 module.exports.setDataSight = setDataSight;
 module.exports.getParalelSI = getParalelSI;
+module.exports.getKmeans = getKmeans;
+module.exports.getMoments = getMoments;
 
