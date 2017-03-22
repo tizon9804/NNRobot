@@ -193,17 +193,15 @@ class LogicBrain:
         cluster1 = self.Smemory.kmeans.A
         cluster2 = self.Smemory.kmeans.B
         center = self.Smemory.kmeans.center
-        clus1 = []
-        clus2 = []
-        cent = []
+        clus = []
         for cl in cluster1:
-            clus1.append({"x": cl[0], "y": cl[1], "range": 50})
+            clus.append({"x": cl[0], "y": cl[1], "range": 50})
         for cl in cluster2:
-            clus2.append({"x": cl[0], "y": cl[1], "range": 3000})
+            clus.append({"x": cl[0], "y": cl[1], "range": 3000})
         for cl in center:
-            cent.append({"x": cl[0], "y": cl[1], "range": 2000})
+            clus.append({"x": cl[0], "y": cl[1], "range": 2000})
 
         # envia informacion para visualizar
-        self.net.sendDataSight(moments,clus1,clus2,cent)
+        self.net.sendDataSight(moments,clus)
 
 

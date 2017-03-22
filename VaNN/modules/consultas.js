@@ -9,9 +9,7 @@ var nexplore = 0;
 var cpu = 0;
 var memory = 0;
 var moments;
-var cluster1;
-var cluster2;
-var central; 
+var cluster;
 
 var validar = function (req) {
     var q = req.query;
@@ -38,9 +36,7 @@ var setData = function (req, res) {
 var setDataSight = function (req, res) {
     var q = req.body;    
     moments = q.moments; 
-    cluster1 = q.cluster1;
-    cluster2 = q.cluster2;
-    central = q.central;     
+    cluster = q.cluster;      
     res.json({ "ok": "200" })
 };
 
@@ -54,14 +50,12 @@ var getPositions = function (req, res) {
 
 var getKmeans = function (req, res) {
     res.json({
-        "cluster1": cluster1,
-        "cluster2": cluster2,
-        "center": central
+        "buffer": cluster        
     })
 };
 
 var getMoments = function (req, res) {
-    res.json({"moments": moments})
+    res.json({"buffer": moments})
 };
 
 var getParalelInfo = function (req, res) {
