@@ -1,12 +1,13 @@
 # import the necessary packages
-#from picamera.array import PiRGBArray
-#from picamera import PiCamera
-from docutils.nodes import image
+from picamera.array import PiRGBArray
+from picamera import PiCamera
+
 
 import NNRobotUSup.Network.ServerVideoStream as server
 import time
 import cv2
 import numpy as np
+import io
 import NNRobotUSup.Network.Routes as ro
 import NNRobotUSup.Entities.Item as I
 
@@ -34,7 +35,8 @@ class Camera:
             camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
             self.rawCapture = PiRGBArray(camera)
             # allow the camera to warmup
-            time.sleep(0.1)
+            #camera.start_preview()
+            time.sleep(5)
             self.camera = camera
 
     def getImage(self):
@@ -46,11 +48,16 @@ class Camera:
 
     def raspCapture(self):
         # capture frames from the camera
+        #stream = io.BytesIO()
         self.camera.capture(self.rawCapture, "bgr")
         # print 'Captured image: ', self.rawCapture.array.shape
-        image =  self.rawCapture.array
-        # cv2.imshow("Frame", self.image)
-        # key = cv2.waitKey(1) & 0xFF
+        #stream.seek(0)
+        #data = np.fromstring(stream.read(),dtype=np.uint8)
+        image = self.rawCapture.array
+        #print data
+        #image = cv2.imdecode(image, 1)
+        #cv2.imshow("Frame", image)
+        #key = cv2.waitKey(1) & 0xFF
         # clear the stream in preparation for the next frame
         self.rawCapture.truncate(0)
         return image
@@ -76,16 +83,17 @@ class Camera:
         self.gaussianBlur(False)
         self.gray(False)
         self.laplacian(True)
-        self.gaussianBlur(False)
-        self.convolution(False)
+        self.gaussianBlur(True)
+        self.convolution(True)
+        self.medianBlur(True)
+        self.bilateralFilter(True)
         self.medianBlur(False)
         self.bilateralFilter(False)
-        self.medianBlur(False)
-        self.bilateralFilter(True)
-        self.cannyEdges(True)
+        self.cannyEdges(False)
         self.img = self.imFilt
         # encuentra los contornos de los bordes
-        im2, contours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        im2, cont
+        ours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         i = 0
         #recorre cada contorno el cual es un potencial objeto
         for contour in contours:
@@ -97,8 +105,8 @@ class Camera:
             w,h=rect[1]
             box = cv2.boxPoints(rect)
             box = np.int0(box)
-            max = 320
-            min = 100
+            max = 400
+            min = 50
             # obtiene el objeto del contorno que cumplen con rango de tamno
             if w>=min and h>=min and w<=max and h<=max:
                 #obtiene los pedasos de imagenes, se realiza un proceso de descripcion
@@ -159,10 +167,10 @@ class Camera:
         imgCrop = cv2.bitwise_and(imageColor, imageColor, mask=im_floodfill_inv)
         #todo calcular la posicion x,y del objeto
         #cv2.calcOpticalFlowPyrLK()
-        cv2.imshow("im_floodfill_inv"+str(i), im_floodfill_inv)
-        cv2.waitKey(1)
-        cv2.imshow("floodimg"+str(i), floodimg)
-        cv2.waitKey(1)
+        #cv2.imshow("im_floodfill_inv"+str(i), im_floodfill_inv)
+        #cv2.waitKey(1)
+        #cv2.imshow("floodimg"+str(i), floodimg)
+        #cv2.waitKey(1)
         cv2.imshow("rgb"+str(i), imgCrop)
         cv2.waitKey(1)
         return imgCrop
@@ -200,7 +208,7 @@ class Camera:
     def laplacian(self,show):
         self.img = self.imFilt
         dst = cv2.Laplacian(self.img, ddepth=cv2.CV_16S,
-                            scale=2, delta=200, ksize=5, borderType=cv2.BORDER_CONSTANT)
+                            scale=2, delta=200, ksize=3, borderType=cv2.BORDER_CONSTANT)
         self.imFilt = cv2.convertScaleAbs(dst)
         if show:
             cv2.imshow("Laplacian", self.imFilt)
@@ -230,7 +238,7 @@ class Camera:
 
     def cannyEdges(self,show):
         self.img = self.imFilt
-        self.imFilt = cv2.Canny(self.img, 0, 50)
+        self.imFilt = cv2.Canny(self.img, 0, 20)
         if show:
             cv2.imshow("edges1", self.imFilt)
             cv2.waitKey(1)

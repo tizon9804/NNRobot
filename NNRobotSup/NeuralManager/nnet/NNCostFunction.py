@@ -20,8 +20,9 @@ class costGrads:
         self.thetas+=[self.wout]
     def setState(self,win,wt,wout):
         self.win.set_value(win)
-        self.thetas=[self.win]
+        self.thetas=[self.win]        
         for i in range(len(self.wt)):
+            print i
             self.wt[i].set_value(wt[i])
             self.thetas+=[self.wt[i]]
         self.wout.set_value(wout)

@@ -33,10 +33,11 @@ class LogicBrain:
         self.isSearching = True
         self.isMoving = False
         self.isTransition = False
-        self.isVideoStreaming = True
+        self.isVideoStreaming = False
         self.targetList = []
         self.Lmemory = lt.LongTerm()
         self.Smemory = S.ShortTerm()
+        self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory)
         #robot indicators
         self.laserData = []
         self.posData = []
@@ -45,7 +46,7 @@ class LogicBrain:
         self.nexplore = 0
         # init in new thread the part of the brain that take decisions
         tLogic = threading.Thread(target=self.loopLogic)
-        #tLogic.start()
+        tLogic.start()
         # init in new thread the part of the brain that take the sensors
         tSense = threading.Thread(target=self.loopSense)
         tSense.start()
@@ -60,7 +61,7 @@ class LogicBrain:
         diffs = []
         while self.logicLife:
             # register iterations per second
-            #self.logLogicThread("Thinking...")
+            self.logLogicThread("Thinking...")
             self.sendDataVA()
             self.sendDataSight()
             last_time,diffs,ips = self.ips(last_time,diffs);
@@ -72,7 +73,6 @@ class LogicBrain:
         self.logSenseThread("thread started...")
         last_time = time.clock()
         diffs = []
-        self.sight = sight.SightSense(self.isVideoStreaming,self.Smemory)
         while self.senseLife:
             #register iterations per second
             last_time, diffs, ips = self.ips(last_time, diffs);

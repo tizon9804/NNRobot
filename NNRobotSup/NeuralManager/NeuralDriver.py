@@ -40,16 +40,16 @@ actions=persistence.loadActions()
 #initialize imagedriver
 #-------------------------------------------------------------------------
 print("initializing imagedriver..")
-from NNRobotSup.ImageProcessor import ImageDriver as imd
+from ImageProcessor import ImageDriver as imd
 init=imd.ImgDriver()
 cap=init.cap
 #-------------------------------------------------------------------------
 #initialize robotDriver
 #-------------------------------------------------------------------------
 print("initializing robotdriver..")
-#from NNRobotSup.RobotSystem import Robot
-#robot=Robot.RobotDriver()
-robot=0
+from RobotSystem import Robot
+robot=Robot.RobotDriver()
+
 #-------------------------------------------------------------------------
 #initialize neuralnetwork
 #-------------------------------------------------------------------------
@@ -59,7 +59,7 @@ type='SightConscience'
 init.convImage()
 print init.convImg.shape
 input_layer_size = init.convImg.shape[1]
-num_hidden_layer = 5
+num_hidden_layer = 3
 hidden_layer_size = 100
 num_output_Layers = 5
 NNSight=NN.CNNET(type,

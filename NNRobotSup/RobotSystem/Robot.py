@@ -31,13 +31,14 @@ import sys
 
 # This Python script connects to the robot and prints out the current
 # Sonar and Laser range readings.
+#LD_LIBRARY_PATH=/usr/local/Aria/lib
 class RobotDriver:
     def __init__(self):
 
         Aria.init()
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
-        self.argparser.addDefaultArgument("-rh 190.168.0.18 -lp 190.168.0.18 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241
+        self.argparser.addDefaultArgument("-rh 157.253.173.241 -lp 157.253.173.241 -cl -lpt tcp -lt urg")#-rh 157.253.173.241 -lp 157.253.173.241
         self.robot = ArRobot()
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
