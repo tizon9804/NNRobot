@@ -17,8 +17,9 @@ class Network:
 
     def sendDataSight(self, moments, cluster):
         self.logRoutes("Camera Data")
+        print cluster
         tPost = t.Thread(
-            target=self.asycnSendSight('http://190.158.131.76:3000/dataSigth', moments, cluster))
+            target=self.asycnSendSight('http://190.158.131.76:3000/dataSight', moments, cluster))
         tPost.start();
 
     def asycnSend(self,url,data,posData,logic,image,explore,cpu,memory):
@@ -35,8 +36,8 @@ class Network:
 
     def asycnSendSight(self, url, moments, cluster):
         r = req.post(url, data={
-            'moments': moments,
-            'cluster': cluster
+            'moments': [moments],
+            'cluster': [cluster]
         })
         self.logRoutes("Send Laser: " + r.text)
 

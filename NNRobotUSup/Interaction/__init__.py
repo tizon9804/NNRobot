@@ -8,7 +8,7 @@ import Speak as Speak
 speak = Speak.Speak()
 textSpeak = txtsp.TextToSpeak()
 watson = w.Watson()
-resp = watson.talk("busca un niño")
+resp = watson.talk("buenas tardes")
 print resp[0]
 out = textSpeak.generateSpeak(resp[0])
 speak.speak(out)
