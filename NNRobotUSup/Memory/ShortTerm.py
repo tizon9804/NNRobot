@@ -9,12 +9,6 @@ class ShortTerm:
         self.itemsZip = []
         self.Z = []
 
-    def Cluster(self):
-        item = I.Item()
-        for it in self.items:
-            item=it
-            self.Z.append([item.momCentral,item.momEspacial])
-            Z = np.float32(self.Z)
-        if Z.shape[0]%50==0:
-            self.kmeans.applyKM(Z,2)
+    def Cluster(self,numk):
+       return self.kmeans.applyKM(self.Z,numk)
 

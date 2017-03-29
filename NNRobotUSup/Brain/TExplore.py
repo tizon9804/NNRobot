@@ -1,0 +1,59 @@
+import threading
+import ExplorationLogicBrain as ELB
+import time
+class Explore:
+    def __init__(self,BrainP):
+        self.bparm = BrainP
+        tExplore = threading.Thread(target=self.loopExplore)
+        tExplore.start()
+
+    def loopExplore(self):
+        self.bparm.logExploreThread("thread started...")
+        self.exploreLogic = ELB.Explore(self.bparm.explore,self.bparm.debugExploreLogic,self.bparm.debugRobotSystem)
+        last_time = time.clock()
+        diffs = []
+        while self.bparm.exploreLife:
+            # register iterations per second
+            last_time, diffs, ips = self.bparm.ips(last_time, diffs);
+            self.bparm.nexplore = ips
+            self.bparm.RobotLife = self.exploreLogic.RobotStarted
+            if self.bparm.RobotLife:
+                self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
+                self.searchDirection()
+                self.move()
+
+    # ----------------------------------------------------------------------------------
+    # EXPLORE
+    # ---------------------------------------------------------------------------------
+
+    def searchDirection(self):
+        if self.bparm.isSearching:
+            # search a possible direction to move, it do not cares the range of distance
+            self.exploreLogic.searchDirection()
+            self.bparm.logExploreThread(str(self.bparm.PROBTOMOVE))
+            # think best way with the nnet return 0-1 where 1 is a secure way
+            bestWay = 1
+            self.bparm.moveEstimation = bestWay - (1 - self.exploreLogic.estimation)
+
+    def move(self):
+        if self.bparm.isMoving:
+            if self.bparm.isTransition:
+                self.inTransition()
+            self.bparm.logExploreThread("moving robot" + str(self.bparm.actualDistance - self.bparm.error))
+            self.exploreLogic.move(self.bparm.actualDistance - self.bparm.error)
+            threading._sleep(0.5)
+            self.bparm.logLogicThread("FINISHING MOVE")
+            self.bparm.actualAngle = 0
+            self.bparm.actualDistance = 0
+            self.bparm.isMoving = False
+            self.bparm.isSearching = True
+            # track route could be saved in middleterm(graph)
+
+    def inTransition(self):
+        self.bparm.logExploreThread("in transition")
+        self.bparm.PROBTOMOVE = 0.7
+        self.bparm.moveEstimation = 0
+        print "Best way for laser::", self.bparm.actualAngle, ":::", self.bparm.actualDistance, "PROBTOMOVE::", self.bparm.PROBTOMOVE
+        self.exploreLogic.transitionMove(self.bparm.actualAngle)
+        self.bparm.isTransition = False
+

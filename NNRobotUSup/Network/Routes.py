@@ -11,15 +11,15 @@ class Network:
             explore) + "#" + str(cpu) + "#" + str(memory)
         self.logRoutes(str(logmessage))
         tPost = t.Thread(
-            target=self.asycnSend('http://190.158.131.76:3000/data', data, posData, logic, image, explore,
+            target=self.asycnSend('http://localhost:3000/data', data, posData, logic, image, explore,
                                   cpu, memory))
         tPost.start();
 
-    def sendDataSight(self, moments, cluster):
+    def sendDataSight(self, cluster):
         self.logRoutes("Camera Data")
-        print cluster
+        #print cluster
         tPost = t.Thread(
-            target=self.asycnSendSight('http://190.158.131.76:3000/dataSight', moments, cluster))
+            target=self.asycnSendSight('http://localhost:3000/dataSight', [], cluster))
         tPost.start();
 
     def asycnSend(self,url,data,posData,logic,image,explore,cpu,memory):

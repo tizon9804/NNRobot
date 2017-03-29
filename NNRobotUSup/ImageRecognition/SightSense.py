@@ -1,10 +1,11 @@
 import Camera as c
+import ImageProcessing as IM
 class SightSense:
-    def __init__(self,isVideoStream,Smemory):
-       self.cam = c.Camera(isVideoStream,Smemory)
-       self.Smemory = Smemory
+    def __init__(self,isVideoStream,Smemory,Lmemory):
+       self.cam = c.Camera(isVideoStream)
+       self.IMprocess = IM.IMprocess(Smemory,Lmemory)
 
-    def getRoute(self):
+
+    def see(self):
         image = self.cam.getImage()
-        self.cam.contours(image)
-        #self.cam.show(image)
+        self.IMprocess.contours(image)
