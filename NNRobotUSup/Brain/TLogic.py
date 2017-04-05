@@ -1,5 +1,7 @@
 import threading,time
 import numpy as np
+from NNRobotUSup.Memory import LongTerm as lt
+import NNRobotUSup.Memory.ShortTerm as S
 
 class Logic:
     def __init__(self,BrainP,Explore,Sense):
@@ -15,16 +17,42 @@ class Logic:
         diffs = []
         while self.bparm.logicLife:
             # register iterations per second
-            self.bparm.logLogicThread("Thinking...")
-            self.bparm.sendDataVA()
-            self.bparm.sendDataSight()
+            #self.bparm.logLogicThread("Thinking...")
+            self.sendStatistics()
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nlogic = ips
             self.isSearchingLogic()
+            self.learnObjects()
 
     # ----------------------------------------------------------------------------------
     # LOGIC
     # ---------------------------------------------------------------------------------
+    def learnObjects(self):
+        sMemory = self.bparm.Smemory # type: S.ShortTerm
+        state = len(sMemory.Z) % 100
+        if state == 0 and len(sMemory.Z) > 0:
+            sMemory.clustering = True
+            costdif = 0
+            antCost = 0
+            isbreak = False
+            #metodo de elbow
+            for i in range(2,100):
+                cost = sMemory.Cluster(i)
+                if isbreak:
+                    break
+                costdifAct = antCost - cost
+                #Primera derivada difgradiente todo segunda derivada
+                difGrad = costdif/costdifAct
+                antCost = cost
+                costdif = costdifAct
+                if i == 1:
+                   costdifAct = cost
+                   costdif = costdifAct
+                if difGrad > 2:
+                    isbreak = True
+
+            sMemory.clustering = False
+
 
     def isSearchingLogic(self):
         if self.bparm.RobotLife:
@@ -52,4 +80,11 @@ class Logic:
         self.bparm.isTransition = True
         self.bparm.isMoving = True
 
+    #----------------------------------------------------------------------------------------------
+    # visual analitics
+    #-----------------------------------------------------------------------------------------------
+
+    def sendStatistics(self):
+        self.bparm.sendDataVA()
+        self.bparm.sendDataSight()
 

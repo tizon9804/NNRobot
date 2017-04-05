@@ -1,6 +1,8 @@
 import numpy as np
 import NNRobotUSup.Entities.Item as I
 import cv2
+
+
 class IMprocess:
     def __init__(self, Smemory, Lmemory):
         self.Lmemory = Lmemory
@@ -12,45 +14,46 @@ class IMprocess:
         imgRGB = img.copy()
         self.img = img
         self.imFilt = img
-        #self.gaussianBlur(False)
+        # self.gaussianBlur(False)
         self.gray(False)
         self.laplacian(True)
         self.gaussianBlur(False)
-        #self.convolution(False)
+        # self.convolution(False)
         self.medianBlur(False)
         self.bilateralFilter(False)
-        #self.medianBlur(False)
-        #self.bilateralFilter(False)
+        # self.medianBlur(False)
+        # self.bilateralFilter(False)
         self.cannyEdges(False)
         self.img = self.imFilt
         # encuentra los contornos de los bordes
         im2, contours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         i = 0
-        # recorre cada contorno el cual es un potencial objeto
-        for contour in contours:
-            cnt = contour
-            # delimita el contorno por medio de ptron hull ver opencv
-            hull = cv2.convexHull(cnt)
-            # delimita el contorno con un rectangulo
-            rect = cv2.minAreaRect(cnt)
-            w, h = rect[1]
-            box = cv2.boxPoints(rect)
-            box = np.int0(box)
-            max = 10000
-            min = 5000
-            area=w*h
-            # obtiene el objeto del contorno que cumplen con rango de tamno
-            if area < max and area > min:
-                # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
-                flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
-                #cv2.imshow("rgb" + str(0), flood)
-                #cv2.waitKey(1)
-                # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
-                cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
-                cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
-            i += 1
-        # filtro que elimina el color de to_do lo que no es un controno
-        self.floodImage(self.img, img, 0)
+        if not self.Smemory.clustering:
+            # recorre cada contorno el cual es un potencial objeto
+            for contour in contours:
+                cnt = contour
+                # delimita el contorno por medio de ptron hull ver opencv
+                hull = cv2.convexHull(cnt)
+                # delimita el contorno con un rectangulo
+                rect = cv2.minAreaRect(cnt)
+                w, h = rect[1]
+                box = cv2.boxPoints(rect)
+                box = np.int0(box)
+                max = 10000
+                min = 5000
+                area = w * h
+                # obtiene el objeto del contorno que cumplen con rango de tamno
+                if area < max and area > min:
+                    # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
+                    flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
+                    # cv2.imshow("rgb" + str(0), flood)
+                    # cv2.waitKey(1)
+                    # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
+                    cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
+                    cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
+                i += 1
+            # filtro que elimina el color de to_do lo que no es un controno
+            self.floodImage(self.img, img, 0)
         cv2.imshow("Contours", img)
         cv2.waitKey(1)
 
@@ -116,14 +119,14 @@ class IMprocess:
         self.Smemory.Z.append(
             [item.compacity, item.momCentral, item.momCentral2, item.momEspacial, item.meanRed, item.meanGreen,
              item.meanBlue])
-        self.Smemory.itemsZip.append(
-            {"C": item.compacity,
-             "ME": item.momEspacial,
-             "MC": item.momCentral,
-             "MC2": item.momCentral2,
-             "MR": item.meanRed,
-             "MG": item.meanGreen,
-             "MB": item.meanBlue})
+        # self.Smemory.itemsZip.append(
+        #   {"C": item.compacity,
+        #   "ME": item.momEspacial,
+        #  "MC": item.momCentral,
+        # "MC2": item.momCentral2,
+        # "MR": item.meanRed,
+        # "MG": item.meanGreen,
+        # "MB": item.meanBlue})
 
     def gaussianBlur(self, show):
         self.img = self.imFilt

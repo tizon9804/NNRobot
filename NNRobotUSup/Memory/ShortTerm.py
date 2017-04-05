@@ -5,10 +5,15 @@ import numpy as np
 class ShortTerm:
     def __init__(self):
         self.kmeans = C.KmeansFunctions()
+        self.clustering = False
         self.items = []
-        self.itemsZip = []
+        self.itemsZip = np.array([])
+        self.centersZip = np.array([])
         self.Z = []
 
     def Cluster(self,numk):
-       return self.kmeans.applyKM(self.Z,numk)
+       cost =  self.kmeans.applyKM(self.Z,numk)
+       self.itemsZip = self.kmeans.z
+       self.centersZip = self.kmeans.center
+       return cost
 

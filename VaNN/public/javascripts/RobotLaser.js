@@ -62,8 +62,10 @@ getLaser();
 function getLaser() {    
     d3.interval(function () {
         d3.json("/laserstream", function (error, laserData) {    
-            if (laserData.buffer.length > 0) {
-                update(laserData);
+            if (laserData.buffer != undefined) {
+                if (laserData.buffer.length > 0) {
+                    update(laserData);
+                }
             }
         });
     }, 200);

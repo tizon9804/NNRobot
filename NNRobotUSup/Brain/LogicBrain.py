@@ -63,13 +63,17 @@ class BrainParams:
                           psu.virtual_memory().percent)
 
     def sendDataSight(self):
-        cluster = self.Smemory.kmeans.z
-        center = self.Smemory.kmeans.center
+        cluster = self.Smemory.itemsZip
+        center = self.Smemory.centersZip
+        print cluster.shape
+        print center.shape
         clus = []
+        i=0
         for cl in cluster:
-            clus.append({"x": cl[0], "y": cl[1], "range": cl[2]})
+            clus.append({"x": cl[0], "y": cl[1], "range": cl[2],"index": i })
+            i = i + 1
         for cl in center:
-            clus.append({"x": cl[0], "y": cl[1], "range": 0})
+            clus.append({"x": cl[0], "y": cl[1], "range": -1})
         # envia informacion para visualizar
         self.net.sendDataSight(clus)
     # ----------------------------------------------------------------------------------

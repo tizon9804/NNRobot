@@ -1,12 +1,11 @@
-﻿createMap('/positionStream', "#map");
-createMap('/moments', "#moments");
-createMap('/kmeans', "#kmeans");
+﻿createMap('/positionStream', "#map",true,500,500);
+createMap('/kmeans', "#kmeans",false,1000,1000);
 
 
-function createMap(urlData,eleDiv) {
+function createMap(urlData,eleDiv,ismap,w,h) {
     var margin = { top: 20, right: 20, bottom: 30, left: 40 },
-        width = 500 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = w - margin.left - margin.right,
+        height = h - margin.top - margin.bottom;
 
     /* 
      * value accessor - returns the value to encode for a given data object.
@@ -79,39 +78,33 @@ function createMap(urlData,eleDiv) {
     function getPositions() {
         d3.interval(function () {
             d3.json(urlData, function (error, posData) {
-                if (posData.buffer.length > 0) {
-                    updateMap(posData);
+                if (posData.buffer != undefined) {
+                    if (posData.buffer.length > 0) {
+                        updateMap(posData);
+                    }
                 }
                 //getPositions();
             });
-        }, 500);
+        }, 1000);
     }
+
     var jdata = []
     var isadd = 0
+    var divisorMap = 1
+    if (ismap) { divisorMap = 4000; }
+
     function updateMap(data) {
 
-        // change string (from CSV) into number format   
-        data.buffer.forEach(function (d) {
-            var json = JSON.stringify(eval("(" + d + ")"));
-            var object = JSON.parse(json)
-            if (jdata.length > 5000) {
-                jdata.splice(0, 1500);;
-            }
-            if (object.range < 3900 && isadd == 0) {
-                jdata.push(object)
-            }
-            if (isadd > 40) {
-                isadd = 0
-            }
-            else {
-                isadd++
-            }
-
-        });
+        if (ismap) {
+           changeDataMap(data);
+        }
+        else {
+           changeData(data);
+        }
 
         // don't want dots overlapping axis, so add in buffer to data domain
-        xScale.domain([d3.min(jdata, xValue) - 1, d3.max(jdata, xValue) + 1]);
-        yScale.domain([d3.min(jdata, yValue) - 1, d3.max(jdata, yValue) + 1]);
+        xScale.domain([d3.min(jdata, xValue) , d3.max(jdata, xValue) ]);
+        yScale.domain([d3.min(jdata, yValue) , d3.max(jdata, yValue) ]);
 
         map.select('.x.axis').transition().duration(200).call(xAxis);
         map.select(".y.axis").transition().duration(200).call(yAxis)
@@ -139,24 +132,75 @@ function createMap(urlData,eleDiv) {
             .transition()
             .duration(100)
             .style("opacity", "0.1")
-            .remove()
-
+            .remove()       
         dots.enter().append("circle")
             .attr("class", "dot")
-            .attr("r", 2.5)
+            .attr("r", function (d) {
+                if (d.range == -1) {
+                    return 5
+                }
+                return 2.5
+
+            })
             .attr("cx", xMap)
             .attr("cy", yMap)
-            .style("fill", function (d) { return d3.rgb(color((((d.range / 4000) % 20) * 38) + 10)).darker(Math.floor((d.range / 4000) / 20) * (1 / 4)).toString(); })
+            .style("fill", function (d) {
+                if (d.range == -1) {
+                    return d3.rgb(0,0,0).toString()
+                }
+                return d3.rgb(color((((d.range / divisorMap) % 20) * 38) + 10)).darker(Math.floor((d.range / divisorMap) / 20) * (1 / 4)).toString();
+            })
             .transition()
             .duration(500)
-            .style("opacity", function (d, i) { return (i / 2000) })
+            .style("opacity", function (d, i) { return (i / jdata.length) })
 
         dots.transition().duration(100)
             .attr("cx", xMap)
             .attr("cy", yMap)
-            .style("opacity", function (d, i) { return (i / 2000) })
-            .style("fill", function (d) { return d3.rgb(color((((d.range) % 20) * 38) + 10)).darker(Math.floor((d.range) / 20) * (1 / 4)).toString(); })
+            .attr("r", function (d) {
+                if (d.range == -1) {
+                    return 5
+                }
+                return 2.5
+            })
+            .style("opacity", function (d, i) { return (i / jdata.length) })
+            .style("fill", function (d) {
+                if (d.range == -1) {
+                    return d3.rgb(0, 0, 0).toString()
+                }
+                return d3.rgb(color((((d.range) % 20) * 38) + 10)).darker(Math.floor((d.range) / 20) * (1 / 4)).toString();
+            })
 
 
+    }
+
+    function changeDataMap(data) {
+        // change string (from CSV) into number format   
+        data.buffer.forEach(function (d) {
+            var json = JSON.stringify(eval("(" + d + ")"));
+            var object = JSON.parse(json)
+            if (jdata.length > 5000) {
+                jdata.splice(0, 1500);
+            }
+            if (object.range < 3900 && isadd == 0) {
+                jdata.push(object);
+            }
+            if (isadd > 40) {
+                isadd = 0
+            }
+            else {
+                isadd++
+            }
+        });      
+    }
+
+    function changeData(data) {
+        // change string (from CSV) into number format   
+        jdata = []
+        data.buffer.forEach(function (d) {
+            var json = JSON.stringify(eval("(" + d + ")"));
+            var object = JSON.parse(json)          
+            jdata.push(object);    
+        });       
     }
 }

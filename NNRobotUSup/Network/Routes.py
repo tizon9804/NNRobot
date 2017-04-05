@@ -17,7 +17,7 @@ class Network:
 
     def sendDataSight(self, cluster):
         self.logRoutes("Camera Data")
-        #print cluster
+        print len(cluster)
         tPost = t.Thread(
             target=self.asycnSendSight('http://localhost:3000/dataSight', [], cluster))
         tPost.start();
