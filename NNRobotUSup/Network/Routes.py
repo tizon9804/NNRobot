@@ -4,7 +4,7 @@ import threading as t
 class Network:
     def __init__(self, debug):
         self.debug = debug
-        print "request created"
+        #print "request created"
 
     def sendData(self, data, posData, logic, image, explore, cpu, memory):
         logmessage = str(logic) + "#" + str(len(posData)) + "#" + str(image) + "#" + str(
@@ -17,7 +17,7 @@ class Network:
 
     def sendDataSight(self, cluster):
         self.logRoutes("Camera Data")
-        print len(cluster)
+        #print len(cluster)
         tPost = t.Thread(
             target=self.asycnSendSight('http://localhost:3000/dataSight', [], cluster))
         tPost.start();

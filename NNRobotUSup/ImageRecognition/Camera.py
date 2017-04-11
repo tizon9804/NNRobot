@@ -1,6 +1,6 @@
 # import the necessary packages
-#from picamera.array import PiRGBArray
-#from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 
 
 import NNRobotUSup.Network.ServerVideoStream as server
@@ -27,9 +27,9 @@ class Camera:
             #camera.framerate = Fraction(1, 6)
             #camera.shutter_speed = 6#000000
             #camera.exposure_mode = 'off'
-            camera.iso = 800
+            #camera.iso = 800
             #camera.image_effect = 'emboss'
-            camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
+            #camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
             self.rawCapture = PiRGBArray(camera)
             # allow the camera to warmup
             #camera.start_preview()
@@ -46,7 +46,7 @@ class Camera:
     def raspCapture(self):
         # capture frames from the camera
         #stream = io.BytesIO()
-        self.camera.capture(self.rawCapture, "bgr")
+        self.camera.capture(self.rawCapture, "bgr", use_video_port=True)
         # print 'Captured image: ', self.rawCapture.array.shape
         #stream.seek(0)
         #data = np.fromstring(stream.read(),dtype=np.uint8)

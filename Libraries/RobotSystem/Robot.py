@@ -34,13 +34,12 @@ import sys
 # Sonar and Laser range readings.
 class RobotDriver:
     def __init__(self, debug):
-
         Aria.init()
         self.debug = debug
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
-        self.argparser.addDefaultArgument(
-            "-rh 192.168.0.10 -lp 192.168.0.10 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
+        self.logRobot('Connecting to robot...')
+        self.argparser.addDefaultArgument("-rh 157.253.173.241 -lp 157.253.173.241 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
         self.startAngle = -30
         self.endAngle = 30
@@ -54,8 +53,8 @@ class RobotDriver:
             Aria.logOptions()
             self.logRobot('Could not connect to robot')
             Aria.exit(1)
-        self.robot.attachKeyHandler(self.kh)
-        self.teleop = ArModeUnguardedTeleop(self.robot, "teleop", "t", "T")
+            #self.robot.attachKeyHandler(self.kh)
+        #self.teleop = ArModeUnguardedTeleop(self.robot, "teleop", "t", "T")
 
         self.logRobot('Connected to robot')
         self.robot.runAsync(1)
@@ -75,9 +74,9 @@ class RobotDriver:
 
     def getLaserBuffer(self):
         if self.laser:
-            self.robot.tryLock()
+            self.laser.lockDevice()  #self.robot.tryLock()
             readings = self.laser.getRawReadingsAsVector()
-            self.robot.unlock()
+            self.laser.unlockDevice()  #self.robot.unlock()
             lenreading = len(readings)
             buffer = np.zeros(lenreading)
             bufferpos = []
@@ -91,30 +90,30 @@ class RobotDriver:
             return np.zeros(1, 228)
 
     def getMaxReadings(self):
-        self.robot.tryLock()
+        self.laser.lockDevice()  #self.robot.tryLock()
         readings = self.laser.getRawReadingsAsVector()
-        self.robot.unlock()
+        self.laser.unlockDevice()  #self.robot.unlock()
         return len(readings)
 
     def getMaxDistance(self):
         if self.laser:
-            self.laser.lockDevice()
+            self.laser.lockDevice()#
             distance = self.laser.getMaxRange()
-            self.laser.unlockDevice()
+            self.laser.unlockDevice()#
             return distance
 
     def getClosestFrontDistance(self):
         if self.laser:
-            self.robot.tryLock()
+            self.laser.lockDevice()  #self.robot.tryLock()
             distance = self.laser.currentReadingPolar(self.startAngle, self.endAngle)
-            self.robot.unlock()
+            self.laser.unlockDevice()  #self.robot.unlock()
             return distance
 
     def getClosestDistance(self,start,end):
         if self.laser:
-            self.robot.tryLock()
+            self.laser.lockDevice()  #self.robot.tryLock()
             distance = self.laser.currentReadingPolar(end,start)
-            self.robot.unlock()
+            self.laser.unlockDevice()  #self.robot.unlock()
             relangle = self.robot.getPose().getTh()
             angle = (np.absolute(start)-np.absolute(end))/2
             angle = start-angle

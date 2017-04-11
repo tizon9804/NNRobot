@@ -15,9 +15,12 @@ while(True):
         try:
             with picamera.PiCamera() as camera:
                 camera.resolution = (640, 480)
-                # Start a preview and let the camera warm up for 2 seconds
-                camera.framerate = 60
-                #camera.iso = 1600
+                camera.framerate = 30
+                # dark
+                # camera.framerate = Fraction(1, 6)
+                # camera.shutter_speed = 6#000000
+                # camera.exposure_mode = 'off'
+                camera.iso = 800
                 # camera.image_effect = 'emboss'
                 camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
                 camera.start_preview()

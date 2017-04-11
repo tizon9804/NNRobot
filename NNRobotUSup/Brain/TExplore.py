@@ -4,8 +4,9 @@ import time
 class Explore:
     def __init__(self,BrainP):
         self.bparm = BrainP
-        tExplore = threading.Thread(target=self.loopExplore)
-        tExplore.start()
+        time.sleep(5)
+        #tExplore = threading.Thread(target=self.loopExplore)
+        #tExplore.start()
 
     def loopExplore(self):
         self.bparm.logExploreThread("thread started...")

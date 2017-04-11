@@ -32,7 +32,7 @@ class BrainParams:
         self.isSearching = True
         self.isMoving = False
         self.isTransition = False
-        self.isVideoStreaming = True
+        self.isVideoStreaming = False
         self.targetList = []
         self.Lmemory = lt.LongTerm()
         self.Smemory = S.ShortTerm()
@@ -60,13 +60,13 @@ class BrainParams:
 
     def sendDataVA(self):
         self.net.sendData(self.laserData, self.posData, self.nlogic, self.nimage, self.nexplore, psu.cpu_percent(),
-                          psu.virtual_memory().percent)
+                         psu.virtual_memory().percent)
 
     def sendDataSight(self):
         cluster = self.Smemory.itemsZip
         center = self.Smemory.centersZip
-        print cluster.shape
-        print center.shape
+        #print cluster.shape
+        #print center.shape
         clus = []
         i=0
         for cl in cluster:

@@ -17,7 +17,7 @@ class Logic:
         diffs = []
         while self.bparm.logicLife:
             # register iterations per second
-            #self.bparm.logLogicThread("Thinking...")
+            self.bparm.logLogicThread("Thinking...")
             self.sendStatistics()
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nlogic = ips

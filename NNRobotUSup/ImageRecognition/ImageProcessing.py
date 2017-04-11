@@ -16,7 +16,7 @@ class IMprocess:
         self.imFilt = img
         # self.gaussianBlur(False)
         self.gray(False)
-        self.laplacian(True)
+        self.laplacian(False)
         self.gaussianBlur(False)
         # self.convolution(False)
         self.medianBlur(False)
@@ -46,8 +46,8 @@ class IMprocess:
                 if area < max and area > min:
                     # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
                     flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
-                    # cv2.imshow("rgb" + str(0), flood)
-                    # cv2.waitKey(1)
+                    cv2.imshow("rgb" + str(0), flood)
+                    cv2.waitKey(1)
                     # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
                     cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
                     cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
