@@ -1761,7 +1761,7 @@
     <Content Include="public\dist\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="public\stylesheets\style.styl" />
     <Content Include="README.md" />
-    <Content Include="stream\image_stream.jpg" />
+    <Content Include="public\stream\image_stream.jpg" />
     <Content Include="typings.json" />
     <Content Include="views\barchar.hbs" />
     <Content Include="views\index.hbs" />
@@ -1773,7 +1773,7 @@
   <ItemGroup>
     <Folder Include="bin\" />
     <Folder Include="modules\" />
-    <Folder Include="stream\" />
+    <Folder Include="public\stream\" />
     <Folder Include="node_modules\" />
     <Folder Include="node_modules\.bin\" />
     <Folder Include="node_modules\body-parser\" />

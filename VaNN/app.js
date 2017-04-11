@@ -90,13 +90,13 @@ function stopStreaming() {
     if (Object.keys(sockets).length == 0) {
         app.set('watchingFile', false);
         if (proc) proc.kill();
-        fs.unwatchFile('./stream/image_stream.jpg');
+        fs.unwatchFile('./public/stream/image_stream.jpg');
     }
 }
 
 function startStreaming(io) {
     if (app.get('watchingFile')) {
-        io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+        io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
         return;
     }
 
@@ -104,11 +104,11 @@ function startStreaming(io) {
     proc = spawn('raspistill', args);
 
     console.log('Watching for changes...');
-
+    io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
     app.set('watchingFile', true);
 
-    fs.watchFile('./stream/image_stream.jpg', function (current, previous) {
-        io.sockets.emit('liveStream', 'image_stream.jpg?_t=' + (Math.random() * 100000));
+    fs.watchFile('./public/stream/image_stream.jpg', function (current, previous) {
+        io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
     })
 }
 

@@ -6,5 +6,5 @@ socket.on('liveStream', function (url) {
 
 function startStream() {
     socket.emit('start-stream');
-    $('.start').hide();
+    //$('.start').hide();
 }
