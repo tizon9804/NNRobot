@@ -2,8 +2,8 @@
 var debug = require('debug')('ESATD3');
 var app = require('../app');
 //process.env.PORT ||
-app.set('port',  3000);
 
-var server = app.listen(app.get('port'), function() {
+
+var server = app.listen(app.port(), function() {
     debug('Express server listening on port ' + server.address().port);
 });

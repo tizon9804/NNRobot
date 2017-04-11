@@ -35,6 +35,10 @@ router.get('/moments', function (req, res) {
     consultas.getMoments(req, res);
 });
 
+router.get('/streamCam', function () {
+    
+});
+
 router.get('/paralelinfo', function (req, res) {
     consultas.getParalelInfo(req, res);
 });
