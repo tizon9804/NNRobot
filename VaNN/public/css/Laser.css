@@ -49,12 +49,40 @@ body {
 }
 
 .map{
-    width:50%;
+    width:40%;
     float:left;
-    padding:10%;
+    margin:5%;
 }
 
 .Laser{
     width:50%;
     float:left;
+}
+
+.cam img{
+ width:40%;
+ height:40%;        
+}
+
+.cluster #image{ 
+ float:left;
+ width:20%;
+ height:30px;
+ margin-left:30%;
+ margin-top:10%;
+}
+.cluster img{
+    padding:20%;
+}
+.cluster h3{
+    width:100%;
+}
+h2{
+ float:left;
+ width:100%;
+ text-align:center;
+}
+
+.cam{
+    margin-left:15%;
 }

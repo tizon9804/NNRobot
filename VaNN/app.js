@@ -81,8 +81,27 @@ io.on('connection', function (socket) {
     });
 
     socket.on('start-stream', function () {
-        startStreaming(io);
+        w = app.get('watchingFile')
+        r = startStreaming(io, 'stream/image_stream.jpg', 'liveStream',w);
+        app.set('watchingFile', r);
     });
+    socket.on('start-stream-gray', function () {
+        w = app.get('watchingFile-gray')        
+        r = startStreaming(io, 'stream/image_stream_gray.jpg', 'liveStream-gray', w);
+        app.set('watchingFile-gray', r);
+    });
+    socket.on('start-stream-laplacian', function () {
+        w = app.get('watchingFile-laplacian')
+        r = startStreaming(io, 'stream/image_stream_laplacian.jpg', 'liveStream-laplacian', w);
+        app.set('watchingFile-laplacian', r);
+    });
+    socket.on('start-stream-canny', function () {
+        w = app.get('watchingFile-canny')
+        r = startStreaming(io, 'stream/image_stream_canny.jpg', 'liveStream-canny', w);
+        app.set('watchingFile-canny', r);
+    });
+
+    
 
 });
 
@@ -94,22 +113,17 @@ function stopStreaming() {
     }
 }
 
-function startStreaming(io) {
-    if (app.get('watchingFile')) {
-        io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
-        return;
+function startStreaming(io,img,channel,isWatching) {
+    if (isWatching) {
+        io.sockets.emit(channel, img + '?_t=' + (Math.random() * 100000));
+        return true;
     }
-
-    var args = ["-w", "640", "-h", "480", "-o", "./stream/image_stream.jpg", "-t", "999999999", "-tl", "100"];
-    proc = spawn('raspistill', args);
-
-    console.log('Watching for changes...');
-    io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
-    app.set('watchingFile', true);
-
-    fs.watchFile('./public/stream/image_stream.jpg', function (current, previous) {
-        io.sockets.emit('liveStream', 'stream/image_stream.jpg?_t=' + (Math.random() * 100000));
+    console.log('starting streaming...'+channel);
+    io.sockets.emit(channel, img + '?_t=' + (Math.random() * 100000));
+    fs.watch('./public/stream/image_stream.jpg', function (current, previous) {
+        io.sockets.emit(channel, img + '?_t=' + (Math.random() * 100000));
     })
+    return true;
 }
 
 function port() {

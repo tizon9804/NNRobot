@@ -1,14 +1,13 @@
 from NNRobotUSup.Memory import LongTerm as lt
 import NNRobotUSup.Memory.ShortTerm as S
-
 import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
-import numpy as np
 import time
 import psutil as psu
 import TExplore as TE
 import TLogic as TL
 import TSense as TS
+import random
 
 class BrainParams:
     def __init__(self):
@@ -32,7 +31,7 @@ class BrainParams:
         self.isSearching = True
         self.isMoving = False
         self.isTransition = False
-        self.isVideoStreaming = False
+        self.isVideoStreaming = True
         self.targetList = []
         self.Lmemory = lt.LongTerm()
         self.Smemory = S.ShortTerm()
@@ -72,8 +71,13 @@ class BrainParams:
         for cl in cluster:
             clus.append({"x": cl[0], "y": cl[1], "range": cl[2],"index": i })
             i = i + 1
+        if len(clus) > 600:
+            random.shuffle(clus)
+            clus = clus[:600]
+        i = 0
         for cl in center:
-            clus.append({"x": cl[0], "y": cl[1], "range": -1})
+            clus.append({"x": cl[0], "y": cl[1], "range": i, "index": -1})
+            i = i + 1
         # envia informacion para visualizar
         self.net.sendDataSight(clus)
     # ----------------------------------------------------------------------------------

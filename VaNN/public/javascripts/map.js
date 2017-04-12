@@ -1,5 +1,5 @@
-﻿createMap('/positionStream', "#map",true,500,500);
-createMap('/kmeans', "#kmeans",false,1000,1000);
+﻿createMap('/positionStream', "#map",true,400,400);
+createMap('/kmeans', "#kmeans",false,500,500);
 
 
 function createMap(urlData,eleDiv,ismap,w,h) {
@@ -100,75 +100,85 @@ function createMap(urlData,eleDiv,ismap,w,h) {
         }
         else {
            changeData(data);
-        }
-
+        }       
         // don't want dots overlapping axis, so add in buffer to data domain
         xScale.domain([d3.min(jdata, xValue) , d3.max(jdata, xValue) ]);
         yScale.domain([d3.min(jdata, yValue) , d3.max(jdata, yValue) ]);
 
-        map.select('.x.axis').transition().duration(200).call(xAxis);
-        map.select(".y.axis").transition().duration(200).call(yAxis)
+        map.select('.x.axis').transition().duration(500).call(xAxis);
+        map.select(".y.axis").transition().duration(500).call(yAxis)
 
 
         // draw dots
         var dots = map.selectAll(".dot")
             .data(jdata)
             .on("mouseover", function (d) {
-                tooltip.transition()
-                    .duration(200)
-                    .style("opacity", .9);
-                tooltip.html("Positions  <br/> (" + xValue(d)
-                    + ", " + yValue(d) + ")")
-                    .style("left", (d3v3.event.pageX + 5) + "px")
-                    .style("top", (d3v3.event.pageY - 28) + "px");
+                showImage(d,this);               
             })
-            .on("mouseout", function (d) {
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0);
+            .on("mouseout", function (d,o) {
+               
             });
 
         dots.exit()
             .transition()
-            .duration(100)
+            .duration(500)
             .style("opacity", "0.1")
             .remove()       
         dots.enter().append("circle")
             .attr("class", "dot")
             .attr("r", function (d) {
-                if (d.range == -1) {
-                    return 5
+                if (!ismap) {
+                    if (d.index == -1) { return 8; }
+                    return 5;
                 }
-                return 2.5
+                return 2.5;
 
             })
             .attr("cx", xMap)
             .attr("cy", yMap)
-            .style("fill", function (d) {
-                if (d.range == -1) {
-                    return d3.rgb(0,0,0).toString()
-                }
-                return d3.rgb(color((((d.range / divisorMap) % 20) * 38) + 10)).darker(Math.floor((d.range / divisorMap) / 20) * (1 / 4)).toString();
+            .style("fill", function (d) {              
+                return colores_google(d.range);
+               // return d3.rgb(color((((d.range / divisorMap) % 20) * 38) + 10)).darker(Math.floor((d.range / divisorMap) / 20) * (1 / 4)).toString();
             })
             .transition()
             .duration(500)
-            .style("opacity", function (d, i) { return (i / jdata.length) })
+            .style("opacity", function (d, i) {
+                if (ismap) {
+                    return (i / jdata.length);
+                }
+                if (d.index == -1) { return 0.6; }
+                return 0.5;
+            })
+            .style("stroke-width", "1.8")
+            .style("stroke", function (d) {
+                if (d.index == -1) { return "black"; }
+            })
 
-        dots.transition().duration(100)
+        dots.transition().duration(700)
             .attr("cx", xMap)
             .attr("cy", yMap)
             .attr("r", function (d) {
-                if (d.range == -1) {
-                    return 5
+                if (!ismap)
+                {
+                    if (d.index == -1) {return 8;}
+                    return 5;
                 }
-                return 2.5
+                return 2.5;
             })
-            .style("opacity", function (d, i) { return (i / jdata.length) })
-            .style("fill", function (d) {
-                if (d.range == -1) {
-                    return d3.rgb(0, 0, 0).toString()
+            .style("opacity", function (d, i) {
+                if (ismap) {
+                    return (i / jdata.length)
                 }
-                return d3.rgb(color((((d.range) % 20) * 38) + 10)).darker(Math.floor((d.range) / 20) * (1 / 4)).toString();
+                if (d.index == -1) { return 0.6; }
+                return 0.5;
+            })
+            .style("fill", function (d) {               
+                return colores_google(d.range);
+                //return d3.rgb(color((((d.range) % 20) * 38) + 10)).darker(Math.floor((d.range) / 20) * (1 / 4)).toString();
+            })
+            .style("stroke-width","1.8")
+            .style("stroke", function (d) {
+                if (d.index == -1) { return "black"; }
             })
 
 
@@ -197,10 +207,34 @@ function createMap(urlData,eleDiv,ismap,w,h) {
     function changeData(data) {
         // change string (from CSV) into number format   
         jdata = []
+        clusters=0
         data.buffer.forEach(function (d) {
             var json = JSON.stringify(eval("(" + d + ")"));
             var object = JSON.parse(json)          
-            jdata.push(object);    
-        });       
+            jdata.push(object); 
+            if (object.index == -1) {
+                clusters++;
+            }
+        });   
+        d3.select(".statistics #clusters").attr("value", clusters) 
+        d3.select(".statistics #elements").attr("value", jdata.length)      
     }
+
+    function showImage(d,o) {
+        if (!ismap && d.index != -1) {
+            url = 'stream/image_stream_object_' + d.index + '.jpg?_t=' + (Math.random() * 100000)
+            $('#stream_object').attr('src', url);
+            d3.select(o).transition()
+                .duration(500)
+                .attr("r", 10)
+                .style("fill", d3.rgb(50, 50,50).toString())
+                .style("opacity",1)
+        }
+    }
+
+    function colores_google(n) {
+        var colores_g = ["#3366cc", "#dc3912", "#ff9900", "#109618", "#990099", "#0099c6", "#dd4477", "#66aa00", "#b82e2e", "#316395", "#994499", "#22aa99", "#aaaa11", "#6633cc", "#e67300", "#8b0707", "#651067", "#329262", "#5574a6", "#3b3eac"];
+        return colores_g[n % colores_g.length];
+    }
+
 }

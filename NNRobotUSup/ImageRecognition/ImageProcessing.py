@@ -9,21 +9,22 @@ class IMprocess:
         self.Smemory = Smemory
         self.image = []
         self.moments = []
+        self.path = r'../../VaNN/public/stream'
 
     def contours(self, img):
         imgRGB = img.copy()
         self.img = img
         self.imFilt = img
         # self.gaussianBlur(False)
-        self.gray(False)
-        self.laplacian(False)
+        self.gray(True)
+        self.laplacian(True)
         self.gaussianBlur(False)
         # self.convolution(False)
         self.medianBlur(False)
         self.bilateralFilter(False)
         # self.medianBlur(False)
         # self.bilateralFilter(False)
-        self.cannyEdges(False)
+        self.cannyEdges(True)
         self.img = self.imFilt
         # encuentra los contornos de los bordes
         im2, contours, hierarchy = cv2.findContours(self.imFilt.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
@@ -43,10 +44,11 @@ class IMprocess:
                 min = 5000
                 area = w * h
                 # obtiene el objeto del contorno que cumplen con rango de tamno
-                if area < max and area > min:
+                if area < max and area > min and h > 50 and w > 50:
                     # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
                     flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
-                    cv2.imshow("rgb" + str(0), flood)
+                    #cv2.imshow("rgb" + str(0), flood)
+                    cv2.imwrite(self.path+'/image_stream_object.jpg', flood)
                     cv2.waitKey(1)
                     # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
                     cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
@@ -54,7 +56,8 @@ class IMprocess:
                 i += 1
             # filtro que elimina el color de to_do lo que no es un controno
             self.floodImage(self.img, img, 0)
-        cv2.imshow("Contours", img)
+        #cv2.imshow("Contours", img)
+        cv2.imwrite(self.path+'/image_stream.jpg', img)
         cv2.waitKey(1)
 
     def obtainPieceOfImage(self, cnt, rect, imageRGB, imgCont, i):
@@ -88,7 +91,7 @@ class IMprocess:
         item.meanRed = meanRGB[2]
         item.meanGreen = meanRGB[1]
         item.meanBlue = meanRGB[0]
-        self.addItems(item)
+        self.addItems(item,floodImg)
         self.addMoments(item.momCentral, item.momEspacial, item.compacity)
         return floodImg
 
@@ -114,19 +117,15 @@ class IMprocess:
     def addMoments(self, x, y, object):
         self.moments.append({"x": x, "y": y, "range": object})
 
-    def addItems(self, item):
+    def addItems(self, item,img):
         self.Smemory.items.append(item)
         self.Smemory.Z.append(
-            [item.compacity, item.momCentral, item.momCentral2, item.momEspacial, item.meanRed, item.meanGreen,
+            [item.meanRed,
+             item.meanGreen,
              item.meanBlue])
-        # self.Smemory.itemsZip.append(
-        #   {"C": item.compacity,
-        #   "ME": item.momEspacial,
-        #  "MC": item.momCentral,
-        # "MC2": item.momCentral2,
-        # "MR": item.meanRed,
-        # "MG": item.meanGreen,
-        # "MB": item.meanBlue})
+        tam = len(self.Smemory.Z)
+        cv2.imwrite(self.path + '/image_stream_object_'+str(tam)+'.jpg', img)
+
 
     def gaussianBlur(self, show):
         self.img = self.imFilt
@@ -139,7 +138,7 @@ class IMprocess:
         self.img = self.imFilt
         self.imFilt = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
         if show:
-            cv2.imshow("COLOR_BGR2GRAY", self.imFilt)
+            cv2.imwrite(self.path + '/image_stream_gray.jpg', self.imFilt)
             cv2.waitKey(1)
 
     def laplacian(self, show):
@@ -148,7 +147,7 @@ class IMprocess:
                             scale=2, delta=200, ksize=3, borderType=cv2.BORDER_CONSTANT)
         self.imFilt = cv2.convertScaleAbs(dst)
         if show:
-            cv2.imshow("Laplacian", self.imFilt)
+            cv2.imwrite(self.path + '/image_stream_laplacian.jpg', self.imFilt)
             cv2.waitKey(1)
 
     def medianBlur(self, show):
@@ -177,5 +176,5 @@ class IMprocess:
         self.img = self.imFilt
         self.imFilt = cv2.Canny(self.img, 0, 30)
         if show:
-            cv2.imshow("edges1", self.imFilt)
+            cv2.imwrite(self.path + '/image_stream_canny.jpg', self.imFilt)
             cv2.waitKey(1)

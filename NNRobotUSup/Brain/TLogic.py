@@ -17,7 +17,7 @@ class Logic:
         diffs = []
         while self.bparm.logicLife:
             # register iterations per second
-            self.bparm.logLogicThread("Thinking...")
+            #self.bparm.logLogicThread("Thinking...")
             self.sendStatistics()
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nlogic = ips
@@ -29,7 +29,7 @@ class Logic:
     # ---------------------------------------------------------------------------------
     def learnObjects(self):
         sMemory = self.bparm.Smemory # type: S.ShortTerm
-        state = len(sMemory.Z) % 100
+        state = len(sMemory.Z) % 500
         if state == 0 and len(sMemory.Z) > 0:
             sMemory.clustering = True
             costdif = 0
@@ -50,7 +50,7 @@ class Logic:
                    costdif = costdifAct
                 if difGrad > 2:
                     isbreak = True
-
+            self.bparm.sendDataSight()
             sMemory.clustering = False
 
 
@@ -86,5 +86,5 @@ class Logic:
 
     def sendStatistics(self):
         self.bparm.sendDataVA()
-        self.bparm.sendDataSight()
+
 
