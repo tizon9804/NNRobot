@@ -1,6 +1,6 @@
 __author__ = 'Tizon'
 import numpy as np
-from Libraries.NNET import NNCostFunction
+from Libraries.NNET import NNCostFunction as nn
 
 
 class assemble(object):
@@ -29,9 +29,12 @@ class assemble(object):
         Xb = np.ones((X.shape[0], X.shape[1] + 1))
         Xb[:, 1:] = X.astype(np.float32)
         Xb = Xb.astype(np.float32)
+        costgrads =costgrads # type: nn.costGrads
         self.pred, self.proba = costgrads.maxOptFunction(Xb[0])
+        zin = costgrads.zin(Xb[0])
         self.hn = Xb
         print "prediction!!!-->", int(self.pred), " prediction probability!!!-->", (self.proba * 100), "%"
+        return [self.pred,self.proba,zin]
             # print "object",elements[int(self.pred)]
             # print "prediction probability!!!-->", self.proba
             # print "cost",costgrads.testcost(Xb[0],[0,1])

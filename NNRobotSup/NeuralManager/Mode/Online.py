@@ -1,7 +1,7 @@
 __author__ = 'Tizon'
 import numpy as np
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+#from picamera.array import PiRGBArray
+#from picamera import PiCamera
 import time
 import cv2
 class Online:
@@ -81,5 +81,5 @@ class Online:
               self.mind2.think(bufferC,self.costgradsN,self.actions)
               self.robot.setRobotAction(int(self.mind2.pred),self.mind2.proba)
             cv2.destroyAllWindows()
-                self.robot.robot.disableMotors()
+            #self.robot.robot.disableMotors()
 

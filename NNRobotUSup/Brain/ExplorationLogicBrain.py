@@ -19,6 +19,7 @@ class Explore:
             self.estimation = 0
             self.distance = 0
             self.tempMoves = []
+            self.tempMovesBad = []
             self.trackroute = []
             self.thread = thread
         except Exception as ex:
@@ -28,20 +29,22 @@ class Explore:
     def searchDirection(self):
         start = self.MAXREADINGS/2
         end  = start * -1
-        rangeL = 30
+        rangeL = 1
         lmoves = []
-        #iterate al reading of the sensor in steps of rangeL grades
+        #iterate all reading of the sensor in steps of rangeL grades
         for x in range(start,(end+rangeL)-1,-1):
             xend = x-rangeL
             distance,angle = self.robotSystem.getClosestDistance(x,xend)
             self.logExplore(self.thread + " angle::"+ str(self.angle)+ "relative::"+ str(self.getRelativeAngle()))
             estimation = self.calculateProbToMove(distance)
             lmoves.append([angle, distance, estimation])
-        self.angle,distance,estimation = self.getAngleMaxDistanceTemp(lmoves)
-        self.tempMoves.append([self.angle, distance, estimation])
+        angle,distance,estimation = self.getAngleMaxDistanceTemp(lmoves)
+        angleb, distanceb, estimationb = self.getAngleMinDistanceTemp(lmoves)
+        self.tempMovesBad.append([angleb, distanceb, estimationb])
+        self.tempMoves.append([angle, distance, estimation])
         self.estimation = estimation
         if self.robotSystem.robot.isHeadingDone():
-            self.robotSystem.rotate(self.angle)
+            self.robotSystem.rotate(angle)
             self.cumulateAngle += 1
         self.logExplore(self.thread + "temp:: "+str(len(self.tempMoves))+"&&"+ str(self.tempMoves[len(self.tempMoves) - 1]))
 
@@ -65,6 +68,7 @@ class Explore:
         self.contAngle = 1
         self.cumulateAngle = 0
         self.tempMoves = []
+        self.tempMovesBad =[]
         actDistance = self.robotSystem.getClosestFrontDistance()
         if actDistance < distance:
             self.logExplore(self.thread + ":: ATTENTION!! DISTANCE TO MOVE NOW IS DIFFERENT::act "+ str(actDistance)+ "expected:: "+str(distance))
@@ -74,13 +78,35 @@ class Explore:
 
     def getAngleMaxDistanceTemp(self,list):
         maxdistance = 0
-        tupleMax = list[len(list) - 1]
+        tupleList = []
         for tuple in reversed(list):
             dist = tuple[2]
-            if dist > maxdistance:
+            if dist >= maxdistance:
+                if dist == maxdistance:
+                   tupleList.append(tuple)
+                else:
+                    tupleList = []
+                    tupleList.append(tuple)
                 maxdistance = dist
-                tupleMax = tuple
+        position =   len(tupleList)/2
+        tupleMax = tupleList[position]
         return tupleMax
+
+    def getAngleMinDistanceTemp(self,list):
+        mindistance = 6000
+        tupleList = []
+        for tuple in reversed(list):
+            dist = tuple[2]
+            if dist <= mindistance:
+                if dist == mindistance:
+                    tupleList.append(tuple)
+                else:
+                    tupleList = []
+                    tupleList.append(tuple)
+                    mindistance = dist
+        position = len(tupleList) / 2
+        tupleMin = tupleList[position]
+        return tupleMin
 
     def trackRoute(self, angle, distance):
         self.trackroute.append([angle, self.actualFront, distance])

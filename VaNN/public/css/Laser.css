@@ -63,6 +63,20 @@ body {
  width:40%;
  height:40%;        
 }
+.cam{
+    margin-left:15%;
+}
+
+.nnet .camn img{
+ width:40%;
+ height:40%;        
+}
+
+.nnet .camn{
+    margin-left:15%;
+    float:left;
+    width:100%;
+}
 
 .cluster #image{ 
  float:left;
@@ -83,6 +97,18 @@ h2{
  text-align:center;
 }
 
-.cam{
-    margin-left:15%;
+
+
+.nnet #nnetForm{ 
+ float:left;
+ width:20%;
+ height:30px;
+ margin-left:30%;
+ margin-top:10%;
+}
+
+.nnet .line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
 }

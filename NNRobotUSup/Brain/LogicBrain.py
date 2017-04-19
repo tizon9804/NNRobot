@@ -2,11 +2,13 @@ from NNRobotUSup.Memory import LongTerm as lt
 import NNRobotUSup.Memory.ShortTerm as S
 import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
+import Libraries.Persistence.TargetManager as T
 import time
 import psutil as psu
 import TExplore as TE
 import TLogic as TL
 import TSense as TS
+import numpy as np
 import random
 
 class BrainParams:
@@ -32,8 +34,10 @@ class BrainParams:
         self.isMoving = False
         self.isTransition = False
         self.isVideoStreaming = True
+        self.isBadWay = False
         self.targetList = []
-        self.Lmemory = lt.LongTerm()
+        self.persistence = T.targetManager()
+        self.Lmemory = lt.LongTerm(self.persistence)
         self.Smemory = S.ShortTerm()
         self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory)
         # robot indicators
@@ -64,8 +68,6 @@ class BrainParams:
     def sendDataSight(self):
         cluster = self.Smemory.itemsZip
         center = self.Smemory.centersZip
-        #print cluster.shape
-        #print center.shape
         clus = []
         i=0
         for cl in cluster:
@@ -78,8 +80,41 @@ class BrainParams:
         for cl in center:
             clus.append({"x": cl[0], "y": cl[1], "range": i, "index": -1})
             i = i + 1
+        reportTraining = self.getTrainingStatistics()
         # envia informacion para visualizar
         self.net.sendDataSight(clus)
+
+    def sendDataNnet(self):
+        reportTraining = self.getTrainingStatistics()
+        # envia informacion para visualizar
+        self.net.sendDataNnet(reportTraining)
+
+    def getTrainingStatistics(self):
+        reportCost = np.array([])
+        reportSecure = np.array([])
+        iterP = 0
+        iterS = 0
+        lambdaNN = 0
+        maxIter = 0
+        accurExpected = 0
+        if self.Lmemory.isTraining:
+            reportCost = self.Lmemory.trainMind.reportCost
+            reportSecure = self.Lmemory.trainMind.reportSecure
+            iterP = self.Lmemory.trainMind.i
+            iterS = self.Lmemory.trainMind.j
+        lambdaNN = self.Lmemory.lambdaNN
+        maxIter = self.Lmemory.maxIter
+        accurExpected = self.Lmemory.accuracyExpected
+        report = ({'rcost':[reportCost],
+                   'rsecure':[reportSecure],
+                   'iterp':[iterP],
+                   'iters':[iterS],
+                   'lambdann':[lambdaNN],
+                   'maxiter':[maxIter],
+                   'accurExp':[accurExpected],
+                   'isTraining':[self.Lmemory.isTraining]
+                   })
+        return report
     # ----------------------------------------------------------------------------------
     # LOGS
     # ---------------------------------------------------------------------------------

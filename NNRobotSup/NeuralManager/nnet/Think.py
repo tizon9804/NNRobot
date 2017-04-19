@@ -32,14 +32,12 @@ class assemble(object):
         self.hn=Xb
         if self.proba > 0.8:
             print "prediction!!!-->",int(self.pred)," object",elements[int(self.pred)]," prediction probability!!!-->", (self.proba*100),"%"
-
-
-
-            #print "object",elements[int(self.pred)]
-            #print "prediction probability!!!-->", self.proba
-            #print "cost",costgrads.testcost(Xb[0],[0,1])
-            #print "zout",costgrads.zout(Xb[0])
-            #print "------------------------------------------------------"
+        return [self.pred,self.proba]
+        #print "object",elements[int(self.pred)]
+        #print "prediction probability!!!-->", self.proba
+        #print "cost",costgrads.testcost(Xb[0],[0,1])
+        #print "zout",costgrads.zout(Xb[0])
+        #print "------------------------------------------------------"
     def accuracy(self,X,y,costgrads):
         Xb=np.ones((X.shape[0],X.shape[1]+1))
         Xb[:,1:]=X

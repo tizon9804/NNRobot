@@ -2,12 +2,16 @@ import threading,time
 import numpy as np
 from NNRobotUSup.Memory import LongTerm as lt
 import NNRobotUSup.Memory.ShortTerm as S
+import TExplore as TE
+import cv2
 
 class Logic:
     def __init__(self,BrainP,Explore,Sense):
-        self.explore = Explore
+        self.explore = Explore # type: TE.Explore
         self.sense = Sense
         self.bparm = BrainP
+        self.conscienceNameExp="NAV"
+        self.path = r'../../VaNN/public/stream'
         tLogic = threading.Thread(target=self.loopLogic)
         tLogic.start()
 
@@ -21,12 +25,45 @@ class Logic:
             self.sendStatistics()
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nlogic = ips
+            self.bestWay()
             self.isSearchingLogic()
             self.learnObjects()
 
     # ----------------------------------------------------------------------------------
     # LOGIC
     # ---------------------------------------------------------------------------------
+
+    def bestWay(self):
+        lMemory = self.bparm.Lmemory # type: lt.LongTerm
+        if lMemory.bestWay.shape[0] > 0:
+            isnav,navMind  = self.createConscienceExp()
+            if isnav:
+                prediction,probability = lMemory.think(navMind.name,lMemory.bestWay)
+    def trainBestWay(self):
+        self.bparm.logLogicThread("training best way..")
+        lMemory = self.bparm.Lmemory  # type: lt.LongTerm
+        if lMemory.bestWay.shape[0] > 0:
+            cv2.imwrite(self.path + '/image_stream_best.jpg', lMemory.bestWayO)
+            isnav, navMind = lMemory.lookForConscience(self.conscienceNameExp)
+            if isnav:
+                lMemory.trainConscience(navMind.name,lMemory.bestWay)
+    def trainBadWay(self):
+        self.bparm.logLogicThread("training worst way..")
+        lMemory = self.bparm.Lmemory  # type: lt.LongTerm
+        if lMemory.bestWay.shape[0] > 0:
+            cv2.imwrite(self.path + '/image_stream_bad.jpg', lMemory.bestWayO)
+            isnav,c = lMemory.lookForConscience(self.conscienceNameExp)
+            if isnav:
+                lMemory.addDataToTrain(lMemory.bestWay,1)
+
+    def createConscienceExp(self):
+        lMemory = self.bparm.Lmemory  # type: lt.LongTerm
+        isnav,navMind = lMemory.lookForConscience(self.conscienceNameExp)
+        if not isnav:
+           lMemory.createConscience(self.conscienceNameExp,lMemory.bestWay.shape[1],3,100,2)
+        return isnav,navMind
+
+
     def learnObjects(self):
         sMemory = self.bparm.Smemory # type: S.ShortTerm
         state = len(sMemory.Z) % 500
@@ -41,7 +78,7 @@ class Logic:
                 if isbreak:
                     break
                 costdifAct = antCost - cost
-                #Primera derivada difgradiente todo segunda derivada
+                #Primera derivada difgradiente
                 difGrad = costdif/costdifAct
                 antCost = cost
                 costdif = costdifAct
@@ -57,9 +94,7 @@ class Logic:
     def isSearchingLogic(self):
         if self.bparm.RobotLife:
             if self.bparm.isSearching:
-                self.explore.exploreLogic
-                if np.absolute(
-                        self.explore.exploreLogic.cumulateAngle) > 3 or self.bparm.moveEstimation >= self.bparm.PROBTOMOVE * 0.90:  # TODO
+                if np.absolute(self.explore.exploreLogic.cumulateAngle) > 3 or self.bparm.moveEstimation >= self.bparm.PROBTOMOVE * 0.90:  # TODO
                     self.isSearching = False
                     threading._sleep(0.5)
                     self.bparm.logLogicThread("###SEARCHED###")
@@ -67,18 +102,24 @@ class Logic:
                     while len(self.explore.exploreLogic.tempMoves) == 0:
                         self.bparm.logLogicThread("waiting..")
                     self.bparm.actualAngle, self.bparm.actualDistance, self.bparm.actualEstimation = self.explore.exploreLogic.getAngleMaxDistanceTemp(self.explore.exploreLogic.tempMoves)
+                    self.bparm.badActualAngle,distance, estimation = self.explore.exploreLogic.getAngleMinDistanceTemp(self.explore.exploreLogic.tempMovesBad)
                     self.bparm.logLogicThread(
                         str(self.bparm.actualAngle) + "$$" + str(self.bparm.actualDistance) + "$$" + str(self.bparm.actualEstimation))
-                    # threading._sleep(5)
-                    # self.exploreLogic.rotationRate -= (1 - self.actualEstimation) / 4  # TODO
                     self.bparm.logLogicThread(" rotation rate::: " + str(self.explore.exploreLogic.rotationRate))
                     self.bparm.error = self.bparm.actualDistance * 0.1
                     self.startMoving()
 
-
     def startMoving(self):
         self.bparm.isTransition = True
         self.bparm.isMoving = True
+        num = 0
+        while self.bparm.isTransition:
+            if self.bparm.isBadWay and num < 2:
+                self.bparm.logLogicThread("waiting to train best way...")
+                self.trainBadWay()
+                num += 1
+
+        self.trainBestWay()
 
     #----------------------------------------------------------------------------------------------
     # visual analitics
@@ -86,5 +127,6 @@ class Logic:
 
     def sendStatistics(self):
         self.bparm.sendDataVA()
+        self.bparm.sendDataNnet()
 
 

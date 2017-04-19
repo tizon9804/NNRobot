@@ -4,6 +4,12 @@ import theano.tensor as T
 from sigmoid import sigmoid
 class costGrads:
     def __init__(self,thetain,hiddenTheta,thetaout):
+        # downsample each feature map individually, using maxpooling
+        #pooled_out = downsample.max_pool_2d(
+         #   input=conv_out,
+          #  ds=poolsize,
+          #  ignore_border=True
+        #)
         #define theano function
         print "creating symbolic variables"
         self.x=T.fvector("x")
@@ -17,6 +23,7 @@ class costGrads:
             self.wt+=[wt]
             self.thetas+=[wt]
         self.thetas+=[self.wout]
+
     def setState(self,win,wt,wout):
         self.win.set_value(win)
         self.thetas=[self.win]
@@ -25,6 +32,7 @@ class costGrads:
             self.thetas+=[self.wt[i]]
         self.wout.set_value(wout)
         self.thetas+=[self.wout]
+
     def getState(self):
         win=self.win.get_value()
         wt=[]
@@ -32,6 +40,7 @@ class costGrads:
             wt+=[self.wt[i].get_value()]
         wout=self.wout.get_value()
         return [win,wt,wout]
+
     def createFunction(self):
         print "nncostfunction..."
         print "sigmoid of X in thetain"
@@ -46,24 +55,24 @@ class costGrads:
         print "creating function"
         logistic=(-self.y*T.log(zout))-((1-self.y)*T.log(1-zout))
         logistic=T.mean(logistic)
-
-        regular=T.sum(self.win**2)
-        for wt in self.wt:
-           regular+=T.sum(wt**2)
-        regular+=T.sum(self.wout**2)
-        regular=regular*0.01
-        logistic=logistic+regular
-
+        # regular=T.sum(self.win**2)
+        # for wt in self.wt:
+        #    regular+=T.sum(wt**2)
+        # regular+=T.sum(self.wout**2)
+        # regular=regular*0.01
+        # logistic=logistic+regular
         gs=T.grad(logistic,self.thetas)
         self.cost,self.grads=logistic,gs
         self.max=T.argmax(zout)
         self.maxp=T.max(zout)
-        self.maxFunction=theano.function([self.x],T.argmax(zout))
+        self.maxFunction=theano.function([self.x],T.argmax(zout),mode='FAST_RUN')
         self.zoutt=zout
         self.maxOptFunction = theano.function(
                                     inputs=[self.x],
                                     outputs=[T.argmax(zout),T.max(zout)],
                                     mode='FAST_RUN')
+        zinV = 1/(1+T.exp(-(self.x * self.win.T)))
+        self.zin = theano.function([self.x],zinV)
         self.zout=theano.function([self.x],zout)
         self.maxpFunction=theano.function([self.x],T.max(zout))
         self.testcost=theano.function([self.x,self.y],self.cost)

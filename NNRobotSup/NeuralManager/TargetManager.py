@@ -37,7 +37,7 @@ class targetManager:
         print "inputs X y saved..."
 
     def loadNN(self,name):
-        #try:
+        try:
             print "trying to load the NN ",name
             self.state[name] = cPickle.load(open('data/'+str(name)+'.pkl','r'))
             win,wt,wout=self.state[name]
@@ -46,7 +46,7 @@ class targetManager:
             self.NNLoaded[name]=True
             print "NN ",name," Loaded..."
             return True
-       # except Exception,e:
+        except Exception,e:
             print "error ",str(e)
             print "New NN ", name,"..."
             self.NNLoaded[name]=False

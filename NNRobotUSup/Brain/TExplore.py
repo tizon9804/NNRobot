@@ -15,6 +15,7 @@ class Explore:
         diffs = []
         while self.bparm.exploreLife:
             # register iterations per second
+            self.bparm.logExploreThread("exploring...")
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nexplore = ips
             self.bparm.RobotLife = self.exploreLogic.RobotStarted
@@ -39,10 +40,11 @@ class Explore:
     def move(self):
         if self.bparm.isMoving:
             if self.bparm.isTransition:
+                self.badAngle()
                 self.inTransition()
             self.bparm.logExploreThread("moving robot" + str(self.bparm.actualDistance - self.bparm.error))
             self.exploreLogic.move(self.bparm.actualDistance - self.bparm.error)
-            threading._sleep(0.5)
+            threading._sleep(2)
             self.bparm.logLogicThread("FINISHING MOVE")
             self.bparm.actualAngle = 0
             self.bparm.actualDistance = 0
@@ -57,4 +59,12 @@ class Explore:
         print "Best way for laser::", self.bparm.actualAngle, ":::", self.bparm.actualDistance, "PROBTOMOVE::", self.bparm.PROBTOMOVE
         self.exploreLogic.transitionMove(self.bparm.actualAngle)
         self.bparm.isTransition = False
+
+    def badAngle(self):
+        self.exploreLogic.transitionMove(self.bparm.badActualAngle)
+        self.bparm.isBadWay = True
+        threading._sleep(2)
+        self.bparm.isBadWay = False
+
+
 

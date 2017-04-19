@@ -1,12 +1,14 @@
 import numpy as np
 import NNRobotUSup.Entities.Item as I
+from NNRobotUSup.Memory import LongTerm as lt
 import cv2
 
 
 class IMprocess:
     def __init__(self, Smemory, Lmemory):
-        self.Lmemory = Lmemory
+        self.Lmemory = Lmemory # type: lt.LongTerm
         self.Smemory = Smemory
+        self.bestWay = []
         self.image = []
         self.moments = []
         self.path = r'../../VaNN/public/stream'
@@ -17,6 +19,7 @@ class IMprocess:
         self.imFilt = img
         # self.gaussianBlur(False)
         self.gray(True)
+        self.Lmemory.newImage(img)
         self.laplacian(True)
         self.gaussianBlur(False)
         # self.convolution(False)

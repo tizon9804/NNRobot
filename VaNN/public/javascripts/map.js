@@ -85,7 +85,7 @@ function createMap(urlData,eleDiv,ismap,w,h) {
                 }
                 //getPositions();
             });
-        }, 1000);
+        }, 2000);
     }
 
     var jdata = []

@@ -57,11 +57,56 @@
         <img src="" id="stream_object">
     </div>
 </div>
+<div class="nnet">
+    <h2 class="page-header title">Navigation Neural Network</h2>    
+    <div class="row camn">
+        <img src="" id="stream_best">
+        <img src="" id="stream_bad">
+        <img src="" id="stream_nnet">
+    </div>
+    <div id="nnet" class="map"></div>
+    <div id="nnetForm">
+        <div class="statistics_nnet">
+            <div class="form-group row">
+                <label for="example-text-input" class="col-2 col-form-label">Max Iterations</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" value="0" id="maxIter">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="example-search-input" class="col-2 col-form-label">Accuracy Expected</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" value="0" id="accExp">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="example-search-input" class="col-2 col-form-label">Lambda</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" value="0" id="lambda">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="example-search-input" class="col-2 col-form-label"># General iterations</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" value="0" id="iterP">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="example-search-input" class="col-2 col-form-label"># iterations per data</label>
+                <div class="col-10">
+                    <input class="form-control" type="text" value="0" id="iterS">
+                </div>
+            </div>
+        </div>      
+    </div>
+</div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="javascripts/RobotLaser.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="javascripts/StreamClient.js"></script>
 <script src="javascripts/map.js"></script>
+<script src="javascripts/NNETCostSecure.js"></script>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script src="javascripts/liquid.js"></script>
+
 

@@ -68,7 +68,7 @@ function getLaser() {
                 }
             }
         });
-    }, 200);
+    }, 500);
 }
 
 function update(data) {     

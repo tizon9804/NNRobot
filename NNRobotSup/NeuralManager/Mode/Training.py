@@ -140,6 +140,9 @@ class config:
         print "inputs", self.X.shape
         print "outputs", self.y.shape
         print "output layer",num_output_Layer
+        self.X=self.X[846:]
+        print self.X
+        self.y = self.y[846:]
         m = self.X.shape[0]
         #convert y in a vector of dimensions 1xnum_outputs with valueas 1 and 0
         #print "element to train ",self.elements[int(self.position)]

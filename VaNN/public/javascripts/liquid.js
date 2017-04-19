@@ -47,35 +47,35 @@ function logic() {
     d3v3.json("/paralelsi?thread=logic", function (error, data) {
         porcentaje = data.ips
         gauge1.update(porcentaje);        
-        setTimeout(logic,2000);
+        setTimeout(logic,3000);
     });    
 }
 function image() {
     d3v3.json("/paralelsi?thread=image", function (error, data) {
         porcentaje = data.ips
         gauge2.update(porcentaje);
-        setTimeout(image,2000);
+        setTimeout(image,3000);
     });    
 }
 function explore() {
     d3v3.json("/paralelsi?thread=explore", function (error, data) {
         porcentaje = data.ips
         gauge3.update(porcentaje);
-        setTimeout(explore,2000);
+        setTimeout(explore,3000);
     });    
 }
 function cpu() {
     d3v3.json("/paralelsi?thread=cpu", function (error, data) {
         porcentaje = data.ips
         gauge4.update(porcentaje);
-        setTimeout(cpu, 2000);
+        setTimeout(cpu, 3000);
     });
 }
 function memory() {
     d3v3.json("/paralelsi?thread=memory", function (error, data) {
         porcentaje = data.ips
         gauge5.update(porcentaje);
-        setTimeout(memory, 2000);
+        setTimeout(memory, 3000);
     });
 }
 function sleep(milliseconds) {

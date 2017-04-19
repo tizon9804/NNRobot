@@ -47,8 +47,8 @@ cap=init.cap
 #initialize robotDriver
 #-------------------------------------------------------------------------
 print("initializing robotdriver..")
-from RobotSystem import Robot
-robot=Robot.RobotDriver()
+#from RobotSystem import Robot
+#robot=Robot.RobotDriver()
 
 #-------------------------------------------------------------------------
 #initialize neuralnetwork

@@ -100,6 +100,21 @@ io.on('connection', function (socket) {
         r = startStreaming(io, 'stream/image_stream_canny.jpg', 'liveStream-canny', w);
         app.set('watchingFile-canny', r);
     });
+    socket.on('start-stream-nnet', function () {
+        w = app.get('watchingFile-nnet')
+        r = startStreaming(io, 'stream/image_stream_nnet.jpg', 'liveStream-nnet', w);
+        app.set('watchingFile-nnet', r);
+    });
+    socket.on('start-stream-best', function () {
+        w = app.get('watchingFile-best')
+        r = startStreaming(io, 'stream/image_stream_best.jpg', 'liveStream-best', w);
+        app.set('watchingFile-best', r);
+    });
+    socket.on('start-stream-bad', function () {
+        w = app.get('watchingFile-bad')
+        r = startStreaming(io, 'stream/image_stream_bad.jpg', 'liveStream-bad', w);
+        app.set('watchingFile-bad', r);
+    });
 
     
 

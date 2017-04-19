@@ -1,67 +1,38 @@
 __author__ = 'Tizon'
 import numpy as np
 import theano
-import threading
 import time
-import cv2
 import matplotlib.pyplot as plt
-from Libraries.NNET import NNCostFunction
+from Libraries.NNET import NNCostFunction, Think
 
 
 class config:
-
-    def __init__(self, elements, lamb, iterations, persistence, type):
+    def __init__(self, lamb, iterations, persistence, nameCons,secure,maxIterNoMinimize):
         self.persistence = persistence
         self.lamb = lamb
         self.iterations = iterations
-        self.X = np.array(())
-        self.y = np.array(())
-        self.elements = elements
-        self.type = type
-        element = ""
+        self.type = nameCons
+        self.secure = secure
+        self.maxIter = maxIterNoMinimize
+        self.X = np.array([])
+        self.y = np.array([])
+        self.reportCost = np.array([])
+        self.reportSecure = np.array([])
+        self.i=0
+        self.j=0
 
-    def collectDataImg(self, cap, init):
-        if self.persistence.loadDataSet():
-            self.X, self.y = self.persistence.dataset
-            print "data loaded"
-            save = True
-            while (cap.isOpened()):
-                init.convImage()
-                X = init.convImg
-                # X = X.reshape(1,X.shape[1]*X.shape[2]*X.shape[3])
-                # X = X.reshape(1,X.shape[0]*X.shape[1])
-                thread = threading.Thread(target=init.drawImage("todo", init.img))
-                thread.start()
-                if cv2.waitKey(1) & 0xFF == ord('z'):
-                    break
-                self.addDataToTrain(X, y, position)
-            cv2.destroyAllWindows()
-            print "saving..."
-        if save:
-            self.persistence.saveElements(self.elements)
-            self.persistence.saveDataSet([self.X, self.y])
-
-    def addDataToTrain(self, x, y, position):
-        self.position = int(position)
-        print "all", self.X.shape
-        print "new", x.shape
-        if self.X.shape[0] == 0:
-           self.X = x
-        else:
-          print "adding new data in the bucket"
-          self.X = np.vstack([self.X, x.flatten()])
-          self.y = np.append(self.y, int(position))
-
-    def train(self, layer0params, layer1params, mind1, num_output_Layer):
+    def train(self, mind1,x,y):
+        self.X=x
+        self.y=y
+        mind1 = mind1 # type: Think.assemble
+        num_output_Layer = mind1.thetaout.shape[0]
         print "inputs", self.X.shape
         print "outputs", self.y.shape
         print "output layer", num_output_Layer
-        m = self.X.shape[0]
         # convert y in a vector of dimensions 1xnum_outputs with values 1 and 0
         # print "element to train ",self.elements[int(self.position)]
         Xb = np.ones((self.X.shape[0], self.X.shape[1] + 1), dtype=np.float32)
         Xb[:, 1:] = self.X.astype(np.float32)
-        print Xb.shape
         costgrads = NNCostFunction.costGrads(mind1.thetain, mind1.hiddenTheta, mind1.thetaout)
         if self.persistence.NNLoaded[self.type]:
             print "use NN saved", self.type
@@ -71,7 +42,7 @@ class config:
             print "use New NN"
         costgrads.createFunction()
         ##determine the inicial accuracy
-        self.accuracy(Xb, costgrads)
+        self.accuracyF(Xb, costgrads)
         ##----------------------------
         vecy = np.array(())
         print self.y
@@ -80,7 +51,7 @@ class config:
             vy = (vy == int(ye))
             vy = vy.astype(np.int32)
             if vecy.shape[0] == 0:
-                vecy = vy
+                vecy = np.vstack([vy])
             else:
                 vecy = np.vstack([vecy, vy])
         updates = [
@@ -94,27 +65,28 @@ class config:
         try:
             secureAct = 0
             cont = 0
-            crec = 0
-            reportcost = np.array(())
-            reportsecure = np.array(())
+            self.reportCost = np.array(())
+            self.reportSecure = np.array(())
+            self.i = 0
+            self.j = 0
             for i in range(self.iterations):
                 secure = 0
                 promcost = 0
                 for j in range(vecy.shape[0]):
                     cost, pred, prob = train(Xb[j], vecy[j])
-                    # print "#",i+1,"/",self.iterations,"#",j,"final cost->",cost,"vector to train",vecy[j]," element predicted->",int(pred),":",self.elements[int(pred)]," probability-> ",(prob*100),"%"#,"\r",
                     secure += prob
                     promcost += cost
                 secure = secure / vecy.shape[0]
                 promcost = promcost / vecy.shape[0]
-                reportcost = np.append(reportcost, [promcost])
-                reportsecure = np.append(reportsecure, [secure])
-
+                self.reportCost = np.append(self.reportCost, [promcost])
+                self.reportSecure = np.append(self.reportSecure, [secure])
+                self.i = i
+                self.j = j
                 print "#", i + 1, "/", self.iterations, "secure", secure * 100, "final cost->", cost, "vector to train", \
-                    vecy[j], " element predicted->", int(pred), ":", self.elements[int(pred)], " probability-> ", (
+                    vecy[j],"lamda",str(self.lamb)," element predicted->", int(pred), ":probability-> ", (
                     prob * 100), "%"  # ,"\r",
                 # the way to stop learning
-                if (secure) > .97:
+                if (secure) > self.secure:
                     print "#", i + 1, "/", self.iterations, "#", j, "Secure in a ", secure * 100, "%"
                     break
                 elif round(secure, 3) == round(secureAct, 3):
@@ -123,12 +95,12 @@ class config:
                 else:
                     cont = 0
                 secureAct = secure
-                if cont >= 1000:
+                if cont >= self.maxIter:
                     print "stop because do not minimize any more"
                     break
+
         except Exception, e:
             print str(e)
-
         t1 = time.time()
         print("Looping %d times took %f seconds" % (i, t1 - t0))
         gpu = False
@@ -139,6 +111,14 @@ class config:
                 break
         if not gpu:
             print "used cpu"
+
+        self.persistence.saveNN(self.type, costgrads.getState())
+        if not self.persistence.loadNN(self.type):
+            print "unstable consciousness"
+        ##determine the Final accuracy
+        self.accuracyF(Xb, costgrads)
+
+    def statistics(self,costgrads):
         self.persistence.saveNN(self.type, costgrads.getState())
         if not self.persistence.loadNN(self.type):
             print "unstable consciousness"
@@ -160,7 +140,7 @@ class config:
         plt.plot(reportcost)
         plt.show()
 
-    def accuracy(self, Xb, costgrads):
+    def accuracyF(self, Xb, costgrads):
         self.pred = np.array(())
         self.accuracyProbability = np.array(())
         for inp in range(Xb.shape[0]):
@@ -172,3 +152,4 @@ class config:
         print "element expected", self.y
         print "accuracy is: ", self.accuracy, "%"
         print "probabilities of the accuracy ", self.accuracyProbability, "%"
+

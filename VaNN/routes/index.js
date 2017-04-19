@@ -19,6 +19,10 @@ router.post('/dataSight', function (req, res) {
     consultas.setDataSight(req, res);
 });
 
+router.post('/dataNnet', function (req, res) {
+    consultas.setDataNnet(req, res);
+});
+
 router.get('/laserStream', function (req, res) {
     consultas.getLaser(req, res);  
 });
@@ -35,8 +39,8 @@ router.get('/moments', function (req, res) {
     consultas.getMoments(req, res);
 });
 
-router.get('/streamCam', function () {
-    
+router.get('/nnetTraining', function (req,res) {
+    consultas.getNneTraining(req, res);
 });
 
 router.get('/paralelinfo', function (req, res) {
