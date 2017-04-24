@@ -1,13 +1,18 @@
 import Libraries.RobotSystem.Robot as R
-import numpy as np
+import NNRobotUSup.Network.ServerRobotStream as server
 
 
 class Explore:
-    def __init__(self, thread,debugExplore,debugRobot):
+    def __init__(self, thread,debugExplore,debugRobot,isServer):
         try:
             self.debug = debugExplore
             self.logExplore(thread + "init Explore")
-            self.robotSystem = R.RobotDriver(debugRobot)
+            if not isServer:
+                self.robotSystem = R.RobotDriver(debugRobot)
+            else:
+                self.robotSystem = server.RobotServerStream()
+                self.robotSystem.acceptRobot()
+
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
             self.MAXREADINGS = self.robotSystem.getMaxReadings()
             self.RobotStarted = True

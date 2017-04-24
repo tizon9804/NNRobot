@@ -10,7 +10,7 @@ class Explore:
 
     def loopExplore(self):
         self.bparm.logExploreThread("thread started...")
-        self.exploreLogic = ELB.Explore(self.bparm.explore,self.bparm.debugExploreLogic,self.bparm.debugRobotSystem)
+        self.exploreLogic = ELB.Explore(self.bparm.explore,self.bparm.debugExploreLogic,self.bparm.debugRobotSystem,self.bparm.isVideoStreaming)
         last_time = time.clock()
         diffs = []
         while self.bparm.exploreLife:

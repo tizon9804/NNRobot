@@ -31,6 +31,8 @@ while(True):
                 # temporarily (we could write it directly to connection but in this
                 # case we want to find out the size of each capture first to keep
                 # our protocol simple)
+
+
                 #start = time.time()
                 stream = io.BytesIO()
                 for foo in camera.capture_continuous(stream, 'jpeg', use_video_port=True):

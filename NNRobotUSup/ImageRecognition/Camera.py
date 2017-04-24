@@ -1,6 +1,6 @@
 # import the necessary packages
-#from picamera.array import PiRGBArray
-#from picamera import PiCamera
+from picamera.array import PiRGBArray
+from picamera import PiCamera
 
 
 import NNRobotUSup.Network.ServerVideoStream as server
@@ -20,9 +20,9 @@ class Camera:
             self.server= server.VideStream()
         else:
             # initialize the camera and grab a reference to the raw camera capture
-            #camera = PiCamera()
-            #camera.resolution = (640, 480)
-            #camera.framerate = 30
+            camera = PiCamera()
+            camera.resolution = (640, 480)
+            camera.framerate = 30
             #dark
             #camera.framerate = Fraction(1, 6)
             #camera.shutter_speed = 6#000000
@@ -30,11 +30,11 @@ class Camera:
             #camera.iso = 800
             #camera.image_effect = 'emboss'
             #camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
-            #self.rawCapture = PiRGBArray(camera)
+            self.rawCapture = PiRGBArray(camera)
             # allow the camera to warmup
             #camera.start_preview()
             time.sleep(5)
-            #self.camera = camera
+            self.camera = camera
 
     def getImage(self):
         if self.isVideoStream:

@@ -39,7 +39,7 @@ class RobotDriver:
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
         self.logRobot('Connecting to robot...')
-        self.argparser.addDefaultArgument("rh 190.168.0.7 -lp 190.168.0.7 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
+        self.argparser.addDefaultArgument("-rh 157.253.173.241 -lp 157.253.173.241 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
         self.startAngle = -30
         self.endAngle = 30
