@@ -48,7 +48,7 @@ class Explore:
         self.tempMovesBad.append([angleb, distanceb, estimationb])
         self.tempMoves.append([angle, distance, estimation])
         self.estimation = estimation
-        if self.robotSystem.robot.isHeadingDone():
+        if self.robotSystem.isHeadingDone():
             self.robotSystem.rotate(angle)
             self.cumulateAngle += 1
         self.logExplore(self.thread + "temp:: "+str(len(self.tempMoves))+"&&"+ str(self.tempMoves[len(self.tempMoves) - 1]))
@@ -67,14 +67,14 @@ class Explore:
         self.robotSystem.restartHeading()
 
     def getRelativeAngle(self):
-        return self.robotSystem.robot.getPose().getTh()
+        return self.robotSystem.getTh()
 
     def move(self, distance):
         self.contAngle = 1
         self.cumulateAngle = 0
         self.tempMoves = []
         self.tempMovesBad =[]
-        actDistance = self.robotSystem.getClosestFrontDistance()
+        actDistance = self.robotSystem.getClosesFrontDistance()
         if actDistance < distance:
             self.logExplore(self.thread + ":: ATTENTION!! DISTANCE TO MOVE NOW IS DIFFERENT::act "+ str(actDistance)+ "expected:: "+str(distance))
             self.robotSystem.move(actDistance * 0.8)
