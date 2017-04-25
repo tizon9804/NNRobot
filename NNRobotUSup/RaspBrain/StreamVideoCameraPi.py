@@ -3,6 +3,7 @@ import socket
 import struct
 import time
 import picamera
+
 while(True):
     # Connect a client socket to my_server:8000 (change my_server to the
     # hostname of your server) 190.158.131.76

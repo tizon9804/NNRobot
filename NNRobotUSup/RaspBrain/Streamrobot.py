@@ -1,32 +1,31 @@
 import socket
-#import ExplorationInterface as Exp
+import ExplorationInterface as Exp
 
 class robotStream:
     def __int__(self):
         print 'conecting...'
+        self.robotSystem = Exp.ExploreInterface()
 
     def connection(self):
-        #self.robot = Exp.ExploreInterface()
         while(True):
             # Connect a client socket to my_server:8000 (change my_server to the
             # hostname of your server) 190.158.131.76
             try:
                 self.client_socket = socket.socket()
-                self.client_socket.connect(('157.253.206.25', 8080))
+                self.client_socket.connect(('192.168.0.10', 8080))
                 self.connect = True
                 try:
                    while(True):
                        if self.startingConv():
                            self.getClosestDistance()
-                           #self.isHeadingDone()
-                           #self.rotate()
-                           #self.rotateSecure()
-                           #self.restartHeading()
-                           #self.getTh()
-                           #self.getClosesFrontDistance()
-                           #self.move()
-                           #self.getLaserBuffer()
-
+                           self.isHeadingDone()
+                           self.rotate()
+                           self.rotateSecure()
+                           self.restartHeading()
+                           self.getTh()
+                           self.getClosesFrontDistance()
+                           self.move()
+                           self.getLaserBuffer()
                        print "sended"
                 except Exception as ex:
                     self.connect = False
@@ -116,9 +115,12 @@ class robotStream:
         data = self.getData()
         data = data.split(":")
         if data[0] == "getMaxReadings":
-
+            data = self.robotSystem.MAXREADINGS
+            self.setData(data)
 
     def getMaxDistance(self):
         data = self.getData()
         data = data.split(":")
         if data[0] == "getClosestDistance":
+            data = self.robotSystem.MAXDISTANCE
+            self.setData(data)
