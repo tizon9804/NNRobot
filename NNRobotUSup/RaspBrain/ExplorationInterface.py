@@ -4,14 +4,15 @@ class ExploreInterface:
     def __init__(self, thread,debugExplore,debugRobot):
         try:
             self.debug = debugExplore
-            self.logExplore(thread + "init Explore")
+            print thread + "init Explore"
             self.robotSystem = R.RobotDriver(debugRobot)
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
             self.MAXREADINGS = self.robotSystem.getMaxReadings()
+            self.robot = self.robotSystem.robot
             self.RobotStarted = True
             self.thread = thread
         except Exception as ex:
-            self.logExplore(thread + "Cannot connect to Robot:" + str(ex))
+            print thread + "Cannot connect to Robot:" + str(ex)
             self.RobotStarted = False
 
     def getClosestDistance(self,x,xend):

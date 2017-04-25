@@ -1,10 +1,10 @@
 import socket
 import ExplorationInterface as Exp
-
+import pickle
 class robotStream:
-    def __int__(self):
+    def __init__(self):
         print 'conecting...'
-        self.robotSystem = Exp.ExploreInterface()
+        self.robotSystem = Exp.ExploreInterface("exp",True,True)
 
     def connection(self):
         while(True):
@@ -14,113 +14,107 @@ class robotStream:
                 self.client_socket = socket.socket()
                 self.client_socket.connect(('192.168.0.10', 8080))
                 self.connect = True
+                self.istalk = False
                 try:
                    while(True):
-                       if self.startingConv():
-                           self.getClosestDistance()
-                           self.isHeadingDone()
-                           self.rotate()
-                           self.rotateSecure()
-                           self.restartHeading()
-                           self.getTh()
-                           self.getClosesFrontDistance()
-                           self.move()
-                           self.getLaserBuffer()
-                       print "sended"
+                       self.startingConv()
+                       self.data = self.getData()
+                       self.data = self.data.split(":")
+                       self.getClosestDistance()
+                       self.isHeadingDone()
+                       self.rotate()
+                       self.rotateSecure()
+                       self.restartHeading()
+                       self.getTh()
+                       self.getClosesFrontDistance()
+                       self.move()
+                       self.getLaserBuffer()
+                       self.getMaxReadings()
+                       self.getMaxDistance()
+                       #print "sended"
                 except Exception as ex:
                     self.connect = False
-                    print "connection finished..."
+                    print "connection finished...",str(ex)
                 finally:
                     self.client_socket.close()
             except Exception as ex:
                 self.connect = False
-                print "trying Connect Robot..."
+                print "trying Connect Robot...",str(ex)
 
     def getData(self):
         data = self.client_socket.recv(1024).decode()
-        print data
+        #print data
         return data
 
     def setData(self,data):
         self.client_socket.send(b''+str(data))
 
     def startingConv(self):
-        self.client_socket.send(b'raspChappie')
-        data = self.getData()
-        if data == "HiRasp":
-            return True
-        return False
+        if not self.istalk:
+            self.client_socket.send(b'raspChappie')
+            self.data = self.getData()
+            if self.data == "HiRasp":
+                self.setData(b'ok')
+                self.istalk = True
+
 
     def getClosestDistance(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getClosestDistance":
-            data = self.robotSystem.getClosestDistance(data[1], data[2])
-            self.setData(data)
+        if self.data[0] == "getClosestDistance":
+            data = self.robotSystem.getClosestDistance(float(self.data[1]), float(self.data[2]))
+            data_string = pickle.dumps(data)
+            self.client_socket.send(data_string)
 
     def isHeadingDone(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "isHeadingDone":
+        if self.data[0] == "isHeadingDone":
             data = self.robotSystem.robot.isHeadingDone()
             self.setData(data)
 
     def rotate(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "rotate":
-            self.robotSystem.rotate(data[1])
+        if self.data[0] == "rotate":
+            print self.data
+            self.robotSystem.rotate(float(self.data[1]))
+            self.setData(b'ok')
 
     def rotateSecure(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "rotateSecure":
-            self.robotSystem.rotateSecure(data[1])
+        if self.data[0] == "rotateSecure":
+            print self.data
+            self.robotSystem.rotateSecure(float(self.data[1]))
+            self.setData(b'ok')
 
     def restartHeading(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "restartHeading":
+        if self.data[0] == "restartHeading":
             self.robotSystem.restartHeading()
+            self.setData(b'ok')
 
     def getTh(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getTh":
+        if self.data[0] == "getTh":
             data = self.robotSystem.robot.getPose().getTh()
             self.setData(data)
 
     def getClosesFrontDistance(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getClosestFrontDistance":
-            data = self.robotSystem.getClosestFrontDistance()
+        if self.data[0] == "getClosestFrontDistance":
+            data = self.robotSystem.getClosesFrontDistance()
             self.setData(data)
 
     def move(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "move":
-            self.robotSystem.move(data[1])
+        if self.data[0] == "move":
+            print self.data
+            self.robotSystem.move(float(self.data[1]))
+            self.setData(b'ok')
 
     def getLaserBuffer(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getLaserBuffer":
+        if self.data[0] == "getLaserBuffer":
             data = self.robotSystem.getLaserBuffer()
-            self.setData(data)
+            data_string = pickle.dumps(data)
+            self.client_socket.send(data_string)
 
 
     def getMaxReadings(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getMaxReadings":
+        if self.data[0] == "getMaxReadings":
             data = self.robotSystem.MAXREADINGS
             self.setData(data)
 
     def getMaxDistance(self):
-        data = self.getData()
-        data = data.split(":")
-        if data[0] == "getClosestDistance":
+        if self.data[0] == "getMaxDistance":
             data = self.robotSystem.MAXDISTANCE
             self.setData(data)
