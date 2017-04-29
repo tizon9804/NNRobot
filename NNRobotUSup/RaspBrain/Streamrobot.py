@@ -12,7 +12,7 @@ class robotStream:
             # hostname of your server) 190.158.131.76
             try:
                 self.client_socket = socket.socket()
-                self.client_socket.connect(('192.168.0.10', 8080))
+                self.client_socket.connect(('190.158.131.76', 8080))
                 self.connect = True
                 self.istalk = False
                 try:
@@ -43,10 +43,11 @@ class robotStream:
 
     def getData(self):
         data = self.client_socket.recv(1024).decode()
-        #print data
+        print data
         return data
 
     def setData(self,data):
+        print 'data sended',data
         self.client_socket.send(b''+str(data))
 
     def startingConv(self):
@@ -54,14 +55,23 @@ class robotStream:
             self.client_socket.send(b'raspChappie')
             self.data = self.getData()
             if self.data == "HiRasp":
+                print self.data
                 self.setData(b'ok')
                 self.istalk = True
 
 
     def getClosestDistance(self):
         if self.data[0] == "getClosestDistance":
-            data = self.robotSystem.getClosestDistance(float(self.data[1]), float(self.data[2]))
-            data_string = pickle.dumps(data)
+            start = int(self.data[1])
+            end = int(self.data[2])
+            lmoves = []
+            for x in range(start,end,-1):
+                xend = x-1
+                distance,angle = self.robotSystem.getClosestDistance(x,xend)
+                estimation = self.calculateProbToMove(distance)
+                lmoves.append([angle,distance,estimation])
+            data_string = pickle.dumps(lmoves)
+            print lmoves
             self.client_socket.send(data_string)
 
     def isHeadingDone(self):
@@ -118,3 +128,9 @@ class robotStream:
         if self.data[0] == "getMaxDistance":
             data = self.robotSystem.MAXDISTANCE
             self.setData(data)
+
+    def calculateProbToMove(self, distance):
+        # calculate the final value estimation to move between distance and bestway
+        scaledistance = (distance / self.robotSystem.MAXDISTANCE)
+        moveestimate = (scaledistance)
+        return moveestimate

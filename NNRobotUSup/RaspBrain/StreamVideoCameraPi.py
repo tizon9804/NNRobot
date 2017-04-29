@@ -25,7 +25,7 @@ while(True):
                 camera.iso = 800
                 # camera.image_effect = 'emboss'
                 camera.exif_tags['IFD0.Copyright'] = 'Copyright (c) 2017 GSC'
-                # camera.start_preview()
+                camera.start_preview()
                 time.sleep(2)
 
                 # Note the start time and construct a stream to hold image data
