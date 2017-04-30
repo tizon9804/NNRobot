@@ -8,6 +8,8 @@ var nexplore = 0;
 var cpu = 0;
 var memory = 0;
 var moments;
+var predNav = "Thinking";
+var probNav = 0;
 var cluster;
 
 var isTraining = false;
@@ -39,6 +41,8 @@ var setData = function (req, res) {
     nexplore = q.nexplore;    
     cpu = q.cpu;
     memory = q.memory;
+    predNav = q.predNav;
+    probNav = q.probNav;
     res.json({ "ok": "200"})
 };
 
@@ -52,13 +56,15 @@ var setDataSight = function (req, res) {
 var setDataNnet = function (req, res) {
     var q = req.body;    
     isTraining = q.isTraining;
-    rcost = q.rcost;
-    rsecure = q.rsecure;
-    iterp = q.iterp;
-    iters = q.iters;
-    lambdann = q.lambdann;
-    maxiter = q.maxiter;
-    accurExp = q.accurExp;
+    if (isTraining != "False") {
+        rcost = q.rcost;
+        rsecure = q.rsecure;
+        iterp = q.iterp;
+        iters = q.iters;
+        lambdann = q.lambdann;
+        maxiter = q.maxiter;
+        accurExp = q.accurExp;
+    }
     res.json({ "ok": "200" })
 };
 
@@ -73,6 +79,13 @@ var getPositions = function (req, res) {
 var getKmeans = function (req, res) {
     res.json({
         "buffer": cluster        
+    })
+};
+
+var getPredNav = function (req, res) {
+    res.json({
+        "predNav": predNav,
+        "probNav": probNav
     })
 };
 
@@ -139,4 +152,5 @@ module.exports.getParalelSI = getParalelSI;
 module.exports.getKmeans = getKmeans;
 module.exports.getMoments = getMoments;
 module.exports.getNneTraining = getNneTraining;
+module.exports.getPredNav = getPredNav;
 

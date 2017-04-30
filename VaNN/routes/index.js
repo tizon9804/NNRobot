@@ -43,6 +43,10 @@ router.get('/nnetTraining', function (req,res) {
     consultas.getNneTraining(req, res);
 });
 
+router.get('/predNav', function (req, res) {
+    consultas.getPredNav(req, res);
+});
+
 router.get('/paralelinfo', function (req, res) {
     consultas.getParalelInfo(req, res);
 });

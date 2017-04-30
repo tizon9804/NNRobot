@@ -14,8 +14,8 @@ import random
 class BrainParams:
     def __init__(self):
         self.debugLogic = True
-        self.debugSense = False
-        self.debugExplore = False
+        self.debugSense = True
+        self.debugExplore = True
         self.debugNetwork = False
         self.debugExploreLogic = False
         self.debugRobotSystem = False
@@ -31,6 +31,7 @@ class BrainParams:
         self.actualAngle = 0
         self.error = 100
         self.isSearching = True
+        self.numReportSecure = 0
         self.isMoving = False
         self.isTransition = False
         self.isVideoStreaming = True
@@ -62,8 +63,14 @@ class BrainParams:
         return [last_time, diffs, ips]
 
     def sendDataVA(self):
+        try:
+            pred = 'Is a Bad Direction' if self.Lmemory.conscience.prediction == 1 else 'Is a good Direction'
+            prob = self.Lmemory.conscience.probability
+        except Exception,ex:
+            pred=0
+            prob=0
         self.net.sendData(self.laserData, self.posData, self.nlogic, self.nimage, self.nexplore, psu.cpu_percent(),
-                         psu.virtual_memory().percent)
+                         psu.virtual_memory().percent,pred,prob)
 
     def sendDataSight(self):
         cluster = self.Smemory.itemsZip
@@ -87,21 +94,27 @@ class BrainParams:
     def sendDataNnet(self):
         reportTraining = self.getTrainingStatistics()
         # envia informacion para visualizar
-        self.net.sendDataNnet(reportTraining)
+        if self.isNewReportSecure or self.numReportSecure == 0:
+            self.net.sendDataNnet(reportTraining)
 
     def getTrainingStatistics(self):
         reportCost = np.array([])
         reportSecure = np.array([])
         iterP = 0
         iterS = 0
-        lambdaNN = 0
-        maxIter = 0
-        accurExpected = 0
+        self.isNewReportSecure = False
         if self.Lmemory.isTraining:
             reportCost = self.Lmemory.trainMind.reportCost
             reportSecure = self.Lmemory.trainMind.reportSecure
+            numSecure = reportSecure.shape[0]
+            if numSecure > self.numReportSecure:
+                print "##############################", numSecure
+                self.isNewReportSecure = True
+                self.numReportSecure= numSecure
             iterP = self.Lmemory.trainMind.i
-            iterS = self.Lmemory.trainMind.j
+            iterS = self.Lmemory.conscience.y.shape[0]
+        else:
+            self.numReportSecure = 0
         lambdaNN = self.Lmemory.lambdaNN
         maxIter = self.Lmemory.maxIter
         accurExpected = self.Lmemory.accuracyExpected
@@ -114,6 +127,7 @@ class BrainParams:
                    'accurExp':[accurExpected],
                    'isTraining':[self.Lmemory.isTraining]
                    })
+
         return report
     # ----------------------------------------------------------------------------------
     # LOGS

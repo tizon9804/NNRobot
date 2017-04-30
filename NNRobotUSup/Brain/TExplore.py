@@ -20,7 +20,10 @@ class Explore:
             self.bparm.nexplore = ips
             self.bparm.RobotLife = self.exploreLogic.RobotStarted
             if self.bparm.RobotLife:
-                self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
+                try:
+                    self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
+                except Exception,ex:
+                    print "ErrorLaserBuffer $$$$",str(ex)
                 self.searchDirection()
                 self.move()
 
@@ -34,8 +37,6 @@ class Explore:
             self.exploreLogic.searchDirection()
             self.bparm.logExploreThread(str(self.bparm.PROBTOMOVE))
             # think best way with the nnet return 0-1 where 1 is a secure way
-            bestWay = 1
-            self.bparm.moveEstimation = bestWay - (1 - self.exploreLogic.estimation)
 
     def move(self):
         if self.bparm.isMoving:
@@ -54,8 +55,7 @@ class Explore:
 
     def inTransition(self):
         self.bparm.logExploreThread("in transition")
-        self.bparm.PROBTOMOVE = 0.7
-        self.bparm.moveEstimation = 0
+        self.exploreLogic.estimation = 0
         print "Best way for laser::", self.bparm.actualAngle, ":::", self.bparm.actualDistance, "PROBTOMOVE::", self.bparm.PROBTOMOVE
         self.exploreLogic.transitionMove(self.bparm.actualAngle)
         self.bparm.isTransition = False
@@ -63,7 +63,7 @@ class Explore:
     def badAngle(self):
         self.exploreLogic.transitionMove(self.bparm.badActualAngle)
         self.bparm.isBadWay = True
-        threading._sleep(2)
+        threading._sleep(5)
         self.bparm.isBadWay = False
 
 

@@ -19,13 +19,24 @@ app.set('view engine', 'hbs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({
+    extended: false,
+    parameterLimit: 10000,
+    limit: 1024 * 1024 * 10
+}));
+app.use(bodyParser.urlencoded({
+    extended: false,
+    parameterLimit: 10000,
+    limit: 1024 * 1024 * 10
+}));
 app.use(cookieParser());
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

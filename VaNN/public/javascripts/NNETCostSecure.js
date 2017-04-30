@@ -1,8 +1,8 @@
-﻿createMap('/nnetTraining', "#nnet", 400, 400);
+﻿createMap('/nnetTraining', "#nnet", 500, 400);
 
 
 function createMap(urlData, eleDiv, w, h) {
-    var margin = { top: 20, right: 20, bottom: 30, left: 40 },
+    var margin = { top: 20, right: 100, bottom: 30, left: 40 },
         width = w - margin.left - margin.right,
         height = h - margin.top - margin.bottom;
 
@@ -36,6 +36,12 @@ function createMap(urlData, eleDiv, w, h) {
             return yScale(d.y);
         });
 
+    // A area generator, for the dark stroke.
+    var area = d3.svg.area()
+        .interpolate("basis")
+        .x(function (d) { return xScale(d.x); })
+        .y1(function (d) { return yScale(d.y); });
+
     // add the graph canvas to the body of the webpage
     var lineChartNnet = d3.select(eleDiv).append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -67,6 +73,9 @@ function createMap(urlData, eleDiv, w, h) {
         .style("text-anchor", "end")
         .text("Y");
 
+    var lineChartPath = lineChartNnet.append("g")
+        .attr("class", "nnetg")
+
     getPositions();
     // load data
     function getPositions() {
@@ -84,46 +93,72 @@ function createMap(urlData, eleDiv, w, h) {
     function updateMap(data) {
 
         //update statistics
-        d3.select(".statistics_nnet #maxIter").attr("value", data.maxiter)        
+        d3.select(".statistics_nnet #maxIter").attr("value", data.maxiter)
         d3.select(".statistics_nnet #lambda").attr("value", data.lambdann)
-        d3.select(".statistics_nnet #accExp").attr("value", data.accurExp)   
+        d3.select(".statistics_nnet #accExp").attr("value", data.accurExp)
         d3.select(".statistics_nnet #iterP").attr("value", data.iterp)
         d3.select(".statistics_nnet #iterS").attr("value", data.iters)
+        d3.select(".trainingNN").html("")
+        if (data.isTraining == "True") {
+            d3.select(".trainingNN").html("Training Navigation...");
+            $(".trainingNN").fadeOut(600);
+            $(".trainingNN").fadeIn(600);
+        }
+        
+        
         rcost = data.rcost;
-        rsecure = data.rsecure;     
-        changeData(rcost, rsecure);    
+        rsecure = data.rsecure;
+        changeData(rcost, rsecure);
         // don't want dots overlapping axis, so add in buffer to data domain
-        xScale.domain([0,data.maxiter]);
-        yScale.domain([
-            d3.min(jdata, function (c) { return d3.min(c.val, function (d) { return d.y; }); }),
-            d3.max(jdata, function (c) { return d3.max(c.val, function (d) { return d.y; }); })
-        ]);
+        xScale.domain([0, jdata[0].val.length+100]);
+        //yScale.domain([0, 1.0]);     
+        minYScale = d3.min(jdata, function (c) { return d3.min(c.val, function (d) { return d.y; }); });
+        maxYScale = d3.max(jdata, function (c) { return d3.max(c.val, function (d) { return d.y; }); });
+        minYScale = parseFloat(minYScale)
+        maxYScale = parseFloat(maxYScale)
+        minYScale -= 0.01
+        maxYScale += 0.01
+        yScale.domain([minYScale,maxYScale]);
 
         lineChartNnet.select('.x.axis').transition().duration(500).call(xAxis);
-        lineChartNnet.select(".y.axis").transition().duration(500).call(yAxis)
+        lineChartNnet.select(".y.axis").transition().duration(500).call(yAxis);       
+              
+            
+        var linesC = lineChartPath.selectAll(".line")
+            .data(jdata)
+           
+        var textline = lineChartPath.selectAll(".lineText")
+            .data(jdata) 
 
-    
-        // draw dots
-        var linesC = lineChartNnet.selectAll(".nnetg")
-            .data(jdata)  
-            .enter().append("g")
-            .attr("class", "nnetg")         
+        var areaC = lineChartPath.selectAll(".area")
+            .data(jdata)
+
+        area.y0(height)
+            .y1(function (d) { return yScale(d.y); });
 
         linesC.exit()
             .transition()
-            .duration(500)            
-            .remove()       
+            .duration(500)
+            .remove()  
+        textline.exit()
+            .transition()
+            .duration(500)
+            .remove()   
 
-        linesC.append("path")
+        areaC.exit()
+            .transition()
+            .duration(500)
+            .remove()    
+
+        linesC.enter().append("path")
             .attr("class", "line")
             .attr("d", function (d) {
                 return line(d.val);
-            })         
+            })
             .style("stroke", function (d) {
                 return 2;
             })
-
-        linesC.append("text")
+        textline.enter().append("text")
             .datum(function (d) { return { id: d.id, val: [d.val[d.val.length - 1]] }; })
             .attr("class", "lineText")
             .attr("transform", function (d) {
@@ -134,22 +169,33 @@ function createMap(urlData, eleDiv, w, h) {
             .style("font", "10px sans-serif")
             .text(function (d) { return d.id; });
 
-        linesC.selectAll(".line").transition().duration(700)           
+        areaC.enter().insert("path", ".line").transition().duration(500)
+            .attr("class", "area")
+            .attr("transform", function (d) { return "translate(0," + (d.val[0].y * (h / 4 - 20)) + ")"; })
+            .attr("d", function (d) { return area(d.val); })
+            .style("fill", function (d, i) { return colores_google(4); })
+            .style("fill-opacity", 1e-6);
+
+        linesC.transition().duration(500)
             .attr("d", function (d) {
                 return line(d.val);
-            })           
+            })
             .style("stroke", function (d) {
-                return 2;
+                return 3;
             })
-        linesC.selectAll(".lineText")
-            .datum(function (d) {
-                return { id: d.id, val: [d.val[d.val.length - 1]]};
-            })
-            .attr("transform", function (d) {
-                return "translate(" + xScale(d.val[0].x) + "," + yScale(d.val[0].y) + ")";
-            })
-            .text(function (d) { return d.id; });
 
+        textline.datum(function (d) {
+            return { id: d.id, val: [d.val[d.val.length - 1]] };
+        })
+        .attr("transform", function (d) {
+            return "translate(" + xScale(d.val[0].x) + "," + yScale(d.val[0].y) + ")";
+        })
+            .text(function (d) {
+                return d.id + ": " + (d.val[0].y)+ "%";
+            });
+
+        areaC.style("fill-opacity", .9)
+            .attr("d", function (d) { return area(d.val); });  
     }   
 
     function changeData(rcost, resecure) {
@@ -157,9 +203,8 @@ function createMap(urlData, eleDiv, w, h) {
             // change string (from CSV) into number format              
             jdata = [{
                 id: "secure",
-                val: rsecure.map(function (d, i) {
-                    i=i+1
-                    return { x: i, y: d };
+                val: rsecure.map(function (d, i) {                    
+                    return { x: i, y: (d*100).toFixed(3) };
                 })
             }];
            // rcost.forEach(function (d, i) {

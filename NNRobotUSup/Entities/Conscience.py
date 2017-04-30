@@ -10,6 +10,8 @@ class Conscience:
         self.elements = np.array([])
         self.y = np.array([])
         self.persistence = persistence
+        self.prediction = 0
+        self.probability = 0
 
     def initNN(self):
         if not self.isInitNN:
@@ -23,7 +25,7 @@ class Conscience:
                 self.costgrads.createFunction()
                 self.isInitNN = True
             except Exception,ex:
-                print "Error: ", str(ex)
+                #print "Error: ", str(ex)
                 self.isInitNN = False
 
     def collectDataImg(self, cap, init):

@@ -14,7 +14,7 @@ class Sense:
             #register iterations per second
             last_time, diffs, ips = self.bparm.ips(last_time, diffs);
             self.bparm.nimage = ips
-            self.bparm.logSenseThread("transmiting...")
+            #self.bparm.logSenseThread("transmiting...")
             self.bparm.sight.see()
             #time.sleep(0.5)
 

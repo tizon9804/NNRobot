@@ -22,7 +22,10 @@ class Explore:
             self.actualFront = 0
             self.contAngle = 1
             self.estimation = 0
+            self.angleAnt = 0.0
+            self.action = False
             self.distance = 0
+            self.needOther = True
             self.tempMoves = []
             self.tempMovesBad = []
             self.trackroute = []
@@ -32,27 +35,29 @@ class Explore:
             self.RobotStarted = False
 
     def searchDirection(self):
-        start = self.MAXREADINGS/2
-        end  = start * -1
-        rangeL = 1
-        lmoves = []
-        #iterate all reading of the sensor in steps of rangeL grades
-        for x in range(start,(end+rangeL)-1,-1):
-            xend = x-rangeL
-            distance,angle = self.robotSystem.getClosestDistance(x,xend)
-            self.logExplore(self.thread + " angle::"+ str(self.angle)+ "relative::"+ str(self.getRelativeAngle()))
-            estimation = self.calculateProbToMove(distance)
-            lmoves.append([angle, distance, estimation])
-        angle,distance,estimation = self.getAngleMaxDistanceTemp(lmoves)
-        angleb, distanceb, estimationb = self.getAngleMinDistanceTemp(lmoves)
-        self.tempMovesBad.append([angleb, distanceb, estimationb])
-        self.tempMoves.append([angle, distance, estimation])
-        self.estimation = estimation
-        if self.robotSystem.isHeadingDone():
-            self.robotSystem.rotate(angle)
-            self.cumulateAngle += 1
-        self.logExplore(self.thread + "temp:: "+str(len(self.tempMoves))+"&&"+ str(self.tempMoves[len(self.tempMoves) - 1]))
+        try:
+            start = self.MAXREADINGS/2
+            end  = start * -1
+            rangeL = 1
+            #iterate all reading of the sensor in steps of rangeL grades
+            lmoves = self.robotSystem.getClosestDistance(start,(end+rangeL)-1)
+            while  self.needOther and len(lmoves) > 0:
+                if self.action:
+                    angle,distance,estimation = self.getAngleMaxDistanceTempRemove(lmoves)
+                    if self.robotSystem.isHeadingDone():
+                        self.robotSystem.rotate(angle)
+                        self.cumulateAngle += 1
+                    self.estimation = estimation
+                    angleb, distanceb, estimationb = self.getAngleMinDistanceTemp(lmoves)
+                    self.tempMovesBad.append([angleb, distanceb, estimationb])
+                    self.tempMoves.append([angle, distance, estimation])
+                    self.action = False
 
+
+
+            self.logExplore(self.thread + "temp:: "+str(len(self.tempMoves))+"&&"+ str(self.tempMoves[len(self.tempMoves) - 1]))
+        except Exception,ex:
+            self.logExplore(self.thread + str(ex))
 
     def calculateProbToMove(self, distance):
         # calculate the final value estimation to move between distance and bestway
@@ -67,7 +72,11 @@ class Explore:
         self.robotSystem.restartHeading()
 
     def getRelativeAngle(self):
-        return self.robotSystem.getTh()
+        try:
+            return self.robotSystem.getTh()
+        except Exception,ex:
+            self.logExplore(self.thread + str(ex))
+            return 0
 
     def move(self, distance):
         self.contAngle = 1
@@ -94,8 +103,35 @@ class Explore:
                     tupleList.append(tuple)
                 maxdistance = dist
         position =   len(tupleList)/2
-        tupleMax = tupleList[position]
-        return tupleMax
+        numtup = len(tupleList)
+        if numtup > 0:
+            tupleMax = tupleList[position]
+            return tupleMax
+        print "ERROR max getAngleMaxDistanceTemp######################################################"
+        return [0, 0, 0]
+
+    def getAngleMaxDistanceTempRemove(self,list):
+        maxdistance = 0
+        tupleList = []
+        i=len(list)-1
+        for tuple in reversed(list):
+            dist = tuple[2]
+            if dist >= maxdistance:
+                if dist == maxdistance:
+                   tupleList.append([tuple,i])
+                else:
+                    tupleList = []
+                    tupleList.append([tuple,i])
+                maxdistance = dist
+            i=i-1
+        position =   len(tupleList)/2
+        numtup = len(tupleList)
+        if numtup > 0:
+            tupleMax = tupleList[position][0]
+            del list[tupleList[position][1]]
+            return tupleMax
+        print "ERROR max lmoves getAngleMaxDistanceTemp######################################################"
+        return [0, 0, 0]
 
     def getAngleMinDistanceTemp(self,list):
         mindistance = 6000
@@ -110,8 +146,12 @@ class Explore:
                     tupleList.append(tuple)
                     mindistance = dist
         position = len(tupleList) / 2
-        tupleMin = tupleList[position]
-        return tupleMin
+        numtup = len(tupleList)
+        if numtup > 0:
+            tupleMin = tupleList[position]
+            return tupleMin
+        print "ERROR min getAngleMinDistanceTemp######################################################"
+        return [0,0,0]
 
     def trackRoute(self, angle, distance):
         self.trackroute.append([angle, self.actualFront, distance])

@@ -118,28 +118,6 @@ class config:
         ##determine the Final accuracy
         self.accuracyF(Xb, costgrads)
 
-    def statistics(self,costgrads):
-        self.persistence.saveNN(self.type, costgrads.getState())
-        if not self.persistence.loadNN(self.type):
-            print "unstable consciousness"
-        self.pred = np.array(())
-        self.accuracyProbability = np.array(())
-        for inp in range(Xb.shape[0]):
-            self.pred = np.append(self.pred, costgrads.maxFunction(Xb[inp]))
-            self.accuracyProbability = np.append(self.accuracyProbability, costgrads.maxpFunction(Xb[inp]))
-        self.accuracy = np.mean(self.pred == np.asarray(self.y)) * 100
-        self.accuracyProbability = np.mean(self.accuracyProbability) * 100
-        print "element predicted", self.pred
-        print "element expected", self.y
-        print "accuracy is: ", self.accuracy, "%"
-        print "probabilities of the accuracy ", self.accuracyProbability, "%"
-        plt.figure(1)
-        plt.subplot(211)
-        plt.plot(reportsecure)
-        plt.subplot(212)
-        plt.plot(reportcost)
-        plt.show()
-
     def accuracyF(self, Xb, costgrads):
         self.pred = np.array(())
         self.accuracyProbability = np.array(())

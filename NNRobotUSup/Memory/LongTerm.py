@@ -44,10 +44,12 @@ class LongTerm:
             if c.name == nameCons:
                 self.conscience = c  # type: Con.Conscience
                 self.addDataToTrain(data,0)
-                listyBest = (self.conscience.y == 0)
-                print listyBest.shape, "best Y"
-                if listyBest.shape[0] % self.numEleToTrain == 0 and not self.isTraining:
-                    self.lambdaNN = float(1.0/(self.conscience.elements.shape[0]*10))
+                numbad = np.nonzero(self.conscience.y)[0].shape[0]
+                total = self.conscience.y.shape[0]
+                numbest = total - numbad
+                print numbest, "best Y"
+                if numbest % self.numEleToTrain == 0 and not self.isTraining:
+                    self.lambdaNN = float(1.0/(self.conscience.elements.shape[0]*5))
                     self.isTraining = True
                     tTrain = threading.Thread(target=self.trainNN,args=(self.lambdaNN,self.maxIter,self.accuracyExpected,self.maxNoCostIter,self.persistence,self.conscience),name="NNET")
                     tTrain.start()
@@ -59,6 +61,7 @@ class LongTerm:
         print threading.currentThread().getName(), ' training launched'
         self.trainMind = train.config(lambdaNN, maxIter, persistence,conscience.name, accuracy, maxNoCost)
         self.trainMind.train(conscience.mind, conscience.elements, conscience.y)
+        threading._sleep(5)
         self.isTraining = False
 
 
@@ -86,11 +89,10 @@ class LongTerm:
             if c.name == nameCons:
                 conscience = c  # type: Con.Conscience
                 conscience.initNN()
-                prediction,probability = [-1,-1]
                 if conscience.isInitNN:
                     mind = conscience.mind  # type: Think.assemble
-                    prediction,probability,zin = mind.think(data,conscience.costgrads)
-                    print zin.shape
+                    conscience.prediction,conscience.probability,zin = mind.think(data,conscience.costgrads)
+                    #print zin.shape
                     #img = conscience.win.T[0][1:]
                     img = zin[0][1:]
                     img = np.reshape(img,self.bestWayO.shape)
@@ -98,7 +100,6 @@ class LongTerm:
                     maxi = np.max(img)
                     img =((img - mini) / (maxi - mini)) * (255);
                     cv2.imwrite(self.path + '/image_stream_nnet.jpg', img)
-                return [prediction,probability]
 
     def newImage(self,img):
         im = np.asarray(img, dtype='float32') / 256 # is important divide 256 to correct train nnet

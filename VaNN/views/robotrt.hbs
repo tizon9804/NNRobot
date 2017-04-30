@@ -20,12 +20,16 @@
     <h2>Memory Percent</h2>
     <svg id="fillgauge5" width="100%" height="20%"></svg>
 </div>
-<div>
+<div class="blocky">
     <h2 class="page-header title">Exploration</h2>
     <div id="Laser" class="map"></div>
     <div id="map" class="map"></div>
+   <div class="predNavDiv">
+       <h2 class="predNavH2">Nothing</h2>
+       <div id="predNav" class="map"></div>
+   </div>
 </div>
-<div class="Image">
+<div class="Image blocky">
     <h2 class="page-header title">Image Processing</h2>
     <button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>
     <div class="row cam">
@@ -35,7 +39,7 @@
         <img src="" id="stream">
     </div>
 </div>
-<div class="cluster">
+<div class="cluster blocky">
     <h2 class="page-header title">Clustering</h2>
     <div id="kmeans" class="map"></div>
     <div id="image">        
@@ -57,13 +61,14 @@
         <img src="" id="stream_object">
     </div>
 </div>
-<div class="nnet">
+<div class="nnet blocky">
     <h2 class="page-header title">Navigation Neural Network</h2>    
     <div class="row camn">
         <img src="" id="stream_best">
         <img src="" id="stream_bad">
         <img src="" id="stream_nnet">
     </div>
+    <h2 class="trainingNN"></h2>  
     <div id="nnet" class="map"></div>
     <div id="nnetForm">
         <div class="statistics_nnet">
@@ -92,7 +97,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="example-search-input" class="col-2 col-form-label"># iterations per data</label>
+                <label for="example-search-input" class="col-2 col-form-label"># Number of Elements</label>
                 <div class="col-10">
                     <input class="form-control" type="text" value="0" id="iterS">
                 </div>
@@ -101,6 +106,7 @@
     </div>
 </div>
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="javascripts/PredNav.js"></script>
 <script src="javascripts/RobotLaser.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="javascripts/StreamClient.js"></script>

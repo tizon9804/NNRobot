@@ -10,10 +10,10 @@ from PIL import Image
 print "open sockets port 8000"
 server_socket = socket.socket()
 server_socket.bind(('0.0.0.0', 8000))
-print "listening"
+print "listening SENSE"
 server_socket.listen(0)
 
-print  "Accept a single connection and make a file-like object out of it"
+print  "Accept a single connection Camera"
 connection = server_socket.accept()[0].makefile('rb')
 try:
     while True:

@@ -97,6 +97,11 @@ h2{
  text-align:center;
 }
 
+.predNavDiv{
+ float:left;
+ width:100%;
+}
+
 
 
 .nnet #nnetForm{ 
@@ -109,6 +114,25 @@ h2{
 
 .nnet .line {
   fill: none;
-  stroke: steelblue;
-  stroke-width: 1.5px;
+  stroke: #109618;
+  stroke-width: 2px;
+}
+
+.predNavDiv .line {
+  fill: none;
+  stroke: #000000;
+  stroke-width: 2px;
+}
+
+.blockys{
+    border-radius:2px;
+    box-shadow:0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);
+    background-color:#fff;
+    margin:5%
+}
+
+.predNavDiv .map{
+    width:40%;
+    float:left;
+    margin:1%;
 }
