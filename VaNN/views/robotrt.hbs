@@ -30,13 +30,12 @@
    </div>
 </div>
 <div class="Image blocky">
-    <h2 class="page-header title">Image Processing</h2>
-    <button type="button" id="" class="btn btn-info start" onclick="startStream()">Start Camera</button>
-    <div class="row cam">
-        <img src="" id="stream_gray">
-        <img src="" id="stream_laplacian">
-        <img src="" id="stream_canny">
-        <img src="" id="stream">
+    <h2 class="page-header title">Image Processing</h2>    
+    <div class="row cam">       
+        <canvas id="image_stream_gray"></canvas>
+        <canvas id="image_stream_laplacian"></canvas>
+        <canvas id="image_stream_canny"></canvas>
+        <canvas id="image_stream"></canvas>        
     </div>
 </div>
 <div class="cluster blocky">
@@ -64,9 +63,9 @@
 <div class="nnet blocky">
     <h2 class="page-header title">Navigation Neural Network</h2>    
     <div class="row camn">
-        <img src="" id="stream_best">
-        <img src="" id="stream_bad">
-        <img src="" id="stream_nnet">
+        <canvas id="image_stream_best"></canvas>    
+        <canvas id="image_stream_bad"></canvas>    
+        <canvas id="image_stream_nnet"></canvas> 
     </div>
     <h2 class="trainingNN"></h2>  
     <div id="nnet" class="map"></div>

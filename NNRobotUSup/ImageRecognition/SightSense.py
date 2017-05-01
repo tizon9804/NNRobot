@@ -1,9 +1,9 @@
 import Camera as c
 import ImageProcessing as IM
 class SightSense:
-    def __init__(self,isVideoStream,Smemory,Lmemory):
+    def __init__(self,isVideoStream,Smemory,Lmemory,ftpSender):
        self.cam = c.Camera(isVideoStream)
-       self.IMprocess = IM.IMprocess(Smemory,Lmemory)
+       self.IMprocess = IM.IMprocess(Smemory,Lmemory,ftpSender)
 
 
     def see(self):

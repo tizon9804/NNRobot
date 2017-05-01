@@ -1,17 +1,20 @@
 import numpy as np
 import NNRobotUSup.Entities.Item as I
 from NNRobotUSup.Memory import LongTerm as lt
+import NNRobotUSup.Network.FtpSender as ftp
 import cv2
 
 
 class IMprocess:
-    def __init__(self, Smemory, Lmemory):
+    def __init__(self, Smemory, Lmemory,ftpSender):
         self.Lmemory = Lmemory # type: lt.LongTerm
         self.Smemory = Smemory
+        self.ftpSender = ftpSender #type: ftp.FtpSender
         self.bestWay = []
         self.image = []
         self.moments = []
         self.path = r'../../VaNN/public/stream'
+        self.path2 = '../../VaNN/public/stream'
 
     def contours(self, img):
         imgRGB = img.copy()
@@ -51,7 +54,6 @@ class IMprocess:
                     # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
                     flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
                     #cv2.imshow("rgb" + str(0), flood)
-                    cv2.imwrite(self.path+'/image_stream_object.jpg', flood)
                     cv2.waitKey(1)
                     # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
                     cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
@@ -60,8 +62,11 @@ class IMprocess:
             # filtro que elimina el color de to_do lo que no es un controno
             self.floodImage(self.img, img, 0)
         #cv2.imshow("Contours", img)
-        cv2.imwrite(self.path+'/image_stream.jpg', img)
-        cv2.waitKey(1)
+        self.ftpSender.upload(img, 'image_stream')
+        cv2.waitKey(2)
+
+
+
 
     def obtainPieceOfImage(self, cnt, rect, imageRGB, imgCont, i):
         # obtiene la matriz de rotacion del rect que senala un objeto
@@ -127,8 +132,7 @@ class IMprocess:
              item.meanGreen,
              item.meanBlue])
         tam = len(self.Smemory.Z)
-        cv2.imwrite(self.path + '/image_stream_object_'+str(tam)+'.jpg', img)
-
+        #self.ftpSender.upload(img, 'image_stream_object_'+str(tam))
 
     def gaussianBlur(self, show):
         self.img = self.imFilt
@@ -141,7 +145,7 @@ class IMprocess:
         self.img = self.imFilt
         self.imFilt = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
         if show:
-            cv2.imwrite(self.path + '/image_stream_gray.jpg', self.imFilt)
+            self.ftpSender.upload(self.imFilt, 'image_stream_gray')
             cv2.waitKey(1)
 
     def laplacian(self, show):
@@ -150,7 +154,7 @@ class IMprocess:
                             scale=2, delta=200, ksize=3, borderType=cv2.BORDER_CONSTANT)
         self.imFilt = cv2.convertScaleAbs(dst)
         if show:
-            cv2.imwrite(self.path + '/image_stream_laplacian.jpg', self.imFilt)
+            self.ftpSender.upload(self.imFilt, 'image_stream_laplacian')
             cv2.waitKey(1)
 
     def medianBlur(self, show):
@@ -179,5 +183,5 @@ class IMprocess:
         self.img = self.imFilt
         self.imFilt = cv2.Canny(self.img, 0, 30)
         if show:
-            cv2.imwrite(self.path + '/image_stream_canny.jpg', self.imFilt)
+            self.ftpSender.upload(self.imFilt, 'image_stream_canny')
             cv2.waitKey(1)

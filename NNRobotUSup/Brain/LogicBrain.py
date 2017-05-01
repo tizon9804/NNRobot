@@ -2,6 +2,7 @@ from NNRobotUSup.Memory import LongTerm as lt
 import NNRobotUSup.Memory.ShortTerm as S
 import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
+import NNRobotUSup.Network.FtpSender as ftp
 import Libraries.Persistence.TargetManager as T
 import time
 import psutil as psu
@@ -37,10 +38,11 @@ class BrainParams:
         self.isVideoStreaming = True
         self.isBadWay = False
         self.targetList = []
+        self.ftpSender = ftp.FtpSender()
         self.persistence = T.targetManager()
-        self.Lmemory = lt.LongTerm(self.persistence)
+        self.Lmemory = lt.LongTerm(self.persistence,self.ftpSender)
         self.Smemory = S.ShortTerm()
-        self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory)
+        self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory, self.ftpSender)
         # robot indicators
         self.laserData = []
         self.posData = []

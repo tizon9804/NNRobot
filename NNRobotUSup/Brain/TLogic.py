@@ -10,6 +10,7 @@ class Logic:
         self.explore = Explore # type: TE.Explore
         self.sense = Sense
         self.bparm = BrainP
+        self.ftpSender = self.bparm.ftpSender  # type: ftp.FtpSender
         self.conscienceNameExp="NAV"
         self.path = r'../../VaNN/public/stream'
         tLogic = threading.Thread(target=self.loopLogic)
@@ -43,7 +44,7 @@ class Logic:
         self.bparm.logLogicThread("training best way..")
         lMemory = self.bparm.Lmemory  # type: lt.LongTerm
         if lMemory.bestWay.shape[0] > 0:
-            cv2.imwrite(self.path + '/image_stream_best.jpg', lMemory.bestWayO)
+            self.ftpSender.upload(lMemory.bestWayO, 'image_stream_best')
             isnav, navMind = lMemory.lookForConscience(self.conscienceNameExp)
             if isnav:
                 print "picture best way...."
@@ -52,7 +53,7 @@ class Logic:
         self.bparm.logLogicThread("training worst way..")
         lMemory = self.bparm.Lmemory  # type: lt.LongTerm
         if lMemory.bestWay.shape[0] > 0:
-            cv2.imwrite(self.path + '/image_stream_bad.jpg', lMemory.bestWayO)
+            self.ftpSender.upload(lMemory.bestWayO, 'image_stream_bad')
             isnav,c = lMemory.lookForConscience(self.conscienceNameExp)
             if isnav:
                 print "picture bad way...."

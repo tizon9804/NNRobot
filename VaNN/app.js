@@ -96,37 +96,28 @@ io.on('connection', function (socket) {
         r = startStreaming(io, 'stream/image_stream.jpg', 'liveStream',w);
         app.set('watchingFile', r);
     });
-    socket.on('start-stream-gray', function () {
-        w = app.get('watchingFile-gray')        
-        r = startStreaming(io, 'stream/image_stream_gray.jpg', 'liveStream-gray', w);
-        app.set('watchingFile-gray', r);
-    });
-    socket.on('start-stream-laplacian', function () {
-        w = app.get('watchingFile-laplacian')
-        r = startStreaming(io, 'stream/image_stream_laplacian.jpg', 'liveStream-laplacian', w);
-        app.set('watchingFile-laplacian', r);
-    });
-    socket.on('start-stream-canny', function () {
-        w = app.get('watchingFile-canny')
-        r = startStreaming(io, 'stream/image_stream_canny.jpg', 'liveStream-canny', w);
-        app.set('watchingFile-canny', r);
-    });
-    socket.on('start-stream-nnet', function () {
-        w = app.get('watchingFile-nnet')
-        r = startStreaming(io, 'stream/image_stream_nnet.jpg', 'liveStream-nnet', w);
-        app.set('watchingFile-nnet', r);
-    });
-    socket.on('start-stream-best', function () {
-        w = app.get('watchingFile-best')
-        r = startStreaming(io, 'stream/image_stream_best.jpg', 'liveStream-best', w);
-        app.set('watchingFile-best', r);
-    });
-    socket.on('start-stream-bad', function () {
-        w = app.get('watchingFile-bad')
-        r = startStreaming(io, 'stream/image_stream_bad.jpg', 'liveStream-bad', w);
-        app.set('watchingFile-bad', r);
-    });
 
+    socket.on('image_stream', function (buffer) {
+        io.sockets.emit('image_stream', buffer);
+    });
+    socket.on('image_stream_canny', function (buffer) {
+        io.sockets.emit('image_stream_canny', buffer);
+    });
+    socket.on('image_stream_gray', function (buffer) {
+        io.sockets.emit('image_stream_gray', buffer);
+    });
+    socket.on('image_stream_laplacian', function (buffer) {
+        io.sockets.emit('image_stream_laplacian', buffer);
+    });
+    socket.on('image_stream_bad', function (buffer) {
+        io.sockets.emit('image_stream_bad', buffer);
+    });
+    socket.on('image_stream_nnet', function (buffer) {
+        io.sockets.emit('image_stream_nnet', buffer);
+    });
+    socket.on('image_stream_best', function (buffer) {
+        io.sockets.emit('image_stream_best', buffer);
+    }); 
     
 
 });

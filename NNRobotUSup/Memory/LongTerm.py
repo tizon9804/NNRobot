@@ -6,9 +6,10 @@ import Libraries.Persistence.TargetManager as T
 import threading
 
 class LongTerm:
-    def __init__(self,persistence):
+    def __init__(self,persistence,ftpSender):
         self.consciences = []
         self.id = 0
+        self.ftpSender = ftpSender  # type: ftp.FtpSender
         self.bestWayO = np.array([])
         self.bestWay = np.array([])
         self.persistence = persistence # type: T.targetManager
@@ -99,7 +100,7 @@ class LongTerm:
                     mini = np.min(img)
                     maxi = np.max(img)
                     img =((img - mini) / (maxi - mini)) * (255);
-                    cv2.imwrite(self.path + '/image_stream_nnet.jpg', img)
+                    self.ftpSender.upload(img, 'image_stream_nnet')
 
     def newImage(self,img):
         im = np.asarray(img, dtype='float32') / 256 # is important divide 256 to correct train nnet
