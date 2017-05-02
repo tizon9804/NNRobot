@@ -3,6 +3,7 @@ import threading
 import cv2
 from socketIO_client import SocketIO, LoggingNamespace
 from base64 import b64encode
+import socket
 
 class FtpSender:
     def __init__(self):
@@ -12,21 +13,32 @@ class FtpSender:
     def connect(self):
         self.sock = SocketIO('104.198.238.71',80,LoggingNamespace)
         #self.sock = SocketIO('190.158.131.76', 3000, LoggingNamespace)
+        #self.sockUdp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
+        #self.UDP_IP = '104.198.238.71'
+        #self.UDP_PORT = 5000
         self.isconnect = True
+
     def upload(self,img,name):
         if self.isconnect:
             if not self.sending:
                 t = threading.Thread(target=self.uploadasync, args=(img, name))
                 t.start()
-
         else:
             self.connect()
+
+
 
     def uploadasync(self,img,name):
         self.sending = True
         img = cv2.imencode('.jpeg', img)
         self.sock.emit(name, {'buffer': b64encode(img[1])})
         self.sending = False
+
+
+    def uploadasyncUDP(self, img, name):
+        img = cv2.imencode('.jpeg', img)
+        self.sockUdp.sendto(b64encode(img[1]), (self.UDP_IP, self.UDP_PORT))
+
 
 
 

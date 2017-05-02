@@ -24,6 +24,7 @@ class Explore:
                     self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
                 except Exception,ex:
                     print "ErrorLaserBuffer $$$$",str(ex)
+                    self.bparm.exploreLife = False
                 self.searchDirection()
                 self.move()
 
