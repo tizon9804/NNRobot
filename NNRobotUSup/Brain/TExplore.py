@@ -10,7 +10,7 @@ class Explore:
 
     def loopExplore(self):
         self.bparm.logExploreThread("thread started...")
-        self.exploreLogic = ELB.Explore(self.bparm.explore,self.bparm.debugExploreLogic,self.bparm.debugRobotSystem,self.bparm.isVideoStreaming)
+        self.exploreLogic = ELB.Explore(self.bparm.explore,self.bparm.debugExploreLogic,self.bparm.debugRobotSystem,self.bparm.isVideoStreaming,self.bparm)
         last_time = time.clock()
         diffs = []
         while self.bparm.exploreLife:
@@ -23,8 +23,8 @@ class Explore:
                 try:
                     self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
                 except Exception,ex:
-                    print "ErrorLaserBuffer $$$$",str(ex)
-                    self.bparm.exploreLife = False
+                    print "ErrorLaserBuffer loopExplore $$$$",str(ex)
+                    #self.bparm.exploreLife = False
                 self.searchDirection()
                 self.move()
 

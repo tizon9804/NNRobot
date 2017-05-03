@@ -20,7 +20,6 @@ class BrainParams:
         self.debugNetwork = False
         self.debugExploreLogic = False
         self.debugRobotSystem = False
-        self.net = ro.Network(self.debugNetwork)
         self.PROBTOMOVE = 0.8  # is temp 1
         self.logicLife = True
         self.senseLife = True
@@ -40,9 +39,10 @@ class BrainParams:
         self.targetList = []
         self.ftpSender = ftp.FtpSender()
         self.persistence = T.targetManager()
+        self.net = ro.Network(self.debugNetwork, self)
         self.Lmemory = lt.LongTerm(self.persistence,self.ftpSender)
         self.Smemory = S.ShortTerm()
-        self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory, self.ftpSender)
+        self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory, self.ftpSender,self)
         # robot indicators
         self.laserData = []
         self.posData = []

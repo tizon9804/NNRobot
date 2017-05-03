@@ -8,7 +8,7 @@ import socket
 class FtpSender:
     def __init__(self):
         self.connect()
-        self.sending = False
+        self.sending = 60
 
     def connect(self):
         self.sock = SocketIO('104.198.238.71',80,LoggingNamespace)
@@ -20,7 +20,9 @@ class FtpSender:
 
     def upload(self,img,name):
         if self.isconnect:
-            if not self.sending:
+            self.sending += 1
+            if self.sending > 50:
+                self.sending = 0
                 t = threading.Thread(target=self.uploadasync, args=(img, name))
                 t.start()
         else:
@@ -29,10 +31,9 @@ class FtpSender:
 
 
     def uploadasync(self,img,name):
-        self.sending = True
         img = cv2.imencode('.jpeg', img)
         self.sock.emit(name, {'buffer': b64encode(img[1])})
-        self.sending = False
+
 
 
     def uploadasyncUDP(self, img, name):

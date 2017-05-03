@@ -5,9 +5,10 @@ import cv2
 import numpy as np
 
 class VideStream:
-    def __init__(self):
+    def __init__(self,bparm):
         # Start a socket listening for connections on 0.0.0.0:8000 (0.0.0.0 means
         # all interfaces)
+        self.bparm = bparm
         self.isVideoActive = False
 
     def acceptVideo(self):
@@ -44,5 +45,8 @@ class VideStream:
         except Exception as ex:
             print "Network: finalizo streaming: " + str(ex)
             self.isVideoActive = False
+            self.bparm.logicLife = False
+            self.bparm.exploreLife =False
+            self.bparm.senseLife = False
             connection.close()
             self.server_socket.close()

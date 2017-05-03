@@ -12,12 +12,12 @@ import NNRobotUSup.Network.Routes as ro
 import NNRobotUSup.Entities.Item as I
 
 class Camera:
-    def __init__(self,isVideoStream):
+    def __init__(self,isVideoStream,bparm):
         self.debugNetwork = False
-        self.net = ro.Network(self.debugNetwork)
+        self.net = bparm.net
         self.isVideoStream = isVideoStream
         if isVideoStream:
-            self.server= server.VideStream()
+            self.server= server.VideStream(bparm)
         else:
             # initialize the camera and grab a reference to the raw camera capture
             camera = PiCamera()

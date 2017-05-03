@@ -61,7 +61,7 @@ class IMprocess:
                 i += 1
             # filtro que elimina el color de to_do lo que no es un controno
             self.floodImage(self.img, img, 0)
-        cv2.imshow("Contours", img)
+        #cv2.imshow("Contours", img)
         self.ftpSender.upload(img, 'image_stream')
         cv2.waitKey(2)
 

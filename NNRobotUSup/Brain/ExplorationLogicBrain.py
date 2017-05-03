@@ -3,14 +3,15 @@ import NNRobotUSup.Network.ServerRobotStream as server
 
 
 class Explore:
-    def __init__(self, thread,debugExplore,debugRobot,isServer):
+    def __init__(self, thread,debugExplore,debugRobot,isServer,bparm):
         try:
+            self.bparm = bparm
             self.debug = debugExplore
             self.logExplore(thread + "init Explore")
             if not isServer:
                 self.robotSystem = R.RobotDriver(debugRobot)
             else:
-                self.robotSystem = server.RobotServerStream()
+                self.robotSystem = server.RobotServerStream(self.bparm)
                 self.robotSystem.acceptRobot()
 
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
@@ -33,6 +34,9 @@ class Explore:
         except Exception as ex:
             self.logExplore(thread + "Cannot connect to Robot:" + str(ex))
             self.RobotStarted = False
+            self.bparm.logicLife = False
+            self.bparm.exploreLife = False
+            self.bparm.senseLife = False
 
     def searchDirection(self):
         try:
