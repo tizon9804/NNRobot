@@ -109,6 +109,8 @@ class Logic:
                     if prob==0:
                         pred = 0
                         probTotal = self.explore.exploreLogic.estimation
+
+
                     if  pred == 0 and probTotal >= self.bparm.PROBTOMOVE:
                         self.bparm.PROBTOMOVE = prob*0.5 if prob > 0 else self.bparm.PROBTOMOVE
                         self.isSearching = False
@@ -122,7 +124,7 @@ class Logic:
                         self.bparm.logLogicThread(
                             str(self.bparm.actualAngle) + "$$" + str(self.bparm.actualDistance) + "$$" + str(self.bparm.actualEstimation))
                         self.bparm.logLogicThread(" rotation rate::: " + str(self.explore.exploreLogic.rotationRate))
-                        self.bparm.error = self.bparm.actualDistance * 0.2
+                        self.bparm.error = self.bparm.actualDistance * 0.5
                         self.explore.exploreLogic.needOther = False
                         self.startMoving()
                     else:
@@ -138,7 +140,7 @@ class Logic:
         self.bparm.isMoving = True
         num = 0
         while self.bparm.isTransition:
-            if self.bparm.isBadWay and num < 2:
+            if self.bparm.isBadWay and num < 1:
                 self.bparm.logLogicThread("waiting to train best way...")
                 self.trainBadWay()
                 num += 1

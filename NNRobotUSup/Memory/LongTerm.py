@@ -6,7 +6,8 @@ import Libraries.Persistence.TargetManager as T
 import threading
 
 class LongTerm:
-    def __init__(self,persistence,ftpSender):
+    def __init__(self,persistence,ftpSender,bparm):
+        self.bparm = bparm
         self.consciences = []
         self.id = 0
         self.ftpSender = ftpSender  # type: ftp.FtpSender
@@ -15,10 +16,10 @@ class LongTerm:
         self.persistence = persistence # type: T.targetManager
         self.isTraining = False
         self.accuracyExpected = .98
-        self.maxIter = 1000
+        self.maxIter = 2000
         self.maxNoCostIter = 700
         self.lambdaNN = 0
-        self.numEleToTrain = 10
+        self.numEleToTrain = 20
         self.path = r'../../VaNN/public/stream'
 
 
@@ -62,6 +63,8 @@ class LongTerm:
         print threading.currentThread().getName(), ' training launched'
         self.trainMind = train.config(lambdaNN, maxIter, persistence,conscience.name, accuracy, maxNoCost)
         self.trainMind.train(conscience.mind, conscience.elements, conscience.y)
+        self.bparm.PROBTOMOVE = self.trainMind.accuracyProbability
+        print 'PROBTOMOVE updated',self.bparm.PROBTOMOVE
         threading._sleep(5)
         self.isTraining = False
 
@@ -74,6 +77,7 @@ class LongTerm:
              self.conscience.elements = data
          else:
              self.conscience.elements = np.vstack([self.conscience.elements,data.flatten()])
+         self.persistence.saveElements([self.conscience.elements, self.conscience.y])
 
 
     def updateConscience(self):

@@ -40,7 +40,7 @@ class BrainParams:
         self.ftpSender = ftp.FtpSender()
         self.persistence = T.targetManager()
         self.net = ro.Network(self.debugNetwork, self)
-        self.Lmemory = lt.LongTerm(self.persistence,self.ftpSender)
+        self.Lmemory = lt.LongTerm(self.persistence,self.ftpSender,self)
         self.Smemory = S.ShortTerm()
         self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory, self.ftpSender,self)
         # robot indicators
@@ -82,9 +82,9 @@ class BrainParams:
         for cl in cluster:
             clus.append({"x": cl[0], "y": cl[1], "range": cl[2],"index": i })
             i = i + 1
-        if len(clus) > 600:
-            random.shuffle(clus)
-            clus = clus[:600]
+        #if len(clus) > 600:
+         #   random.shuffle(clus)
+          #  clus = clus[:600]
         i = 0
         for cl in center:
             clus.append({"x": cl[0], "y": cl[1], "range": i, "index": -1})
@@ -114,7 +114,7 @@ class BrainParams:
                 self.isNewReportSecure = True
                 self.numReportSecure= numSecure
             iterP = self.Lmemory.trainMind.i
-            iterS = self.Lmemory.conscience.y.shape[0]
+            iterS = self.Lmemory.trainMind.y.shape[0]
         else:
             self.numReportSecure = 0
         lambdaNN = self.Lmemory.lambdaNN

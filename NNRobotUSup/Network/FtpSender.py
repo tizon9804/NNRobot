@@ -21,7 +21,7 @@ class FtpSender:
     def upload(self,img,name):
         if self.isconnect:
             self.sending += 1
-            if self.sending > 50:
+            if self.sending > 20:
                 self.sending = 0
                 t = threading.Thread(target=self.uploadasync, args=(img, name))
                 t.start()

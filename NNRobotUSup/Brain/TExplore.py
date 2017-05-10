@@ -36,7 +36,7 @@ class Explore:
         if self.bparm.isSearching:
             # search a possible direction to move, it do not cares the range of distance
             self.exploreLogic.searchDirection()
-            self.bparm.logExploreThread(str(self.bparm.PROBTOMOVE))
+            #self.bparm.logExploreThread(str(self.bparm.PROBTOMOVE))
             # think best way with the nnet return 0-1 where 1 is a secure way
 
     def move(self):

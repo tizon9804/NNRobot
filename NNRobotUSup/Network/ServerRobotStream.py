@@ -57,7 +57,7 @@ class RobotServerStream:
             self.server_socket.close()
 
     def getClosestDistance(self,x,xend):
-        time.sleep(1)
+        time.sleep(2)
         data = 'getClosestDistance:'+str(x)+':'+ str(xend)
         self.setData(data)
         data = self.connection.recv(4096*16)
@@ -100,18 +100,14 @@ class RobotServerStream:
         return float(self.getData())
 
     def getClosesFrontDistance(self):
-        falla = True
-        while falla:
-            try:
-                time.sleep(1)
-                data = 'getClosestFrontDistance'
-                self.setData(data)
-                closest= float(self.getData())
-                falla = False
-                return closest
-            except Exception, ex:
-                falla = True
-                print "Falla: intentando enviar getClosestFrontDistance",str(ex)
+        try:
+            time.sleep(1)
+            data = 'getClosestFrontDistance'
+            self.setData(data)
+            closest= float(self.getData())
+            return closest
+        except Exception, ex:
+            print "Falla: intentando enviar getClosestFrontDistance",str(ex)
 
     def move(self,dist):
         time.sleep(1)
@@ -120,12 +116,16 @@ class RobotServerStream:
         self.getData()
 
     def getLaserBuffer(self):
-        time.sleep(2)
-        data = 'getLaserBuffer'
-        self.setData(data)
-        data = self.connection.recv(4096*16)
-        data_arr = pickle.loads(data)
-        return np.array(data_arr)
+        try:
+            time.sleep(2)
+            data = 'getLaserBuffer'
+            self.setData(data)
+            data = self.connection.recv(4096*8)
+
+            data_arr,posData = pickle.loads(data)
+            return np.array(data_arr),posData
+        except Exception,ex:
+            "ERROR LASERBUFFER",str(ex)
 
 
     def getMaxReadings(self):

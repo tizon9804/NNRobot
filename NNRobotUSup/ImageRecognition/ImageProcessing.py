@@ -13,6 +13,7 @@ class IMprocess:
         self.bestWay = []
         self.image = []
         self.moments = []
+        self.tami=0
         self.path = r'../../VaNN/public/stream'
         self.path2 = '../../VaNN/public/stream'
 
@@ -62,12 +63,15 @@ class IMprocess:
             # filtro que elimina el color de to_do lo que no es un controno
             self.floodImage(self.img, img, 0)
         #cv2.imshow("Contours", img)
+        #cv2.waitKey(2)
         self.ftpSender.upload(img, 'image_stream')
-        cv2.waitKey(2)
+        #cv2.imwrite(self.path + '/image_stream' + str(self.tami) + '.jpg', img)
+        self.tami += 1
 
 
 
 
+    #591337812
     def obtainPieceOfImage(self, cnt, rect, imageRGB, imgCont, i):
         # obtiene la matriz de rotacion del rect que senala un objeto
         rotMatrix = cv2.getRotationMatrix2D(rect[0], rect[2], 1.0)
@@ -132,6 +136,7 @@ class IMprocess:
              item.meanGreen,
              item.meanBlue])
         tam = len(self.Smemory.Z)
+        cv2.imwrite(self.path + '/image_stream_object_' + str(tam) + '.jpg', img)
         #self.ftpSender.upload(img, 'image_stream_object_'+str(tam))
 
     def gaussianBlur(self, show):

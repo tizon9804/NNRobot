@@ -46,6 +46,7 @@ class Explore:
             #iterate all reading of the sensor in steps of rangeL grades
             lmoves = self.robotSystem.getClosestDistance(start,(end+rangeL)-1)
             while  self.needOther and len(lmoves) > 0:
+                print "Can Move : ",self.action," Need other direction ", self.needOther," lmove: s", len(lmoves)
                 if self.action:
                     angle,distance,estimation = self.getAngleMaxDistanceTempRemove(lmoves)
                     if self.robotSystem.isHeadingDone():
@@ -142,7 +143,7 @@ class Explore:
         tupleList = []
         for tuple in reversed(list):
             dist = tuple[2]
-            if dist <= mindistance:
+            if dist < mindistance:
                 if dist == mindistance:
                     tupleList.append(tuple)
                 else:
@@ -153,6 +154,7 @@ class Explore:
         numtup = len(tupleList)
         if numtup > 0:
             tupleMin = tupleList[position]
+            print tupleMin,"minimoooooooo$$$$$$$$$$$$$$$$$$$$$$4444"
             return tupleMin
         print "ERROR min getAngleMinDistanceTemp######################################################"
         return [0,0,0]

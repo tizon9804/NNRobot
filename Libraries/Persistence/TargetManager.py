@@ -1,6 +1,7 @@
 __author__ = 'Tizon'
 import cPickle
 import os
+import numpy as np
 
 class targetManager:
     def __init__(self):
@@ -42,5 +43,18 @@ class targetManager:
         except Exception,e:
             print str(e),"no data"
         return self.DataLoaded
+
+    def loadElements(self):
+       try:
+           self.elements = cPickle.load(open(self.path + 'elements.pkl','r'))
+           elements = self.elements
+       except:
+           elements = [np.array([]),np.array([])]
+       return elements
+
+    def saveElements(self,elements):
+        with open(self.path + 'elements.pkl', 'wb') as f:
+             cPickle.dump(elements, f)
+        print "elements saved..."
 
 

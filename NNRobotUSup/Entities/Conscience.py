@@ -1,15 +1,18 @@
 from Libraries.NNET import NNCostFunction as nncost
+import Libraries.Persistence.TargetManager as T
 import numpy as np
 
 class Conscience:
     def __init__(self,id,name,data,persistence):
+        T.targetManager
         self.name = name
         self.id = id
         self.mind = data
         self.isInitNN = False
         self.elements = np.array([])
         self.y = np.array([])
-        self.persistence = persistence
+        self.persistence = persistence # type: T.targetManager
+        self.elements,self.y=self.persistence.loadElements()
         self.prediction = 0
         self.probability = 0
 

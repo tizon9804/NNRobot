@@ -125,7 +125,7 @@ class config:
             self.pred = np.append(self.pred, costgrads.maxFunction(Xb[inp]))
             self.accuracyProbability = np.append(self.accuracyProbability, costgrads.maxpFunction(Xb[inp]))
         self.accuracy = np.mean(self.pred == np.asarray(self.y)) * 100
-        self.accuracyProbability = np.mean(self.accuracyProbability) * 100
+        self.accuracyProbability = np.mean(self.accuracyProbability) * 0.5
         print "element predicted", self.pred
         print "element expected", self.y
         print "accuracy is: ", self.accuracy, "%"

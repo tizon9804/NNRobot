@@ -46,6 +46,7 @@ class RobotDriver:
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
         self.robot.isConnected()
+        self.robot.getStallValue()
         self.kh = ArKeyHandler()
         Aria.setKeyHandler(self.kh)
         if (not self.conn.connectRobot(self.robot)):
