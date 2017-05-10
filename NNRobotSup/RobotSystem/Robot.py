@@ -43,16 +43,34 @@ class RobotDriver:
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
         self.robot.isConnected()
-        self.kh = ArKeyHandler()
-        Aria.setKeyHandler(self.kh)
         if (not self.conn.connectRobot(self.robot)):
           print 'Error connecting to robot'
           Aria.logOptions()
           print 'Could not connect to robot, exiting.'
           Aria.exit(1)
-        self.robot.attachKeyHandler(self.kh)
-        self.teleop=ArModeUnguardedTeleop(self.robot,"teleop","t","T")
 
+        # limiter for close obstacles
+        limiter = ArActionLimiterForwards("speed limiter near", 100, 300, 100)
+
+        # limiter for far away obstacles
+        limiterFar = ArActionLimiterForwards("speed limiter far", 400, 4900, 400)
+
+        # if the robot has upward facing IR sensors ("under the table" sensors), this
+        # stops us too
+        tableLimiter = ArActionLimiterTableSensor()
+
+        # limiter so we don't bump things backwards
+        backwardsLimiter = ArActionLimiterBackwards()
+
+        # add the actions, put the limiters on top, then have the joydrive action,
+        # this will keep the action from being able to drive too fast and hit
+        # something
+        self.robot.lock()
+        self.robot.addAction(tableLimiter, 100)
+        self.robot.addAction(limiter, 100)
+        self.robot.addAction(limiterFar, 90)
+        self.robot.addAction(backwardsLimiter, 85)
+        self.robot.unlock()
         print 'Connected to robot'
         self.robot.runAsync(1)
         self.robot.enableMotors()

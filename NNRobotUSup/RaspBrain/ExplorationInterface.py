@@ -1,11 +1,13 @@
 import Libraries.RobotSystem.Robot as R
 
 class ExploreInterface:
-    def __init__(self, thread,debugExplore,debugRobot):
+    def __init__(self, thread,debugExplore,debugRobot,ip):
         try:
             self.debug = debugExplore
             print thread + "init Explore"
-            self.robotSystem = R.RobotDriver(debugRobot)
+            self.debugRobot =debugRobot
+            self.ip =ip
+            self.robotSystem = R.RobotDriver(debugRobot,ip)
             self.MAXDISTANCE = self.robotSystem.getMaxDistance()
             self.MAXREADINGS = self.robotSystem.getMaxReadings()
             self.robot = self.robotSystem.robot
@@ -14,6 +16,7 @@ class ExploreInterface:
         except Exception as ex:
             print thread + "Cannot connect to Robot:" + str(ex)
             self.RobotStarted = False
+            self.restart()
 
     def getClosestDistance(self,x,xend):
         return self.robotSystem.getClosestDistance(x,xend)
@@ -40,10 +43,21 @@ class ExploreInterface:
         self.robotSystem.move(dist)
 
     def getLaserBuffer(self):
-        return self.robotSystem.getLaserBuffer();
+        buffer =  self.robotSystem.getLaserBuffer();
+        if buffer =='NoneType':
+            self.restart()
+        return buffer
 
-
-
+    def restart(self):
+        try:
+            self.robotSystem.closeRobot();
+            self.robotSystem = R.RobotDriver(self.debugRobot, self.ip)
+            self.MAXDISTANCE = self.robotSystem.getMaxDistance()
+            self.MAXREADINGS = self.robotSystem.getMaxReadings()
+            self.robot = self.robotSystem.robot
+            self.RobotStarted = True
+        except Exception,ex:
+            self.RobotStarted = False
 
 
 

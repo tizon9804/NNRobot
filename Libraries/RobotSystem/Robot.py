@@ -28,27 +28,26 @@ Adept MobileRobots, 10 Columbia Drive, Amherst, NH 03031; +1-603-881-7960
 from AriaPy import *
 import numpy as np
 import sys
+import time
 
 
 # This Python script connects to the robot and prints out the current
 # Sonar and Laser range readings.
 class RobotDriver:
-    def __init__(self, debug):
+    def __init__(self, debug,ip):
         Aria.init()
         self.debug = debug
         self.argparser = ArArgumentParser(sys.argv)
         self.argparser.loadDefaultArguments()
         self.logRobot('Connecting to robot...')
-        self.argparser.addDefaultArgument("-rh 157.253.173.241 -lp 157.253.173.241 -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
+        self.argparser.addDefaultArgument("-rh "+ip+" -lp "+ip+" -cl -lpt tcp -lt urg")  # -rh 157.253.173.241 -lp 157.253.173.241 -rh 190.168.0.18 -lp 190.168.0.18
         self.robot = ArRobot()
         self.startAngle = -30
         self.endAngle = 30
         self.conn = ArRobotConnector(self.argparser, self.robot)
         self.laserCon = ArLaserConnector(self.argparser, self.robot, self.conn)
+
         self.robot.isConnected()
-        self.robot.getStallValue()
-        self.kh = ArKeyHandler()
-        Aria.setKeyHandler(self.kh)
         if (not self.conn.connectRobot(self.robot)):
             self.logRobot('Error connecting to robot')
             Aria.logOptions()
@@ -56,6 +55,28 @@ class RobotDriver:
             Aria.exit(1)
             #self.robot.attachKeyHandler(self.kh)
         #self.teleop = ArModeUnguardedTeleop(self.robot, "teleop", "t", "T")
+        # limiter for close obstacles
+        limiter = ArActionLimiterForwards("speed limiter near", 10, 30, 100)
+
+        # limiter for far away obstacles
+        limiterFar = ArActionLimiterForwards("speed limiter far", 400, 4900, 400)
+
+        # if the robot has upward facing IR sensors ("under the table" sensors), this
+        # stops us too
+        tableLimiter = ArActionLimiterTableSensor()
+
+        # limiter so we don't bump things backwards
+        backwardsLimiter = ArActionLimiterBackwards()
+
+        # add the actions, put the limiters on top, then have the joydrive action,
+        # this will keep the action from being able to drive too fast and hit
+        # something
+        self.robot.lock()
+        self.robot.addAction(tableLimiter, 100)
+        self.robot.addAction(limiter, 100)
+        self.robot.addAction(limiterFar, 90)
+        self.robot.addAction(backwardsLimiter, 85)
+        self.robot.unlock()
 
         self.logRobot('Connected to robot')
         self.robot.runAsync(1)
@@ -83,12 +104,15 @@ class RobotDriver:
             bufferpos = []
             for r in range(lenreading):
                 buffer[r] = readings[r].getRange()
-                bufferpos.append({"x": readings[r].getX(), "y": readings[r].getY(), "range": readings[r].getRange()})
+                bufferpos.append({"x": round(readings[r].getX(),4), "y": round(readings[r].getY(),4), "range": readings[r].getRange()})
             self.logRobot("Laser readings: " + str(lenreading))
-            return [buffer, bufferpos]
-
+            bufferall = [buffer, bufferpos]
+            print buffer
+            print bufferpos
+            print bufferall
+            return bufferall
         else:
-            return np.zeros(1, 228)
+            return np.zeros(1, 228),[]
 
     def getMaxReadings(self):
         self.laser.lockDevice()  #self.robot.tryLock()
@@ -127,24 +151,35 @@ class RobotDriver:
         self.robot.unlock()
 
     def rotateSecure(self, angle):
+        angler = round(angle)
         self.robot.lock()
-        self.robot.setHeading(angle)
+        self.robot.setHeading(angler)
         self.robot.unlock()
         while not self.robot.isHeadingDone():
-            d = 0
+            print "rotating...."
+            self.sleep()
 
     def move(self, dist):
         self.robot.lock()
         self.robot.move(dist)
         self.robot.getMoveDoneDist()
         self.robot.unlock()
+        max = 0
         while not self.robot.isMoveDone():
+            self.sleep()
+            print "moving",max
+            max+=1
+            if max > 50:
+                print 'inf moving....'
+                break
             diff = self.robot.getMoveDoneDist()
             closest = self.getClosestFrontDistance()
             if closest < diff:
-                self.logRobot("object in movement is in front")
+                print "object in movement is in front"
                 self.robot.stop()
                 self.robot.setMoveDoneDist(0)
+                break
+        print "moved######################"
         self.sleep()
 
     def activateTeleop(self):
@@ -158,7 +193,7 @@ class RobotDriver:
         self.teleop.deactivate()
 
     def sleep(self):
-        ArUtil.sleep(100)
+        time.sleep(1)
 
     def setRobotAction(self, action, speed):
         # Drive the robot a bit, then exit.
@@ -181,7 +216,7 @@ class RobotDriver:
     def closeRobot(self):
         self.robot.disableMotors()
         self.logRobot(" ROBOT goodbye.")
-        Aria.exit(0)
+        Aria.exit(1)
 
     def logRobot(self, message):
         if self.debug:

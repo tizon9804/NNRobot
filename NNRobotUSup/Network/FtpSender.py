@@ -28,13 +28,16 @@ class FtpSender:
         else:
             self.connect()
 
-
+    def upload2(self,img,name):
+        if self.isconnect:
+            t = threading.Thread(target=self.uploadasync, args=(img, name))
+            t.start()
+        else:
+            self.connect()
 
     def uploadasync(self,img,name):
         img = cv2.imencode('.jpeg', img)
         self.sock.emit(name, {'buffer': b64encode(img[1])})
-
-
 
     def uploadasyncUDP(self, img, name):
         img = cv2.imencode('.jpeg', img)

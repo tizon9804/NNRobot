@@ -1,13 +1,15 @@
 import socket
 import ExplorationInterface as Exp
 import pickle
+import time
 class robotStream:
-    def __init__(self):
+    def __init__(self,ip):
         print 'conecting...'
-        self.robotSystem = Exp.ExploreInterface("exp",True,True)
+        self.robotSystem = Exp.ExploreInterface("exp",True,True,ip)
 
     def connection(self):
-        while(True):
+        print 'The robot started', self.robotSystem.RobotStarted
+        while(self.robotSystem.RobotStarted):
             # Connect a client socket to my_server:8000 (change my_server to the
             # hostname of your server) 190.158.131.76
             try:
@@ -40,6 +42,7 @@ class robotStream:
             except Exception as ex:
                 self.connect = False
                 print "trying Connect Robot...",str(ex)
+                time.sleep(2)
 
     def getData(self):
         data = self.client_socket.recv(1024).decode()
@@ -114,9 +117,16 @@ class robotStream:
 
     def getLaserBuffer(self):
         if self.data[0] == "getLaserBuffer":
-            data = self.robotSystem.getLaserBuffer()
-            data_string = pickle.dumps(data)
-            self.client_socket.send(data_string)
+            try:
+                data = self.robotSystem.getLaserBuffer()
+                print 'data#$$$--', data
+                data_string = pickle.dumps(data)
+                print 'data#$$$--',data
+                print 'datra_string--',data_string
+                print len(data_string),"  getlaserbuffer"
+                self.client_socket.send(data_string)
+            except Exception,ex:
+                print "getlaserbuffer########################################################################################################",str(ex)
 
 
     def getMaxReadings(self):
