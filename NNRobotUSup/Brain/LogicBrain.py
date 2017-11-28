@@ -1,4 +1,4 @@
-from Memory import LongTerm as lt
+from NNRobotUSup.Memory import LongTerm as lt
 import NNRobotUSup.Memory.ShortTerm as S
 import NNRobotUSup.ImageRecognition.SightSense as sight
 import NNRobotUSup.Network.Routes as ro
