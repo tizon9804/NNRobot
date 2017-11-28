@@ -2,7 +2,6 @@ __author__ = 'Tizon'
 import numpy as np
 import theano
 import time
-import matplotlib.pyplot as plt
 from Libraries.NNET import NNCostFunction, Think
 
 
