@@ -14,6 +14,10 @@ import random
 
 class BrainParams:
     def __init__(self):
+        print "----------------------------------------"
+        print "Bienvenido a NNROBOTUSUP"
+        print "----------------------------------------"
+        print "inicializando variables..."
         self.debugLogic = True
         self.debugSense = True
         self.debugExplore = True
@@ -37,13 +41,20 @@ class BrainParams:
         self.isVideoStreaming = True
         self.isBadWay = False
         self.targetList = []
+        print "inicializando ftp..."
         self.ftpSender = ftp.FtpSender()
+        print "inicializando persistencia..."
         self.persistence = T.targetManager()
+        print "inicializando conexion web..."
         self.net = ro.Network(self.debugNetwork, self)
+        print "inicializando memoria a largo plazo..."
         self.Lmemory = lt.LongTerm(self.persistence,self.ftpSender,self)
+        print "inicializando memoria a corto plazo..."
         self.Smemory = S.ShortTerm()
+        print "inicializando vista..."
         self.sight = sight.SightSense(self.isVideoStreaming, self.Smemory, self.Lmemory, self.ftpSender,self)
         # robot indicators
+        print "inicializando indicadores..."
         self.laserData = []
         self.posData = []
         self.nlogic = 0
