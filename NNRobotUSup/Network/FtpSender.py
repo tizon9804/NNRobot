@@ -11,7 +11,7 @@ class FtpSender:
         self.sending = 60
 
     def connect(self):
-        self.sock = SocketIO('104.198.238.71',80,LoggingNamespace)
+        self.sock = SocketIO('35.188.100.1',8080,LoggingNamespace)
         #self.sock = SocketIO('190.158.131.76', 3000, LoggingNamespace)
         #self.sockUdp = socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
         #self.UDP_IP = '104.198.238.71'
