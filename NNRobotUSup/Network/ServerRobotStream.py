@@ -10,10 +10,10 @@ class RobotServerStream:
         self.isRobotActive = False
 
     def acceptRobot(self):
-        print "open sockets port 8080"
+        print "open sockets port 8001"
         self.isRobotActive = False
         self.server_socket = socket.socket()
-        self.server_socket.bind(('0.0.0.0', 8080))
+        self.server_socket.bind(('0.0.0.0', 8001))
         print "listening ROBOT"
         self.server_socket.listen(0)
         print  "Accept a single connection ROBOT"
