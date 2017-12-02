@@ -19,7 +19,7 @@ class LongTerm:
         self.maxIter = 2000
         self.maxNoCostIter = 700
         self.lambdaNN = 0
-        self.numEleToTrain = 20
+        self.numEleToTrain = 50
         self.path = r'../../VaNN/public/stream'
 
 
