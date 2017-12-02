@@ -5,7 +5,7 @@ class Network:
     def __init__(self, debug,bparm):
         self.debug = False
         self.bparm = bparm
-        self.url = 'http://104.198.238.71'
+        self.url = 'http://104.197.43.177:8080'
         #print "request created"
 
     def sendData(self, data, posData, logic, image, explore, cpu, memory,actualpredNav,actualprobNav):

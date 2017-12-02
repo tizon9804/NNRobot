@@ -55,7 +55,7 @@ class IMprocess:
                     # obtiene los pedasos de imagenes, se realiza un proceso de descripcion
                     flood = self.obtainPieceOfImage(cnt, rect, imgRGB, self.img, i)
                     #cv2.imshow("rgb" + str(0), flood)
-                    cv2.waitKey(1)
+                    #cv2.cvWaitKey()
                     # dibuja sobre la imagen los contornos en forma de rectangulo y hull encontrados
                     cv2.drawContours(img, [box], -1, (114, 224, 150), 2)
                     cv2.drawContours(img, [hull], -1, (207, 252, 232), 1)
@@ -142,16 +142,16 @@ class IMprocess:
     def gaussianBlur(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.GaussianBlur(self.img, (7, 7), 0)
-        if show:
-            cv2.imshow("GaussianBlur", self.imFilt)
-            cv2.waitKey(1)
+        #if show:
+         #   cv2.imshow("GaussianBlur", self.imFilt)
+          #  cv2.waitKey(1)
 
     def gray(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
-        if show:
-            self.ftpSender.upload(self.imFilt, 'image_stream_gray')
-            cv2.waitKey(1)
+        #if show:
+         #   self.ftpSender.upload(self.imFilt, 'image_stream_gray')
+          #  cv2.waitKey(1)
 
     def laplacian(self, show):
         self.img = self.imFilt
@@ -160,33 +160,33 @@ class IMprocess:
         self.imFilt = cv2.convertScaleAbs(dst)
         if show:
             self.ftpSender.upload(self.imFilt, 'image_stream_laplacian')
-            cv2.waitKey(1)
+           # cv2.waitKey(1)
 
     def medianBlur(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.medianBlur(self.img, 5)
-        if show:
-            cv2.imshow("medianBlur", self.imFilt)
-            cv2.waitKey(1)
+        #if show:
+           # cv2.imshow("medianBlur", self.imFilt)
+          #  cv2.waitKey(1)
 
     def bilateralFilter(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.bilateralFilter(self.img, 10, 17, 17)
-        if show:
-            cv2.imshow("bilateralFilter", self.imFilt)
-            cv2.waitKey(1)
+        #if show:
+         #   cv2.imshow("bilateralFilter", self.imFilt)
+          #  cv2.waitKey(1)
 
     def convolution(self, show):
         self.img = self.imFilt
         kernel = np.ones((5, 5), np.float32) / 25
         self.imFilt = cv2.filter2D(self.img, -1, kernel)
-        if show:
-            cv2.imshow("convolution", self.imFilt)
-            cv2.waitKey(1)
+        #if show:
+         #   cv2.imshow("convolution", self.imFilt)
+          #  cv2.waitKey(1)
 
     def cannyEdges(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.Canny(self.img, 0, 30)
         if show:
             self.ftpSender.upload(self.imFilt, 'image_stream_canny')
-            cv2.waitKey(1)
+          #  cv2.waitKey(1)
