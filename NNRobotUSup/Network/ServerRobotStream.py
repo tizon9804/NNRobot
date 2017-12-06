@@ -120,7 +120,7 @@ class RobotServerStream:
             time.sleep(2)
             data = 'getLaserBuffer'
             self.setData(data)
-            data = self.connection.recv(4096*8)
+            data = self.connection.recv(4096*10)
 
             data_arr,posData = pickle.loads(data)
             return np.array(data_arr),posData
