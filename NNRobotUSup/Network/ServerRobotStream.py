@@ -125,8 +125,12 @@ class RobotServerStream:
                 packet = self.connection.recv(4096)
                 print "packet"
                 print len(packet)
+                print packet
                 if not packet: break
-                data.append(packet)                    
+                data.append(packet)
+                print "pre daata"
+                print len(data)
+            print "data"
             print len(data)
             data_arr,posData = pickle.loads(b"".join(data))
             return np.array(data_arr),posData
