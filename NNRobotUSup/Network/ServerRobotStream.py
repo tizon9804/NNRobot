@@ -57,12 +57,22 @@ class RobotServerStream:
             self.server_socket.close()
 
     def getClosestDistance(self,x,xend):
-        time.sleep(2)
-        data = 'getClosestDistance:'+str(x)+':'+ str(xend)
-        self.setData(data)
-        data = self.connection.recv(4096*16)
         try:
-            lmoves = pickle.loads(data)
+            time.sleep(2)
+            data = 'getClosestDistance:'+str(x)+':'+ str(xend)
+            self.setData(data)
+            data = []
+            while True:
+                packet = self.connection.request.recv()
+                print "packet"
+                print len(packet)                
+                if not packet: break
+                data.append(packet)
+                print "pre daata"
+                print len(data)
+            print "data#####################"
+            print len(data)           
+            lmoves = pickle.loads(b"".join(data))
             return lmoves
         except Exception,ex:
             return []
