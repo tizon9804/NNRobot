@@ -23,6 +23,7 @@ class RobotServerStream:
             print '#################### Waiting Robot...########################'
             data = self.getData()
             if data == 'raspChappie':
+                print data
                 self.setData('HiRasp')
                 self.getData()
                 waiting = False
@@ -126,12 +127,14 @@ class RobotServerStream:
         self.getData()
 
     def getLaserBuffer(self):
-        try:
-            time.sleep(2)
+        try:            
             data = 'getLaserBuffer'
+            print data
             self.setData(data)
             data = []
+            print "enter while true"
             while True:
+                print "looping"
                 packet = self.connection.request.recv()
                 print "packet"
                 print len(packet)                
