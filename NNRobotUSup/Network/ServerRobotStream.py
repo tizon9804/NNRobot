@@ -120,8 +120,11 @@ class RobotServerStream:
             time.sleep(2)
             data = 'getLaserBuffer'
             self.setData(data)
+            data = []
             while True:
                 packet = self.connection.recv(4096)
+                print "packet"
+                print len(packet)
                 if not packet: break
                 data.append(packet)                    
             print len(data)
