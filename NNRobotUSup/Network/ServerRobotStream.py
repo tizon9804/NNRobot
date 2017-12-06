@@ -126,29 +126,26 @@ class RobotServerStream:
         self.setData(data)
         self.getData()
 
-    def getLaserBuffer(self):
-        try:            
-            data = 'getLaserBuffer'
-            print data
-            self.setData(data)
-            data = []
-            print "enter while true"
-            while True:
-                print "looping"
-                packet = self.connection.request.recv()
-                print "packet"
-                print len(packet)                
-                if not packet: break
-                data.append(packet)
-                print "pre daata"
-                print len(data)
-            print "data#####################"
+    def getLaserBuffer(self):                    
+        data = 'getLaserBuffer'
+        print data
+        self.setData(data)
+        data = []
+        print "enter while true"
+        while True:
+            print "looping"
+            packet = self.connection.request.recv()
+            print "packet"
+            print len(packet)                
+            if not packet: break
+            data.append(packet)
+            print "pre daata"
             print len(data)
-            data_arr,posData = pickle.loads(b"".join(data))
-            return np.array(data_arr),posData
-        except Exception,ex:
-            "ERROR LASERBUFFER",str(ex)
-
+        print "data#####################"
+        print len(data)
+        data_arr,posData = pickle.loads(b"".join(data))
+        return np.array(data_arr),posData
+       
 
     def getMaxReadings(self):
         data = 'getMaxReadings'
