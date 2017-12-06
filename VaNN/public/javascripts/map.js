@@ -223,12 +223,13 @@ function createMap(urlData,eleDiv,ismap,w,h) {
     function showImage(d,o) {
         if (!ismap && d.index != -1) {
             url = 'stream/image_stream_object_' + d.index + '.jpg?_t=' + (Math.random() * 100000)
-            $('#stream_object').attr('src', url);
-            d3.select(o).transition()
-                .duration(500)
-                .attr("r", 10)
-                .style("fill", d3.rgb(50, 50,50).toString())
-                .style("opacity",1)
+            console.log(url);
+           // $('#stream_object').attr('src', url);
+           // d3.select(o).transition()
+          //      .duration(500)
+           //     .attr("r", 10)
+           //     .style("fill", d3.rgb(50, 50,50).toString())
+            //    .style("opacity",1)
         }
     }
 
