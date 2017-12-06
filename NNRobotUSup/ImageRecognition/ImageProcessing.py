@@ -14,8 +14,10 @@ class IMprocess:
         self.image = []
         self.moments = []
         self.tami=0
-        self.path = r'../../VaNN/public/stream'
-        self.path2 = '../../VaNN/public/stream'
+        #self.path = r'../../VaNN/public/stream'
+        #self.path2 = '../../VaNN/public/stream'
+        self.path = r'../../stream'
+        self.path2 = '../../stream'
 
     def contours(self, img):
         imgRGB = img.copy()
