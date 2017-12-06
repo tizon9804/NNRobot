@@ -158,8 +158,8 @@ class IMprocess:
         dst = cv2.Laplacian(self.img, ddepth=cv2.CV_16S,
                             scale=2, delta=200, ksize=3, borderType=cv2.BORDER_CONSTANT)
         self.imFilt = cv2.convertScaleAbs(dst)
-        if show:
-            self.ftpSender.upload(self.imFilt, 'image_stream_laplacian')
+        #if show:
+            #self.ftpSender.upload(self.imFilt, 'image_stream_laplacian')
            # cv2.waitKey(1)
 
     def medianBlur(self, show):
@@ -187,6 +187,6 @@ class IMprocess:
     def cannyEdges(self, show):
         self.img = self.imFilt
         self.imFilt = cv2.Canny(self.img, 0, 30)
-        if show:
-            self.ftpSender.upload(self.imFilt, 'image_stream_canny')
+        #if show:
+            #self.ftpSender.upload(self.imFilt, 'image_stream_canny')
           #  cv2.waitKey(1)
