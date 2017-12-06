@@ -22,11 +22,12 @@ class Explore:
             if self.bparm.RobotLife:
                 try:
                     self.bparm.laserData, self.bparm.posData = self.exploreLogic.robotSystem.getLaserBuffer()
+                    self.searchDirection()
+                    self.move()
                 except Exception,ex:
                     print "ErrorLaserBuffer loopExplore $$$$",str(ex)
                     #self.bparm.exploreLife = False
-                self.searchDirection()
-                self.move()
+                
 
     # ----------------------------------------------------------------------------------
     # EXPLORE
