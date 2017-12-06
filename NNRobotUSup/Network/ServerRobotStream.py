@@ -120,9 +120,12 @@ class RobotServerStream:
             time.sleep(2)
             data = 'getLaserBuffer'
             self.setData(data)
-            data = self.connection.recv(4096*10)
+            while True:
+                packet = self.connection.recv(4096)
+                if not packet: break
+                data.append(packet)                    
             print len(data)
-            data_arr,posData = pickle.loads(data)
+            data_arr,posData = pickle.loads(b"".join(data))
             return np.array(data_arr),posData
         except Exception,ex:
             "ERROR LASERBUFFER",str(ex)
