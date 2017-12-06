@@ -81,9 +81,9 @@ function createMap(urlData, eleDiv, w, h) {
     function getPositions() {
         d3.interval(function () {
             d3.json(urlData, function (error, posData) {
-               // if (posData.isTraining) {                    
+                if ( posData.rcost!= undefined) {                    
                     updateMap(posData);                    
-              //  }            
+                }            
             });
         }, 1000);
     }
