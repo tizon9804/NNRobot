@@ -37,6 +37,7 @@ class RobotServerStream:
             if not dataLen:
                 return None
             msglen = struct.unpack('>I',dataLen)[0]
+            print msglen
             data = self.recvall(msglen)
             return data
         except Exception as ex:
