@@ -64,7 +64,7 @@ class RobotServerStream:
             self.setData(data)
             data = []
             while True:
-                packet = self.connection.recv()
+                packet = self.connection.recv(1024)
                 print "packet"
                 print len(packet)                
                 if not packet: break
@@ -134,7 +134,7 @@ class RobotServerStream:
         print "enter while true"
         while True:
             print "looping"
-            packet = self.connection.recv()
+            packet = self.connection.recv(1024)
             print "packet"
             print len(packet)                
             if not packet: break
