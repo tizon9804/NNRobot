@@ -36,8 +36,8 @@ class RobotServerStream:
             dataLen = self.recvall(4)
             if not dataLen:
                 return None
-            dataLen = struct.unpack('>I',data)[0]
-            data = self.recvall(dataLen)
+            msglen = struct.unpack('>I',dataLen)[0]
+            data = self.recvall(msglen)
             return data
         except Exception as ex:
             print "Network: finalizo streaming: " + str(ex)
@@ -61,7 +61,7 @@ class RobotServerStream:
     
     def setData(self,data):
         try:
-            msg = struct.pack('>I'),len(data) + data)
+            msg = struct.pack('>I',len(data) + data)
             self.connection.sendall(msg)
         except Exception,ex:
             print "Robot Error: ",str(ex)
