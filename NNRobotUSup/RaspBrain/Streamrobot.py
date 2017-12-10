@@ -2,6 +2,7 @@ import socket
 import ExplorationInterface as Exp
 import pickle
 import time
+import struct
 class robotStream:
     def __init__(self,ip):
         print 'conecting...'
@@ -20,7 +21,7 @@ class robotStream:
                 try:
                    while(True):
                        self.startingConv()
-                       self.data = self.getData()
+                       self.data = self.getData().decode()
                        self.data = self.data.split(":")
                        self.getClosestDistance()
                        self.isHeadingDone()
@@ -45,21 +46,36 @@ class robotStream:
                 time.sleep(2)
 
     def getData(self):
-        data = self.client_socket.recv(1024).decode()
+        dataLen = self.recvall(4)
+        if not dataLen:
+            return None
+        msglen = struct.unpack('>I',dataLen)[0]
+        data = self.recvall(msglen)
         print data
         return data
 
     def setData(self,data):
         print 'data sended',data
-        self.client_socket.send(b''+str(data))
+        msg = struct.pack('>I', len(data) + data)
+        self.client_socket.sendall(msg)
+        
+    def recvall(n):
+        # Helper function to recv n bytes or return None if EOF is hit
+        data = b''
+        while len(data) < n:
+            packet = self.client_socket.recv(n - len(data))
+            if not packet:
+                return None
+            data += packet
+        return data
 
     def startingConv(self):
         if not self.istalk:
-            self.client_socket.send(b'raspChappie')
-            self.data = self.getData()
+            self.setData('raspChappie')
+            self.data = self.getData().decode()
             if self.data == "HiRasp":
                 print self.data
-                self.setData(b'ok')
+                self.setData('ok')
                 self.istalk = True
 
 
@@ -73,9 +89,8 @@ class robotStream:
                 distance,angle = self.robotSystem.getClosestDistance(x,xend)
                 estimation = self.calculateProbToMove(distance)
                 lmoves.append([angle,distance,estimation])
-            data_string = pickle.dumps(lmoves)
             print lmoves
-            self.client_socket.send(data_string)
+            self.setData(lmoves)
 
     def isHeadingDone(self):
         if self.data[0] == "isHeadingDone":
@@ -86,18 +101,18 @@ class robotStream:
         if self.data[0] == "rotate":
             print self.data
             self.robotSystem.rotate(float(self.data[1]))
-            self.setData(b'ok')
+            self.setData('ok')
 
     def rotateSecure(self):
         if self.data[0] == "rotateSecure":
             print self.data
             self.robotSystem.rotateSecure(float(self.data[1]))
-            self.setData(b'ok')
+            self.setData('ok')
 
     def restartHeading(self):
         if self.data[0] == "restartHeading":
             self.robotSystem.restartHeading()
-            self.setData(b'ok')
+            self.setData('ok')
 
     def getTh(self):
         if self.data[0] == "getTh":
@@ -113,21 +128,16 @@ class robotStream:
         if self.data[0] == "move":
             print self.data
             self.robotSystem.move(float(self.data[1]))
-            self.setData(b'ok')
+            self.setData('ok')
 
     def getLaserBuffer(self):
         if self.data[0] == "getLaserBuffer":
             try:
                 data = self.robotSystem.getLaserBuffer()
-                print 'data#$$$--', data
-                data_string = pickle.dumps(data)
-                print 'data#$$$--',data
-                print 'datra_string--',data_string
-                print len(data_string),"  getlaserbuffer"
-                self.client_socket.send(data_string)
+                print len(data),"  getlaserbuffer"
+                self.setData(data)
             except Exception,ex:
-                print "getlaserbuffer########################################################################################################",str(ex)
-
+                print "getlaserbuffer",str(ex)
 
     def getMaxReadings(self):
         if self.data[0] == "getMaxReadings":
